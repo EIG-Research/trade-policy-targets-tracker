@@ -1,5 +1,6 @@
-# Project: Analyzing manufacturing employment in counties most affected by the China shock
-# last update: 4/8/2025 by Jiaxin He
+# Project: Trump Trade Policy Targets Dashboard
+# File description: Aggregating manufacturing employment in counties most affected by the China shock
+# last update: 4/10/2025 by Jiaxin He
 
 # remove dependencies
 rm(list = ls())
