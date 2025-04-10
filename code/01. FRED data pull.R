@@ -48,3 +48,25 @@ path_appdata <- file.path(path_app, "cleaned_data")
 ### Data build ###
 ##################
 
+FRED_API_KEY <- your_api_key_here
+api_key <- Sys.getenv("FRED_API_KEY")
+
+# Query monthly federal budget balance
+budget_id <- "MTSDS133FMS"
+start_date <- "1990-01-01"
+end_date <- "2025-03-01"
+budget_month <- fredo(budget_id, start_date, end_date)
+
+# Aggregate by quarter and adjust seasonally
+
+# Query private construction spending, manufacturing
+
+# Query all employees, manufacturing
+
+# Query all employees, motor vehicles and parts
+
+# Query all employees, private
+
+# Adjust to 2017 dollars
+
+# Calculate manufacturing and automotive shares of private employment
