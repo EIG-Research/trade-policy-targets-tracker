@@ -23,6 +23,7 @@ library(scales)
 # install.packages("devtools")
 # devtools::install_github("manutzn/fredo")
 library(fredo)
+library(seasonal) # Use X-13 to seasonally adjust monthly data
 
 #################
 ### Set paths ###
