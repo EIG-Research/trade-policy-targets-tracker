@@ -100,7 +100,7 @@ priv_qt <- quarterly(priv_month, c(1990,1), mean, FALSE)
 # Calculate quarterly inflation
 cpi_basis <- fredo(FRED_API_KEY, CPI_id, "1989-10-01", "1989-12-01")
 cpi_basis <- mean(cpi_basis$value)
-cpi_inflation <- as.numeric(cpi_qt) / c(cpi_basis, as.numeric(cpi_qt)[-length(cpi_qt)]) %>%
+cpi_inflation <- (as.numeric(cpi_qt) / c(cpi_basis, as.numeric(cpi_qt)[-length(cpi_qt)]) - 1) %>%
   ts(., start = c(1990,1), frequency = 4)
 
 # Adjust to 2017 dollars
@@ -115,3 +115,4 @@ motor_share <- motor_qt / priv_qt
 # Export data
 save(cpi_adj, cpi_inflation, budget_real, construction_real,
      manu_qt, motor_qt, manu_share, motor_share, file = file.path(path_appdata, "fred_data.RData"))
+

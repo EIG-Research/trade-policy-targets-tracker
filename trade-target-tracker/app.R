@@ -13,13 +13,14 @@ rm(list = ls())
 ###   Load Packages     ###
 ###########################
 library(scales)
+library(zoo)
 library(tidyr)
 library(dplyr)
 library(Hmisc)
 library(grattan)
-library(tidycensus)
 library(bslib)
 library(ggplot2)
+library(ggfortify)
 library(dichromat)
 library(cowplot)
 
@@ -61,20 +62,11 @@ load(file.path("./cleaned_data", "bea_data.RData"))
 ######################
 
 # Define EIG color palette
-eig_colors <- c("#b3d6dd", "#79c5fd", "#176F96", "#234f8b", 	# EIG blue colors
-                "#008080", "#5e9c86", "#1a654d", "#044140",	  # EIG green colors
-                "#feecd6", "#f0b799", "#da9969", "#e1ad28")		# EIG beige, red, and yellow
-
-# EIG palette selector
-eig_palette <- function(n_colors, input_palette){
-  if(n_colors <= length(input_palette)){
-    return(input_palette[floor(seq(from = 1, to = length(input_palette), length.out = n_colors))])
-  }else{
-    return(colorRampPalette(input_palette)(n_colors))
-  }
-}
+eig_colors <- c("#1a654d", "#5e9c86", "#008080", "#044140")	  # EIG green colors
 
 ui <- page_fillable(
+  titlePanel("Welcome to the Trade Policy Dashboard", windowTitle = "Welcome to the Trade Policy Dashboard"),
+  textOutput("description"),
   navset_card_tab(
     ### Inflation ###
     nav_panel("Inflation", plotOutput("plot_inflation")),
@@ -82,8 +74,9 @@ ui <- page_fillable(
     ### Federal Budget Balance ###
     nav_panel("Federal Budget Balance", plotOutput("plot_budget")),
     
-    ### Aggregate Trade Balance ###
-    nav_panel("Aggregate Trade Balance", plotOutput("plot_agg_trade"))
+    ### Trade Balance ###
+    nav_panel("Trade Balance", plotOutput("plot_trade")),
+    
   )
 )
 
@@ -92,16 +85,35 @@ ui <- page_fillable(
 ##########################
 
 server <- function(input, output) {
+  output$description <- renderText("This tool tracks quarterly trends in key economic indicators identified by
+  the Trump administration’s trade agenda as gauges of success. Each indicator provides insight into
+  how policy actions align with stated goals, offering an up-to-date look at economic outcomes. Use
+  the buttons below to explore individual indicators, view their associated targets, and assess progress
+  across different areas of trade policy.")
+  
   output$plot_inflation <- renderPlot(
-    ggplot()
+    autoplot(cpi_inflation, ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 0.005, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(as.yearmon(1992)), y = 0.003, label = "Long-run Fed target"),
+                stat = "unique", color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_y_continuous(breaks = seq(-0.02, 0.02, 0.005), labels = scales::percent) +
+      ylab("Inflation (%)") +
+      xlab("Time (Quarter)")
   )
   
   output$plot_budget <- renderPlot(
-    ggplot()
+    autoplot(budget_real, ts.colour = eig_colors[1]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      ylab("Federal Budget Balance (Millions of Dollars)") +
+      xlab("Time (Quarter)")
   )
   
-  output$plot_agg_trade <- renderPlot(
-    ggplot()
+  output$plot_trade <- renderPlot(
+    autoplot(trade_agg_qt, ts.colour = eig_colors[1]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      ylab("Trade Balance (Millions of Dollars)") +
+      xlab("Time (Quarter)")
   )
 }
 

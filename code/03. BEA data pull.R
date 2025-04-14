@@ -4,7 +4,7 @@
 #   2. Trade balance with China
 #   3. Total real value added, manufacturing
 # Additional historical data downloaded manually from Census and OECD
-# last update: 4/11/2025 by Jiaxin He
+# last update: 4/14/2025 by Jiaxin He
 
 # remove dependencies
 rm(list = ls())
