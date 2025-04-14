@@ -6,7 +6,7 @@
 #   3. Employment, Manufacturing
 #   4. Employment, Motor Vehicles and Parts
 #   5. Employment, Total Private
-# last update: 4/10/2025 by Jiaxin He
+# last update: 4/11/2025 by Jiaxin He
 
 # remove dependencies
 rm(list = ls())
@@ -85,7 +85,7 @@ priv_month <- fredo(FRED_API_KEY, emp_priv, start_date, end_date)
 quarterly <- function(df, start_month, func, seasonal = FALSE){
   df_ts <- df %>% select(value) %>% ts(., start = start_month, frequency = 12)
   if(seasonal){
-    df_ts <- final(seas(df_ts))
+    df_ts <- final(seas(df_ts)) # Seasonally adjust FRED budget and construction spending data
   }
   df_ts %>% aggregate(., nfrequency = 4, FUN = func)
 }
@@ -113,5 +113,5 @@ manu_share <- manu_qt / priv_qt
 motor_share <- motor_qt / priv_qt
 
 # Export data
-save(cpi_inflation, budget_real, construction_real,
+save(cpi_adj, cpi_inflation, budget_real, construction_real,
      manu_qt, motor_qt, manu_share, motor_share, file = file.path(path_appdata, "fred_data.RData"))
