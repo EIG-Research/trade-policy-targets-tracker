@@ -1,7 +1,5 @@
 # Project: Trump Trade Policy Targets Dashboard
-# File description: BLS data pull for:
-#   1. Percent change in CPI-U
-#   2. County-level QCEW for usage in China Shock analysis
+# File description: BLS data pull for: County-level QCEW for usage in China Shock analysis
 # last update: 4/10/2025 by Jiaxin He
 
 # remove dependencies
