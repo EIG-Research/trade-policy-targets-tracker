@@ -1,7 +1,7 @@
-# Project: Analyzing the effect of income cutoffs in noncompete bans
-# File Description: R Shiny income breakdown dashboard
+# Project: Trump Trade Policy Targets Dashboard
+# File Description: R Shiny application
 
-# last update: 4/3/2025 by Jiaxin He
+# last update: 4/14/2025 by Jiaxin He
 
 # remove dependencies
 rm(list = ls())
@@ -29,8 +29,9 @@ library(rsconnect)
 rsconnect::setAccountInfo(name='economicinnovationgroup',
                           token='1E424A49864E72123BE5CAA19E6D2274',
                           secret='/OJ/Oy/GW2sk6ibHJt4JgoqzB80U03mcEyFJn0ev')
+
 #################
-### Load Data ###
+### Set paths ###
 #################
 # Define user-specific project directories
 project_directories <- list(
@@ -46,9 +47,14 @@ if (!current_user %in% names(project_directories)) {
 
 path_project <- project_directories[[current_user]]
 path_app <- file.path(path_project, "trade-target-tracker")
-path_appdata <- file.path(path_app, "cleaned_data")
+setwd(path_app)
 
-load(file.path(path_appdata, "fred_data.RData"))
+#################
+### Load Data ###
+#################
+# Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
+load(file.path("./cleaned_data", "fred_data.RData"))
+load(file.path("./cleaned_data", "bea_data.RData"))
 
 ######################
 ### Build Shiny UI ###
@@ -69,16 +75,15 @@ eig_palette <- function(n_colors, input_palette){
 }
 
 ui <- page_fillable(
-  
   navset_card_tab(
-    ### Plot 1 ###
-    nav_panel("Plot 1", plotOutput("plot_1")),
+    ### Inflation ###
+    nav_panel("Inflation", plotOutput("plot_inflation")),
     
-    ### Plot 2 ###
-    nav_panel("Plot 2", plotOutput("plot_2")),
+    ### Federal Budget Balance ###
+    nav_panel("Federal Budget Balance", plotOutput("plot_budget")),
     
-    ### Plot 3 ###
-    nav_panel("Plot 3", plotOutput("plot_3"))
+    ### Aggregate Trade Balance ###
+    nav_panel("Aggregate Trade Balance", plotOutput("plot_agg_trade"))
   )
 )
 
@@ -87,15 +92,15 @@ ui <- page_fillable(
 ##########################
 
 server <- function(input, output) {
-  output$plot_1 <- renderPlot(
+  output$plot_inflation <- renderPlot(
     ggplot()
   )
   
-  output$plot_2 <- renderPlot(
+  output$plot_budget <- renderPlot(
     ggplot()
   )
   
-  output$plot_3 <- renderPlot(
+  output$plot_agg_trade <- renderPlot(
     ggplot()
   )
 }
