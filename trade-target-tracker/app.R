@@ -90,10 +90,22 @@ ui <- page_fillable(
         color: white;
         justify-content: flex-start; /* aligns items to the left */
       }
-       .header-logo {
-      height: 60px;
-      margin-right: 20px;
-    }
+      .header-logo {
+        height: 60px;
+        margin-right: 20px;
+      }
+      .card-header-tabs>li>a{
+        color: #1a654d;
+      }
+      .card-header-tabs>li>a:hover{
+        color: #5e9c86;
+      }
+      .nav-tabs>li>a{
+        color: #1a654d;
+      }
+      .nav-tabs>li>a:hover{
+        color: #5e9c86;
+      }
     "))
   ),
   
@@ -103,7 +115,7 @@ ui <- page_fillable(
     class = "header-container",
     
     # Logo to left of the title
-    img(src = "EIG_reverse.png", class = "header-logo"),
+    img(src = "EIG_reverse.png", alt = "EIG Logo", class = "header-logo"),
     
     # Title with bold font
     h1("Welcome to the Trade Policy Dashboard")
@@ -219,7 +231,7 @@ ui <- page_fillable(
         ),
         
         ## Manufacturing share of private employment ##
-        nav_panel("Manufacturing Employment Share", 
+        nav_panel("Manufacturing Share", 
                   fluidRow(
                     column(8, plotOutput("plot_share_manu"),
                            div(
@@ -251,7 +263,7 @@ ui <- page_fillable(
         ),
         
         ## Motor vehicles and parts share of private employment ##
-        nav_panel("Automotive Employment Share", 
+        nav_panel("Automotive Share", 
                   fluidRow(
                     column(8, plotOutput("plot_motor_share"),
                            div(
@@ -623,7 +635,7 @@ server <- function(input, output) {
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
       labs(
-        y = "Share of Private-Sector Employment (%)",
+        y = "Share of Private-Sector Workers (%)",
         x = "Time (Quarterly)"
       ))
   
@@ -647,7 +659,7 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_continuous(limits = c(1989, 2023), breaks = c(seq(1990,2020,5), 2022)) +
       labs(
-        y = "Manufacturing Employment (Thousands of Workers)",
+        y = "Employment (Thousands of Workers)",
         x = "Time (Annual)"
       ))
   
