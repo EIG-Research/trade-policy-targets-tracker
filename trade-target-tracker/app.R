@@ -23,7 +23,7 @@ library(ggplot2)
 library(ggfortify)
 library(dichromat)
 library(cowplot)
-
+ 
 # R Shiny
 library(shiny)
 library(rsconnect)
@@ -37,7 +37,8 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 # Define user-specific project directories
 project_directories <- list(
   "name" = "PATH TO GITHUB REPO",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker"
+  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker",
+  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker"
 )
 
 # Setting project path based on current user
@@ -58,6 +59,8 @@ load(file.path("./cleaned_data", "fred_data.RData"))
 load(file.path("./cleaned_data", "bea_data.RData"))
 load(file.path("./cleaned_data", "cps_employment.RData"))
 load(file.path("./cleaned_data", "china_shock.RData"))
+
+
 
 ######################
 ### Build Shiny UI ###

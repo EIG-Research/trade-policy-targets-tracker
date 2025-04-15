@@ -11,6 +11,7 @@
 # remove dependencies
 rm(list = ls())
 
+
 ###########################
 ###   Load Packages     ###
 ###########################
@@ -33,7 +34,8 @@ library(seasonal) # Use X-13 to seasonally adjust monthly data
 # Define user-specific project directories
 project_directories <- list(
   "name" = "PATH TO GITHUB REPO",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker"
+  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker",
+  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker"
 )
 
 # Setting project path based on current user
@@ -103,6 +105,8 @@ cpi_basis <- mean(cpi_basis$value)
 cpi_inflation <- (as.numeric(cpi_qt) / c(cpi_basis, as.numeric(cpi_qt)[-length(cpi_qt)]) - 1) %>%
   ts(., start = c(1990,1), frequency = 4)
 
+
+
 # Adjust to billions of 2017 dollars
 cpi_adj <- cpi_qt / mean(cpi_qt[((2017-1990)*4 + 1):((2017-1990)*4 + 4)])
 budget_real <- budget_qt / (cpi_adj*1000)
@@ -117,4 +121,3 @@ motor_qt <- motor_qt / 1000
 # Export data
 save(cpi_adj, cpi_inflation, budget_real, construction_real,
      manu_qt, motor_qt, manu_share, motor_share, file = file.path(path_appdata, "fred_data.RData"))
-
