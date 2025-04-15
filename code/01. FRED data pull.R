@@ -111,6 +111,8 @@ construction_real <- construction_qt / (cpi_adj*1000)
 # Calculate manufacturing and automotive shares of private employment
 manu_share <- manu_qt / priv_qt
 motor_share <- motor_qt / priv_qt
+manu_qt <- manu_qt / 1000
+motor_qt <- motor_qt / 1000
 
 # Export data
 save(cpi_adj, cpi_inflation, budget_real, construction_real,

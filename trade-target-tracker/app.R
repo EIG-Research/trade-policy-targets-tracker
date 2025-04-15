@@ -56,6 +56,7 @@ setwd(path_app)
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("./cleaned_data", "fred_data.RData"))
 load(file.path("./cleaned_data", "bea_data.RData"))
+load(file.path("./cleaned_data", "cps_employment.RData"))
 
 ######################
 ### Build Shiny UI ###
@@ -134,23 +135,69 @@ ui <- page_fillable(
                 ))
     ),
     
-    ## Trade deficit with China ##
-    
     ## Employment rate, native born men 16+ ##
+    nav_panel("Native Male Employment Rate", 
+              fluidRow(
+                column(8, plotOutput("plot_employment_pop_native")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_employment_pop_native"))
+                ))
+    ),
     
     ## Employment, native born men prime age ##
+    nav_panel("Prime-Age Native Male Employment Level", 
+              fluidRow(
+                column(8, plotOutput("plot_employment_lvl_native_prime")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_employment_lvl_native_prime"))
+                ))
+    ),
     
     ## Total Private Construction Spending in Manufacturing ##
+    nav_panel("Construction Spending", 
+              fluidRow(
+                column(8, plotOutput("plot_const")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_const"))
+                ))
+    ),
     
     ## Real value added, manufacturing ##
-    
-    ## Manufacturing share of private employment ##
+    nav_panel("Value Added", 
+              fluidRow(
+                column(8, plotOutput("plot_va")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_va"))
+                ))
+    ),
     
     ## Employment, manufacturing ##
+    nav_panel("Manufacturing Employment", 
+              fluidRow(
+                column(8, plotOutput("plot_emp_manu")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_emp_manu"))
+                ))
+    ),
     
-    ## Motor vehicles and parts share of private employment ##
+    ## Manufacturing share of private employment ##
+    nav_panel("Manufacturing Share", 
+              fluidRow(
+                column(8, plotOutput("plot_share_manu")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_share_manu"))
+                ))
+    ),
     
     ## Employment, motor vehicles and parts ## 
+    
+    ## Motor vehicles and parts share of private employment ##
     
     ## Employment in manufacturing, counties most affected by the "China shock"  ##
     
@@ -181,8 +228,17 @@ server <- function(input, output) {
   cpi_end <- as.Date(as.yearmon(end(cpi_inflation)[1] + (end(cpi_inflation)[2] - 1)/4))
   budget_end <- as.Date(as.yearmon(end(budget_real)[1] + (end(budget_real)[2] - 1)/4))
   trade_end <- as.Date(as.yearmon(end(trade_agg_qt)[1] + (end(trade_agg_qt)[2] - 1)/4))
+  const_end <- as.Date(as.yearmon(end(construction_real)[1] + (end(construction_real)[2] - 1)/4))
+  va_end <- as.Date(as.yearmon(end(va_manu_2005_2024_qt)[1] + (end(va_manu_2005_2024_qt)[2] - 1)/4))
+  manu_end <- as.Date(as.yearmon(end(manu_qt)[1] + (end(manu_qt)[2] - 1)/4))
+  native_end <- as.Date(as.yearmon(end(emp_lvl_prime_age)[1] + (end(emp_lvl_prime_age)[2] - 1)/4))
+  
   df_trade <- data.frame(quarter = as.Date(time(trade_agg_qt)), agg_balance = as.matrix(trade_agg_qt),
-                         china_balance = as.matrix(trade_china_qt))
+                         china_balance = as.matrix(trade_china_qt)) %>%
+    pivot_longer(cols = c(agg_balance, china_balance),
+                 names_to = "series", values_to = "value")
+  df_va <- data.frame(quarter = c(as.Date(time(va_manu_1997_2004_year)), as.Date(time(va_manu_2005_2024_qt))),
+                      value_added = c(as.matrix(va_manu_1997_2004_year), as.matrix(va_manu_2005_2024_qt)))
   
   output$plot_inflation <- renderPlot(
     autoplot(cpi_inflation, ts.colour = eig_colors[1]) +
@@ -198,7 +254,7 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_y_continuous(breaks = seq(-0.02, 0.02, 0.005), labels = scales::percent) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = year_breaks, labels = date2qt, expand = c(0,0)) +
+                   breaks = c(head(year_breaks, -1), cpi_end), labels = date2qt, expand = c(0,0)) +
       ylab("Inflation (%)") +
       xlab("Time (Quarter)")
   )
@@ -221,7 +277,7 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_y_continuous(breaks = seq(-2250, 250, 250)) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = year_breaks, labels = date2qt, expand = c(0,0)) +
+                   breaks = c(head(year_breaks, -1), budget_end), labels = date2qt, expand = c(0,0)) +
       ylab("Fiscal Balance (Billions of Dollars)") +
       xlab("Time (Quarter)")
   )
@@ -231,33 +287,175 @@ server <- function(input, output) {
   })
   
   output$plot_trade <- renderPlot(
-    ggplot(df_trade, aes(x = quarter)) +
-      geom_line(aes(y = agg_balance), color = eig_colors[1]) +
-      # Add current level
+    ggplot(df_trade, aes(x = quarter, y = value, color = series)) +
+      geom_line() + scale_color_manual(name = "",
+                                       values = c("agg_balance" = eig_colors[1], "china_balance" = eig_colors[2]),
+                                       labels = c("All Foreign Trade", "Trade with Mainland China")) +
+      # Add current level of aggregate trade
       geom_point(aes(x = trade_end, y = tail(trade_agg_qt, 1)), color = eig_colors[1], size = 1.5) +
       annotate(geom = "text", x = trade_end, y = tail(trade_agg_qt, 1),
                label = paste0(as.character(round(tail(trade_agg_qt, 1), digits = 1)), "B"),
                vjust = 2, color = eig_colors[1]) +
-      geom_line(aes(y = china_balance), color = eig_colors[2]) +
-      # Add current level
+      
+      # Add current level of China trade
       geom_point(aes(x = trade_end, y = tail(trade_china_qt, 1)), color = eig_colors[1], size = 1.5) +
       annotate(geom = "text", x = trade_end, y = tail(trade_china_qt, 1),
                label = paste0(as.character(round(tail(trade_china_qt, 1), digits = 1)), "B"),
                vjust = 2, color = eig_colors[1]) +
+      
       # Add policy target
       geom_hline(yintercept = 0, color = eig_colors[4]) +
       annotate(geom = "text", x = as.Date("1990-01-01"), y = 0, label = "Target: Eliminate Trade Deficit",
                hjust = 0, vjust = -1, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = year_breaks, labels = date2qt, expand = c(0,0)) +
+                   breaks = c(head(year_breaks, -1), trade_end), labels = date2qt, expand = c(0,0)) +
       ylab("Trade Balance (Billions of Dollars)") +
-      xlab("Time (Quarter)")
+      xlab("Time (Quarter)") +
+      theme(legend.position = "inside",
+            legend.position.inside = c(1, 0.975),
+            legend.justification = c(1, 1),
+            legend.background = element_rect(fill = NA, color = NA))
   )
   
   output$text_trade <- renderText({
     "The administration advocates for an “America First Trade Policy,” aimed at reducing the trade deficit in goods by raising tariffs on U.S. trading partners. The deficit currently stands at $917.8 billion."
   })
+  
+  output$plot_const <- renderPlot(
+    autoplot(construction_real, ts.colour = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = const_end, y = tail(construction_real, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = const_end, y = tail(construction_real, 1),
+               label = paste0(as.character(round(tail(construction_real, 1), digits = 1)), "B"),
+               vjust = -1, color = eig_colors[1]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), const_end), labels = date2qt, expand = c(0,0)) +
+      ylab("Construction Spending (Billions of Dollars)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_const <- renderText({
+    "The Trump administration aims to re-shore construction spending, with an emphasis on shipbuilding. Construction spending stands at 232.1 billion, which rose significantly during the Biden administration."
+  })
+  
+  output$plot_va <- renderPlot(
+    ggplot(df_va, aes(x = quarter, y = value_added)) +
+      geom_line(color = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = va_end, y = tail(va_manu_2005_2024_qt, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = va_end, y = tail(va_manu_2005_2024_qt, 1),
+               label = paste0(as.character(round(tail(va_manu_2005_2024_qt, 1), digits = 1)), "B"),
+               vjust = -1, color = eig_colors[1]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), va_end), labels = date2qt, expand = c(0,0)) +
+      ylab("Value Added (Billions of Dollars)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_va <- renderText({
+    "White House trade policy is aimed to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity. Real value added in manufacturing – or net output – stands at 2.4 trillion, and has risen steadily."
+  })
+  
+  output$plot_emp_manu <- renderPlot(
+    autoplot(manu_qt, ts.colour = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = manu_end, y = tail(manu_qt, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = manu_end, y = tail(manu_qt, 1),
+               label = paste0(as.character(round(tail(manu_qt, 1), digits = 1)), "M"),
+               vjust = -1, color = eig_colors[1]) +
+      # Add policy target
+      geom_hline(yintercept = mean(manu_qt[41:44]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2000-01-01"), y = mean(manu_qt[41:44]),
+               label = paste0("Pre-China PNTR Level", " = ", round(mean(manu_qt[41:44]), digits = 1), "M"),
+               hjust = 0, vjust = -1, color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), manu_end), labels = date2qt, expand = c(0,0)) +
+      ylab("Employment (Millions of Workers)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_emp_manu <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Manufacturing employment stands at 12.8 million, down from the chosen target of 17.3, the level before China joined the WTO in 2001."
+  })
+  
+  output$plot_share_manu <- renderPlot(
+    autoplot(manu_share, ts.colour = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = manu_end, y = tail(manu_share, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = manu_end, y = tail(manu_share, 1),
+               label = paste0(as.character(round(tail(manu_share, 1)*100, digits = 1)), "%"),
+               vjust = -1, color = eig_colors[1]) +
+      # Add policy target
+      geom_hline(yintercept = mean(manu_share[41:44]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2000-01-01"), y = mean(manu_share[41:44]),
+               label = paste0("Pre-China PNTR Level", " = ", round(mean(manu_share[41:44])*100, digits = 1), "%"),
+               hjust = 0, vjust = -1, color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_y_continuous(labels = scales::percent) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), manu_end), labels = date2qt, expand = c(0,0)) +
+      ylab("Share of Private Workers (%)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_share_manu <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Manufacturing jobs currently make up 9.5% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
+  })
+  
+  ## Employment rate, native born men 16+ ##
+  output$plot_employment_pop_native <- renderPlot(
+    autoplot(emp_pop_ratio, ts.colour = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = native_end, y = tail(emp_pop_ratio, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = native_end, y = tail(emp_pop_ratio, 1),
+               label = paste0(as.character(round(tail(emp_pop_ratio, 1)*100, digits = 1)), "%"),
+               vjust = 2, color = eig_colors[1]) +
+      # Add policy target
+      geom_hline(yintercept = mean(emp_pop_ratio[25:28]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_pop_ratio[25:28]),
+               label = paste0("Pre-China PNTR Level", " = ", round(mean(emp_pop_ratio[25:28])*100, digits = 1), "%"),
+               hjust = 0, vjust = -1, color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_y_continuous(labels = scales::percent) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
+      ylab("Employment-to-Population Ratio (%)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_employment_pop_native <- renderText({
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 65.5%. We set the target to be 69.7%, which is the level before China joined the WTO in 2001."
+  })
+  
+  
+  ## Employment, native born men prime age ##
+  output$plot_employment_lvl_native_prime <- renderPlot(
+    autoplot(emp_lvl_prime_age, ts.colour = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = native_end, y = tail(emp_lvl_prime_age, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = native_end, y = tail(emp_lvl_prime_age, 1),
+               label = paste0(as.character(round(tail(emp_lvl_prime_age, 1)*100, digits = 1)), "M"),
+               vjust = -1, color = eig_colors[1]) +
+      # Add policy target
+      geom_hline(yintercept = mean(emp_lvl_prime_age[25:28]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_lvl_prime_age[25:28]),
+               label = paste0("Pre-China PNTR Level", " = ", round(mean(emp_lvl_prime_age[25:28])*100, digits = 1), "M"),
+               hjust = 0, vjust = -1, color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
+      ylab("Employment (Millions of Workers)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_employment_lvl_native_prime <- renderText({
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The prime age employment rate for native-born men is 41.4 million. We set the target to be 43.3, which is the level before China joined the WTO in 2001."
+  })
+  
 }
 
 shinyApp(ui = ui, server = server)

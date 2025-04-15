@@ -71,12 +71,12 @@ trade_china_hist$balance <- round(as.numeric(sub(",", "", trade_china_hist$balan
 va_manu_q <- read.csv(file.path(path_va, "real_VA_manu_2005_2024_Q.csv"), skip = 3, header = TRUE)
 va_manu_q <- head(va_manu_q, -5) %>% select(-1:-2)
 va_manu_2005_2024_qt <- as.numeric(unlist(va_manu_q[2,])) %>%
-  ts(., start = c(2005, 1), frequency = 4)
+  ts(., start = c(2005, 1), frequency = 4) / 1000
 
 va_manu_a <- read.csv(file.path(path_va, "real_VA_manu_1997_2004_A.csv"), skip = 3, header = TRUE)
 va_manu_a <- head(va_manu_a, -5) %>% select(-1:-2) %>% na.omit()
 va_manu_1997_2004_year <- as.numeric(unlist(va_manu_a[1,])) %>%
-  ts(., start = c(1997, 1), frequency = 1)
+  ts(., start = c(1997, 1), frequency = 1) / 1000
 
 # Aggregate quarterly total trade balance
 trade_agg_qt <- trade_agg_month$balance %>% ts(., start = c(1992,1), frequency = 12) %>%
