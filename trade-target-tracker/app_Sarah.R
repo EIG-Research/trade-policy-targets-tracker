@@ -260,13 +260,21 @@ server <- function(input, output) {
   output$plot_employment_pop_native <- renderPlot(
     autoplot(emp_pop_ratio, ts.colour = eig_colors[1]) +
       geom_hline(yintercept = 69.7, color = eig_colors[4]) +
-      geom_text(aes(x = as.Date(as.yearmon(2011)), y = 69.4, label = "2000 level"),
+      geom_text(aes(x = as.Date(as.yearmon(2011)), y = 69.3, label = "2000 level"),
                 stat = "unique", color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      ylab("Native Men Employment-to-Population Ratio (%)") +
-      xlab("Time (Quarter)")
-  )
+      labs(
+        y = "Native Men Employment-to-Population Ratio (%)",
+        x = "Time (Quarter)",
+        caption = "Source: Current Population Survey. Quarterly averages of monthly rates"
+      ) +
+        theme(
+          plot.caption = element_text(face = "italic", hjust = 0)
+        )
+      )
   
+  
+
   output$text_employment_pop_native <- renderText({
     "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 65.5%. We set the target to be 69.7%, which is the level before China joined the WTO in 2001."
   })
@@ -280,9 +288,16 @@ server <- function(input, output) {
                 stat = "unique", color = eig_colors[4]) +
       
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      ylab("Prime-Age Native Men Employment (Millions of Workers)") +
-      xlab("Time (Quarter)")
-  )
+      labs(
+        y = "Prime-Age Native Men Employment (Millions of Workers)",
+        x = "Time (Quarter)",
+        caption = "Source: Current Population Survey. Quarterly averages of monthly rates"
+      ) +
+        theme(
+          plot.caption = element_text(face = "italic", hjust = 0)
+        )
+      )
+      
   
   output$text_employment_lvl_native_prime <- renderText({
     "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The prime age employment rate for native-born men is 41.4 million. We set the target to be 43.3, which is the level before China joined the WTO in 2001."
@@ -310,7 +325,7 @@ server <- function(input, output) {
   output$plot_motor_qt <- renderPlot(
     autoplot(motor_qt, ts.colour = eig_colors[1]) +
       geom_hline(yintercept = 1305.3333, color = eig_colors[4]) +
-      geom_text(aes(x = as.Date(as.yearmon(1992)), y = 1295, label = "2000 level"),
+      geom_text(aes(x = as.Date(as.yearmon(2010)), y = 1292, label = "2000 level"),
                 stat = "unique", color = eig_colors[4]) +
       
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
@@ -325,15 +340,22 @@ server <- function(input, output) {
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
   output$plot_china_shock <- renderPlot(
-    autoplot(china_shock_yr / 1e6 , ts.colour = eig_colors[1]) +
-      geom_hline(yintercept = 649212 / 1e6, color = eig_colors[4]) +
-      geom_text(aes(x = as.Date(2010), y = 643000 / 1e6, label = "2000 level"),
+    autoplot(china_shock_yr / 1e3 , ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 649212 / 1e3, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(2010), y = 642000 / 1e3, label = "2000 level"),
                 stat = "unique", color = eig_colors[4]) +
       
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      ylab("Manufacturing Employment (Millions of Workers)") +
-      xlab("Time (Annual)")
-  )
+      labs(
+        y = "Manufacturing Employment (Thousands of Workers)",
+        x = "Time (Annual)",
+        caption = "Source: Census Bureau County Business Patterns 1990-2022. Quarterly data is not available."
+        ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
+)
+      
   
   output$text_china_shock <- renderText({
     "Identified by Autor et al. (2016), manufacturing employment in the 145 counties most impacted by trade with China are 0.47 million (2022). The target is 0.65 million, total employment in these counties before China joined the WTO in 2001."
