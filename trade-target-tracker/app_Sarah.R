@@ -138,7 +138,7 @@ ui <- page_fillable(
     ),
     
     ## Trade deficit with China ##
-    
+
     ## Employment rate, native born men 16+ ##
     nav_panel("Native Male Employment Rate", 
               fluidRow(
@@ -168,8 +168,24 @@ ui <- page_fillable(
     ## Employment, manufacturing ##
     
     ## Motor vehicles and parts share of private employment ##
+    nav_panel("Vehicle Employment Share", 
+              fluidRow(
+                column(8, plotOutput("plot_motor_share")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_motor_share"))
+                ))
+    ),
 
     ## Employment, motor vehicles and parts ## 
+    nav_panel("Vehicle Employment Level", 
+              fluidRow(
+                column(8, plotOutput("plot_motor_qt")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_motor_qt"))
+                ))
+    )
     
     ## Employment in manufacturing, counties most affected by the "China shock"  ##
     
@@ -230,7 +246,6 @@ server <- function(input, output) {
     "The administration advocates for an “America First Trade Policy,” aimed at reducing the trade deficit in goods by raising tariffs on U.S. trading partners. The deficit currently stands at $917.8 billion."
   })
   
-  
   ## Employment rate, native born men 16+ ##
   output$plot_employment_pop_native <- renderPlot(
     autoplot(emp_pop_ratio, ts.colour = eig_colors[1]) +
@@ -263,10 +278,45 @@ server <- function(input, output) {
     "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The prime age employment rate for native-born men is 41.4 million. We set the target to be 43.3, which is the level before China joined the WTO in 2001."
   })
   
+  
+  ## Motor vehicles and parts share of private employment ##
+  output$plot_motor_share <- renderPlot(
+    autoplot(motor_share, ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 0.0118, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(as.yearmon(2010)), y = 0.0116, label = "2000 level"),
+                stat = "unique", color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_y_continuous(breaks = seq(0.00, 0.02, 0.0025), labels = scales::percent) +
+      ylab("Share of Private Employment (%)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_motor_share <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs make up less than 1% of total U.S. jobs, down from 1.18% in 2000,  the level before China joined the WTO in 2001."
+  })
+  
+
+  ## Employment, motor vehicles and parts ## 
+  output$plot_motor_qt <- renderPlot(
+    autoplot(motor_qt, ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 1305.3333, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(as.yearmon(1992)), y = 1295, label = "2000 level"),
+                stat = "unique", color = eig_colors[4]) +
+      
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      ylab("Motor Vehicle Employment (Thousands of Workers)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_motor_qt <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0  million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
+  })
+  
+  
+  ## Employment in manufacturing, counties most affected by the "China shock"  ##
+  
+  
 }
 
 shinyApp(ui = ui, server = server)
-
-
-# oh need to add targets here.... whoops.
 

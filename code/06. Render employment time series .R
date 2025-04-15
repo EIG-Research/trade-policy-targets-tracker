@@ -33,9 +33,9 @@ setwd(path_data)
 employment_pop_ratio = read_excel( "employment_pop_ratio_native_men.xlsx") %>%
   mutate(employment_rate = employment_rate*100) %>% filter(year < 2025) # don't have all months there yet.
   
-employment_prime = read_excel("employment_prime_age_native_men.xlsx") %>%
+employment_prime = read_excel("employment_prime_native_men.xlsx") %>%
   mutate(employment_level_millions = employment_level/1000000) %>%
-  select(-c(employment_level, employment_level_in_thousands))
+  select(-c(employment_level))
 
 # save as time series
 emp_pop_ratio <- ts(employment_pop_ratio$employment_rate, start = c(1994, 1), frequency = 4)
