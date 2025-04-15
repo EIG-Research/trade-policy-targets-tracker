@@ -234,6 +234,9 @@ server <- function(input, output) {
   ## Employment rate, native born men 16+ ##
   output$plot_employment_pop_native <- renderPlot(
     autoplot(emp_pop_ratio, ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 69.7, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(as.yearmon(2011)), y = 69.4, label = "2000 level"),
+                stat = "unique", color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       ylab("Native Men Employment-to-Population Ratio (%)") +
       xlab("Time (Quarter)")
@@ -247,6 +250,10 @@ server <- function(input, output) {
   ## Employment, native born men prime age ##
   output$plot_employment_lvl_native_prime <- renderPlot(
     autoplot(emp_lvl_prime_age, ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 43.3, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(as.yearmon(2011)), y = 43.1, label = "2000 level"),
+                stat = "unique", color = eig_colors[4]) +
+      
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       ylab("Prime-Age Native Men Employment (Millions of Workers)") +
       xlab("Time (Quarter)")
@@ -259,4 +266,7 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
+
+
+# oh need to add targets here.... whoops.
 
