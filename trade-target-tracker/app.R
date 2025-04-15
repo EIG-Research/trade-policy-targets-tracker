@@ -17,7 +17,6 @@ library(zoo)
 library(tidyr)
 library(dplyr)
 library(Hmisc)
-library(grattan)
 library(bslib)
 library(ggplot2)
 library(ggfortify)
@@ -49,7 +48,6 @@ if (!current_user %in% names(project_directories)) {
 
 path_project <- project_directories[[current_user]]
 path_app <- file.path(path_project, "trade-target-tracker")
-setwd(path_app)
 
 #################
 ### Load Data ###
@@ -295,22 +293,28 @@ server <- function(input, output) {
       # Add current level
       geom_point(aes(x = cpi_end, y = tail(cpi_inflation, 1)), color = eig_colors[1], size = 1.5) +
       annotate(geom = "text", x = cpi_end, y = tail(cpi_inflation, 1),
-               label = paste0(as.character(round(tail(cpi_inflation, 1)*100, digits = 2)), "%"),
-               vjust = -1, color = eig_colors[1]) +
+               label = paste0(as.character(round(tail(cpi_inflation, 1)*100, digits = 1)), "%"),
+               vjust = 2, color = eig_colors[1]) +
       # Add policy target
-      geom_hline(yintercept = 0.005, color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("1990-01-01"), y = 0.005, label = "Long-run Fed target",
+      geom_hline(yintercept = 0.02, color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("1990-01-01"), y = 0.02, label = "Long-run Fed target",
                 hjust = 0, vjust = 2, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_y_continuous(breaks = seq(-0.02, 0.02, 0.005), labels = scales::percent) +
+      scale_y_continuous(breaks = seq(-0.02,0.1,0.02), labels = scales::percent) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), cpi_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Inflation (%)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Inflation (%)",
+        x = "Time (Quarterly)",
+        caption = "Source: Bureau of Labor Statistics, CPI-U, seasonally adjusted."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_inflation <- renderText({
-    "Bringing down inflation is a major goal for the current administration. During a campaign speech, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” The federal reserve’s inflation target is 2%."
+    "Bringing down inflation was a key issue during the 2024 presidential election, and is a major goal for the administration. During a campaign speech, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Quarter 1, 2025, inflation stood at 2.7% The federal reserve’s inflation target is 2%."
   })
   
   output$plot_budget <- renderPlot(
@@ -328,12 +332,18 @@ server <- function(input, output) {
       scale_y_continuous(breaks = seq(-2250, 250, 250)) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), budget_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Fiscal Balance (Billions of Dollars)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Fiscal Balance (Billions of Dollars)",
+        x = "Time (Quarterly)",
+        caption = "Department of the Treasury, Fiscal Service, seasonally adjusted, in 2017 dollars."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_budget <- renderText({
-    "The Trump administration has called for a balanced budget, to be achieved through spending reductions that offset planned tax cuts. The budget deficit currently stands at $1.8 trillion."
+    "During his first joint-address to congress, the president said that “in the near future, I want to do what has not been done in 24 years: balance the federal budget.” The administration aims to achieve this through a series of spending reductions that offset planned tax cuts. The budget deficit was $400 billion for Q1 2025."
   })
   
   output$plot_trade <- renderPlot(
@@ -360,16 +370,20 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), trade_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Trade Balance (Billions of Dollars)") +
-      xlab("Time (Quarter)") +
-      theme(legend.position = "inside",
+      labs(
+        y = "Trade Balance (Billions of Dollars)",
+        x = "Time (Quarterly)",
+        caption = "Bureau of Economic Analysis, seasonally adjusted, in 2017 dollars. Available beginning in Q1 1992."
+      ) +
+      theme(plot.caption = element_text(face = "italic", hjust = 0),
+            legend.position = "inside",
             legend.position.inside = c(1, 0.975),
             legend.justification = c(1, 1),
             legend.background = element_rect(fill = NA, color = NA))
   )
   
   output$text_trade <- renderText({
-    "The administration advocates for an “America First Trade Policy,” aimed at reducing the trade deficit in goods by raising tariffs on U.S. trading partners. The deficit currently stands at $917.8 billion."
+    "The administration advocates for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate US trade deficit stood at $193.6 billion. As of publication, China has the highest planned tariff rate of 125%. The trade deficit with China stands at $53.3 billion as of Quarter 4 2024, which the administration aims to bring to zero."
   })
   
   output$plot_const <- renderPlot(
@@ -382,12 +396,18 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), const_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Construction Spending (Billions of Dollars)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Construction Spending (Billions of Dollars)",
+        x = "Time (Quarterly)",
+        caption = "Census Bureau, seasonally adjusted, in 2017 dollars. Available beginning Q1 1993."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_const <- renderText({
-    "The Trump administration aims to re-shore construction spending, with an emphasis on shipbuilding. Construction spending stands at 232.1 billion, which rose significantly during the Biden administration."
+    "The Trump administration aims to re-shore factories, with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $45.8 billion in Q4 2024, which rose markedly during the Biden administration."
   })
   
   output$plot_va <- renderPlot(
@@ -401,12 +421,18 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), va_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Value Added (Billions of Dollars)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Value Added (Billions of Dollars)",
+        x = "Time (Quarterly)",
+        caption = "Bureau of Economic Analysis, seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_va <- renderText({
-    "White House trade policy is aimed to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity. Real value added in manufacturing – or net output – stands at 2.4 trillion, and has risen steadily."
+    "White House trade policy aims to reverse the \"hollowing out of our manufacturing base\" and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades."
   })
 
   ## Employment, native born men prime age ##
@@ -425,12 +451,18 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Employment (Millions of Workers)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Employment (Millions of Workers)",
+        x = "Time (Quarterly)",
+        caption = "Current Population Survey. Quarterly averages of seasonally adjusted monthly rates."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_employment_lvl_native_prime <- renderText({
-    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The prime age employment rate for native-born men is 41.4 million. We set the target to be 43.3, which is the level before China joined the WTO in 2001."
+    "During the election, JD Vance argued that \"we have seven million — just men, not even women, just men — who have completely dropped out of the labor force….we cannot have an entire American business community that is giving up on American workers and then importing millions of illegal laborers.\" The prime age employment rate for native-born men in Quarter 1 2025 was 42.4 million. We set the target to be 44 million, which is the level in 2000 before China joined the WTO."
   })
   
   ## Employment rate, native born men 16+ ##
@@ -450,12 +482,18 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::percent) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Employment-to-Population Ratio (%)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Employment-to-Population Ratio (%)",
+        x = "Time (Quarterly)",
+        caption = "Current Population Survey. Quarterly averages of seasonally adjusted monthly rates."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_employment_pop_native <- renderText({
-    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 65.5%. We set the target to be 69.7%, which is the level before China joined the WTO in 2001."
+    "The Administration hopes to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 63.3%. We set the target to be 71.1%, which is the 2000 level before China joined the WTO."
   })
   
   
@@ -474,12 +512,18 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), manu_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Employment (Millions of Workers)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Employment (Millions of Workers)",
+        x = "Time (Quarterly)",
+        caption = "Bureau of Labor Statistics, seasonally adjusted."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_emp_manu <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Manufacturing employment stands at 12.8 million, down from the chosen target of 17.3, the level before China joined the WTO in 2001."
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Manufacturing employment stands at 12.8 million in Quarter 1 2025, down from the chosen target of 17.3 in 2000, the level before China joined the WTO in 2001."
   })
   
   output$plot_share_manu <- renderPlot(
@@ -498,12 +542,18 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::percent) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), manu_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Share of Private Workers (%)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Share of Private-Sector Workers (%)",
+        x = "Time (Quarterly)",
+        caption = "Bureau of Labor Statistics, seasonally adjusted."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_share_manu <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Manufacturing jobs currently make up 9.5% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" In  Quarter 1 2025 Manufacturing jobs made up 9.4% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
   })
   
   ## Employment, motor vehicles and parts ## 
@@ -522,12 +572,18 @@ server <- function(input, output) {
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Employment (Millions of Workers)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Employment (Millions of Workers)",
+        x = "Time (Quarterly)",
+        caption = "Bureau of Labor Statistics, seasonally adjusted."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_motor_qt <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0  million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
   })
   
   ## Motor vehicles and parts share of private employment ##
@@ -547,12 +603,18 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::percent) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Share of Private Employment (%)") +
-      xlab("Time (Quarter)")
+      labs(
+        y = "Share of Private-Sector Employment (%)",
+        x = "Time (Quarterly)",
+        caption = "Bureau of Labor Statistics, seasonally adjusted."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
   )
   
   output$text_motor_share <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs make up less than 1% of total U.S. jobs, down from 1.18% in 2000,  the level before China joined the WTO in 2001."
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Vehicle-related manufacturing jobs made up 0.7% of total U.S. jobs in Quarter 1 2025, down from 1.2% in 2000, the level before China joined the WTO in 2001."
   })
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##

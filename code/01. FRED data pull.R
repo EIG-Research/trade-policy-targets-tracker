@@ -61,7 +61,7 @@ end_date <- "2025-03-01"
 
 # Query monthly CPI-U
 CPI_id <- "CPIAUCSL"
-CPI_month <- fredo(FRED_API_KEY, CPI_id, start_date, end_date)
+CPI_month <- fredo(FRED_API_KEY, CPI_id, "1989-01-01", end_date)
 
 # Query monthly federal budget balance
 budget_id <- "MTSDS133FMS"
@@ -92,7 +92,7 @@ quarterly <- function(df, start_month, func, seasonal = FALSE){
   df_ts %>% aggregate(., nfrequency = 4, FUN = func)
 }
 
-cpi_qt <- quarterly(CPI_month, c(1990,1), mean, FALSE)
+cpi_qt <- quarterly(CPI_month, c(1989,1), mean, FALSE)
 budget_qt <- quarterly(budget_month, c(1990,1), sum, TRUE)
 construction_qt <- quarterly(contruction_month, c(1993,1), sum, TRUE)
 manu_qt <- quarterly(manu_month, c(1990,1), mean, FALSE)
@@ -100,17 +100,15 @@ motor_qt <- quarterly(motor_month, c(1990,1), mean, FALSE)
 priv_qt <- quarterly(priv_month, c(1990,1), mean, FALSE)
 
 # Calculate quarterly inflation
-cpi_basis <- fredo(FRED_API_KEY, CPI_id, "1989-10-01", "1989-12-01")
-cpi_basis <- mean(cpi_basis$value)
-cpi_inflation <- (as.numeric(cpi_qt) / c(cpi_basis, as.numeric(cpi_qt)[-length(cpi_qt)]) - 1) %>%
+cpi_inflation <- (cpi_qt[5:length(cpi_qt)] / cpi_qt[1:(length(cpi_qt)-4)] - 1) %>%
   ts(., start = c(1990,1), frequency = 4)
 
 
 
 # Adjust to billions of 2017 dollars
-cpi_adj <- cpi_qt / mean(cpi_qt[((2017-1990)*4 + 1):((2017-1990)*4 + 4)])
+cpi_adj <- cpi_qt[5:length(cpi_qt)] / mean(cpi_qt[((2017-1989)*4 + 1):((2017-1989)*4 + 4)])
 budget_real <- budget_qt / (cpi_adj*1000)
-construction_real <- construction_qt / (cpi_adj*1000)
+construction_real <- construction_qt / (cpi_adj[((1993-1990)*4 + 1):((2024-1990)*4 + 4)]*1000)
 
 # Calculate manufacturing and automotive shares of private employment
 manu_share <- manu_qt / priv_qt
