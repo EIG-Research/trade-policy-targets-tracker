@@ -31,16 +31,30 @@ setwd(path_data)
 
 # read in data
 employment_pop_ratio = read_excel( "employment_pop_ratio_native_men.xlsx") %>%
-  mutate(employment_rate = employment_rate*100) %>% filter(year < 2025) # don't have all months there yet.
+  mutate(employment_rate = employment_rate*100)
   
 employment_prime = read_excel("employment_prime_native_men.xlsx") %>%
   mutate(employment_level_millions = employment_level/1000000) %>%
   select(-c(employment_level))
 
+
+# monthly data
+employment_pop_ratio_m = read_excel( "employment_pop_ratio_prime_age_native_men_monthly.xlsx") %>%
+  mutate(employment_rate = employment_rate*100) %>%
+  select(year, month, employment_rate)
+
+employment_prime_m = read_excel("employment_native_men_monthly.xlsx") %>%
+  mutate(employment_level_millions = employment_level/1000000) %>%
+  select(-c(employment_level, quarter))
+
+
 # save as time series
 emp_pop_ratio <- ts(employment_pop_ratio$employment_rate, start = c(1994, 1), frequency = 4)
 emp_lvl_prime_age <- ts(employment_prime$employment_level_millions, start = c(1994, 1), frequency = 4)
 
+
+emp_pop_ratio_m <- ts(employment_pop_ratio$employment_rate, start = c(1994, 1), frequency = 4)
+emp_lvl_prime_age_m <- ts(employment_prime$employment_level_millions, start = c(1994, 1), frequency = 4)
 
 save(emp_pop_ratio, emp_lvl_prime_age, file = "cps_employment.RData")
 
