@@ -23,6 +23,7 @@ library(ggplot2)
 library(ggfortify)
 library(dichromat)
 library(cowplot)
+library(readxl)
 
 # R Shiny
 library(shiny)
@@ -57,6 +58,7 @@ setwd(path_app)
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("./cleaned_data", "fred_data.RData"))
 load(file.path("./cleaned_data", "bea_data.RData"))
+load(file.path("./cleaned_data", "cps_employment.RData"))
 
 ######################
 ### Build Shiny UI ###
@@ -138,8 +140,24 @@ ui <- page_fillable(
     ## Trade deficit with China ##
     
     ## Employment rate, native born men 16+ ##
+    nav_panel("Native Male Employment Rate", 
+              fluidRow(
+                column(8, plotOutput("plot_employment_pop_native")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_employment_pop_native"))
+                ))
+    ),
     
     ## Employment, native born men prime age ##
+    nav_panel("Prime-Age Native Male Employment Level", 
+              fluidRow(
+                column(8, plotOutput("plot_employment_lvl_native_prime")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_employment_lvl_native_prime"))
+                ))
+    ),
     
     ## Total Private Construction Spending in Manufacturing ##
     
@@ -169,6 +187,8 @@ server <- function(input, output) {
   the buttons below to explore individual indicators, view their associated targets, and assess progress
   across different areas of trade policy.")
   
+  
+  ## Inflation ##
   output$plot_inflation <- renderPlot(
     autoplot(cpi_inflation, ts.colour = eig_colors[1]) +
       geom_hline(yintercept = 0.005, color = eig_colors[4]) +
@@ -184,6 +204,8 @@ server <- function(input, output) {
     "Bringing down inflation is a major goal for the current administration. During a campaign speech, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” The federal reserve’s inflation target is 2%."
   })
   
+  
+  ### Federal Budget Balance ###
   output$plot_budget <- renderPlot(
     autoplot(budget_real, ts.colour = eig_colors[1]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
@@ -196,6 +218,7 @@ server <- function(input, output) {
   })
   
   
+  ### Trade Balance ###
   output$plot_trade <- renderPlot(
     autoplot(trade_agg_qt, ts.colour = eig_colors[1]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
@@ -206,6 +229,33 @@ server <- function(input, output) {
   output$text_trade <- renderText({
     "The administration advocates for an “America First Trade Policy,” aimed at reducing the trade deficit in goods by raising tariffs on U.S. trading partners. The deficit currently stands at $917.8 billion."
   })
+  
+  
+  ## Employment rate, native born men 16+ ##
+  output$plot_employment_pop_native <- renderPlot(
+    autoplot(emp_pop_ratio, ts.colour = eig_colors[1]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      ylab("Native Men Employment-to-Population Ratio (%)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_employment_pop_native <- renderText({
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 65.5%. We set the target to be 69.7%, which is the level before China joined the WTO in 2001."
+  })
+  
+  
+  ## Employment, native born men prime age ##
+  output$plot_employment_lvl_native_prime <- renderPlot(
+    autoplot(emp_lvl_prime_age, ts.colour = eig_colors[1]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      ylab("Prime-Age Native Men Employment (Millions of Workers)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_employment_lvl_native_prime <- renderText({
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The prime age employment rate for native-born men is 41.4 million. We set the target to be 43.3, which is the level before China joined the WTO in 2001."
+  })
+  
 }
 
 shinyApp(ui = ui, server = server)
