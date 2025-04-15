@@ -64,8 +64,6 @@ load(file.path("./cleaned_data", "bea_data.RData"))
 load(file.path("./cleaned_data", "cps_employment.RData"))
 load(file.path("./cleaned_data", "china_shock.RData"))
 
-
-
 ######################
 ### Build Shiny UI ###
 ######################

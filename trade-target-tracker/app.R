@@ -57,6 +57,7 @@ setwd(path_app)
 load(file.path("./cleaned_data", "fred_data.RData"))
 load(file.path("./cleaned_data", "bea_data.RData"))
 load(file.path("./cleaned_data", "cps_employment.RData"))
+load(file.path("./cleaned_data", "china_shock.RData"))
 
 ######################
 ### Build Shiny UI ###
@@ -86,8 +87,12 @@ ui <- page_fillable(
         background-color: #044140;
         padding: 20px;
         color: white;
-        justify-content: center;
+        justify-content: flex-start; /* aligns items to the left */
       }
+       .header-logo {
+      height: 60px;
+      margin-right: 20px;
+    }
     "))
   ),
   
@@ -95,6 +100,9 @@ ui <- page_fillable(
   ## Title ##
   div(
     class = "header-container",
+    
+    # Logo to left of the title
+    img(src = "EIG_reverse.png", class = "header-logo"),
     
     # Title with bold font
     h1("Welcome to the Trade Policy Dashboard")
@@ -195,12 +203,35 @@ ui <- page_fillable(
                 ))
     ),
     
-    ## Employment, motor vehicles and parts ## 
-    
     ## Motor vehicles and parts share of private employment ##
+    nav_panel("Vehicle Employment Share", 
+              fluidRow(
+                column(8, plotOutput("plot_motor_share")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_motor_share"))
+                ))
+    ),
+    
+    ## Employment, motor vehicles and parts ## 
+    nav_panel("Vehicle Employment Level", 
+              fluidRow(
+                column(8, plotOutput("plot_motor_qt")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_motor_qt"))
+                ))
+    ),
     
     ## Employment in manufacturing, counties most affected by the "China shock"  ##
-    
+    nav_panel("Manufacturing Employment - China Shock", 
+              fluidRow(
+                column(8, plotOutput("plot_china_shock")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_china_shock"))
+                ))
+    )
   )
 )
 
@@ -431,7 +462,6 @@ server <- function(input, output) {
     "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 65.5%. We set the target to be 69.7%, which is the level before China joined the WTO in 2001."
   })
   
-  
   ## Employment, native born men prime age ##
   output$plot_employment_lvl_native_prime <- renderPlot(
     autoplot(emp_lvl_prime_age, ts.colour = eig_colors[1]) +
@@ -456,6 +486,59 @@ server <- function(input, output) {
     "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The prime age employment rate for native-born men is 41.4 million. We set the target to be 43.3, which is the level before China joined the WTO in 2001."
   })
   
+  ## Motor vehicles and parts share of private employment ##
+  output$plot_motor_share <- renderPlot(
+    autoplot(motor_share, ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 0.0118, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(as.yearmon(2010)), y = 0.0116, label = "2000 level"),
+                stat = "unique", color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_y_continuous(breaks = seq(0.00, 0.02, 0.0025), labels = scales::percent) +
+      ylab("Share of Private Employment (%)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_motor_share <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs make up less than 1% of total U.S. jobs, down from 1.18% in 2000,  the level before China joined the WTO in 2001."
+  })
+  
+  ## Employment, motor vehicles and parts ## 
+  output$plot_motor_qt <- renderPlot(
+    autoplot(motor_qt, ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 1.3, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(as.yearmon(2010)), y = 1.3, label = "2000 level"),
+                stat = "unique", color = eig_colors[4]) +
+      
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      ylab("Motor Vehicle Employment (Millions of Workers)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_motor_qt <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0  million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
+  })
+  
+  ## Employment in manufacturing, counties most affected by the "China shock"  ##
+  output$plot_china_shock <- renderPlot(
+    autoplot(china_shock_yr / 1e3 , ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 649212 / 1e3, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(2010), y = 642000 / 1e3, label = "2000 level"),
+                stat = "unique", color = eig_colors[4]) +
+      
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      labs(
+        y = "Manufacturing Employment (Thousands of Workers)",
+        x = "Time (Annual)",
+        caption = "Source: Census Bureau County Business Patterns 1990-2022. Quarterly data is not available."
+      ) +
+      theme(
+        plot.caption = element_text(face = "italic", hjust = 0)
+      )
+  )
+  
+  output$text_china_shock <- renderText({
+    "Identified by Autor et al. (2016), manufacturing employment in the 145 counties most impacted by trade with China are 0.47 million (2022). The target is 0.65 million, total employment in these counties before China joined the WTO in 2001."
+  })
 }
 
 shinyApp(ui = ui, server = server)
