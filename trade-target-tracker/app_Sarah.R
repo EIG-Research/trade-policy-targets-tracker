@@ -90,8 +90,12 @@ ui <- page_fillable(
         background-color: #044140;
         padding: 20px;
         color: white;
-        justify-content: center;
+        justify-content: flex-start; /* aligns items to the left */
       }
+       .header-logo {
+      height: 60px;
+      margin-right: 20px;
+    }
     "))
   ),
   
@@ -99,7 +103,10 @@ ui <- page_fillable(
   ## Title ##
   div(
     class = "header-container",
-
+    
+    # Logo to left of the title
+    img(src = "EIG_reverse.png", class = "header-logo"),
+    
     # Title with bold font
     h1("Welcome to the Trade Policy Dashboard")
   ),
