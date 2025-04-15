@@ -117,7 +117,13 @@ ui <- page_fillable(
     ### Inflation ###
     nav_panel("Inflation", 
               fluidRow(
-                column(8, plotOutput("plot_inflation")),  # Plot on the left
+                column(8, plotOutput("plot_inflation"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">Bureau of Labor Statistics, CPI-U,</a> seasonally adjusted')
+                       ) 
+                  ),  # Plot on the left
+                 
                 column(4, div(
                   style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                   textOutput("text_inflation"))
@@ -127,7 +133,13 @@ ui <- page_fillable(
     ### Federal Budget Balance ###
     nav_panel("Budget Balance", 
               fluidRow(
-                column(8, plotOutput("plot_budget")),  # Plot on the left
+                column(8, plotOutput("plot_budget"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars')
+                       )
+                ),  # Plot on the left
+                
                 column(4, div(
                   style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                   textOutput("text_budget"))
@@ -137,20 +149,32 @@ ui <- page_fillable(
     ### Trade Balance ###
     nav_panel("Trade Balance", 
               fluidRow(
-                column(8, plotOutput("plot_trade")),  # Plot on the left
+                column(8, plotOutput("plot_trade"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars. Available beginning in Q1 1992.')
+                       )
+                ),  # Plot on the left
+                
                 column(4, div(
                   style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                   textOutput("text_trade"))
                 ))
     ),
-    
+
     ## Native Employment ##
     nav_panel("Native Employment",
       navset_tab(
         ## Employment rate, native born men 16+ ##
         nav_panel("Native Male Employment Rate", 
                   fluidRow(
-                    column(8, plotOutput("plot_employment_pop_native")),  # Plot on the left
+                    column(8, plotOutput("plot_employment_pop_native"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
+                           )
+                     ),  # Plot on the left
+                    
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_employment_pop_native"))
@@ -160,7 +184,13 @@ ui <- page_fillable(
         ## Employment, native born men prime age ##
         nav_panel("Prime-Age Native Male Employment Level", 
                   fluidRow(
-                    column(8, plotOutput("plot_employment_lvl_native_prime")),  # Plot on the left
+                    column(8, plotOutput("plot_employment_lvl_native_prime"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
+                           )
+                    ),  # Plot on the left
+                    
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_employment_lvl_native_prime"))
@@ -175,7 +205,13 @@ ui <- page_fillable(
         ## Employment, manufacturing ##
         nav_panel("Manufacturing Employment Level", 
                   fluidRow(
-                    column(8, plotOutput("plot_emp_manu")),  # Plot on the left
+                    column(8, plotOutput("plot_emp_manu"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                           )
+                    ),  # Plot on the left
+                    
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_emp_manu"))
@@ -185,7 +221,13 @@ ui <- page_fillable(
         ## Manufacturing share of private employment ##
         nav_panel("Manufacturing Employment Share", 
                   fluidRow(
-                    column(8, plotOutput("plot_share_manu")),  # Plot on the left
+                    column(8, plotOutput("plot_share_manu"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                           )
+                    ),  # Plot on the left
+                    
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_share_manu"))
@@ -195,7 +237,13 @@ ui <- page_fillable(
         ## Employment, motor vehicles and parts ## 
         nav_panel("Automotive Employment Level", 
                   fluidRow(
-                    column(8, plotOutput("plot_motor_qt")),  # Plot on the left
+                    column(8, plotOutput("plot_motor_qt"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                           )
+                    ),  # Plot on the left
+                    
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_motor_qt"))
@@ -205,7 +253,13 @@ ui <- page_fillable(
         ## Motor vehicles and parts share of private employment ##
         nav_panel("Automotive Employment Share", 
                   fluidRow(
-                    column(8, plotOutput("plot_motor_share")),  # Plot on the left
+                    column(8, plotOutput("plot_motor_share"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                           )
+                    ),  # Plot on the left
+                    
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_motor_share"))
@@ -215,7 +269,13 @@ ui <- page_fillable(
         ## Employment in manufacturing, counties most affected by the "China shock"  ##
         nav_panel("Manufacturing Employment - China Shock", 
                   fluidRow(
-                    column(8, plotOutput("plot_china_shock")),  # Plot on the left
+                    column(8, plotOutput("plot_china_shock"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://www.census.gov/programs-surveys/cbp.html" target="_blank"> Census Bureau County Business Patterns 1990-2022,</a> quarterly data is not available.')
+                           )
+                    ),  # Plot on the left
+                    
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_china_shock"))
@@ -230,7 +290,13 @@ ui <- page_fillable(
         ## Total Private Construction Spending in Manufacturing ##
         nav_panel("Construction Spending", 
                   fluidRow(
-                    column(8, plotOutput("plot_const")),  # Plot on the left
+                    column(8, plotOutput("plot_const"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars. Available beginning Q1 1993.')
+                           )
+                    ),  # Plot on the left
+                    
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_const"))
@@ -240,7 +306,12 @@ ui <- page_fillable(
         ## Real value added, manufacturing ##
         nav_panel("Value Added", 
                   fluidRow(
-                    column(8, plotOutput("plot_va")),  # Plot on the left
+                    column(8, plotOutput("plot_va"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis,</a>seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
+                           )
+                    ),  # Plot on the left
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_va"))
@@ -261,7 +332,7 @@ server <- function(input, output) {
   the Trump administration’s trade agenda as gauges of success. Each indicator provides insight into
   how policy actions align with stated goals, offering an up-to-date look at economic outcomes. Use
   the buttons below to explore individual indicators, view their associated targets, and assess progress
-  across different areas of trade policy.")
+  across different areas of trade policy. All figures are in 2017 dollars for consistency")
   
   # Baseline year breaks
   year_breaks <- seq(as.Date(as.yearqtr("1990 Q1")), as.Date(as.yearqtr("2025 Q1")), by = "5 years")
@@ -305,13 +376,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), cpi_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Inflation (%)",
-        x = "Time (Quarterly)",
-        caption = "Source: Bureau of Labor Statistics, CPI-U, seasonally adjusted."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_inflation <- renderText({
     "Bringing down inflation was a key issue during the 2024 presidential election, and is a major goal for the administration. During a campaign speech, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Quarter 1, 2025, inflation stood at 2.7% The federal reserve’s inflation target is 2%."
@@ -334,13 +400,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), budget_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Fiscal Balance (Billions of Dollars)",
-        x = "Time (Quarterly)",
-        caption = "Department of the Treasury, Fiscal Service, seasonally adjusted, in 2017 dollars."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_budget <- renderText({
     "During his first joint-address to congress, the president said that “in the near future, I want to do what has not been done in 24 years: balance the federal budget.” The administration aims to achieve this through a series of spending reductions that offset planned tax cuts. The budget deficit was $400 billion for Q1 2025."
@@ -372,15 +433,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), trade_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Trade Balance (Billions of Dollars)",
-        x = "Time (Quarterly)",
-        caption = "Bureau of Economic Analysis, seasonally adjusted, in 2017 dollars. Available beginning in Q1 1992."
-      ) +
-      theme(plot.caption = element_text(face = "italic", hjust = 0),
-            legend.position = "inside",
-            legend.position.inside = c(1, 0.975),
-            legend.justification = c(1, 1),
-            legend.background = element_rect(fill = NA, color = NA))
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_trade <- renderText({
     "The administration advocates for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate US trade deficit stood at $193.6 billion. As of publication, China has the highest planned tariff rate of 125%. The trade deficit with China stands at $53.3 billion as of Quarter 4 2024, which the administration aims to bring to zero."
@@ -398,13 +452,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), const_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Construction Spending (Billions of Dollars)",
-        x = "Time (Quarterly)",
-        caption = "Census Bureau, seasonally adjusted, in 2017 dollars. Available beginning Q1 1993."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_const <- renderText({
     "The Trump administration aims to re-shore factories, with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $45.8 billion in Q4 2024, which rose markedly during the Biden administration."
@@ -423,13 +472,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), va_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Value Added (Billions of Dollars)",
-        x = "Time (Quarterly)",
-        caption = "Bureau of Economic Analysis, seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_va <- renderText({
     "White House trade policy aims to reverse the \"hollowing out of our manufacturing base\" and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades."
@@ -453,13 +497,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Employment (Millions of Workers)",
-        x = "Time (Quarterly)",
-        caption = "Current Population Survey. Quarterly averages of seasonally adjusted monthly rates."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_employment_lvl_native_prime <- renderText({
     "During the election, JD Vance argued that \"we have seven million — just men, not even women, just men — who have completely dropped out of the labor force….we cannot have an entire American business community that is giving up on American workers and then importing millions of illegal laborers.\" The prime age employment rate for native-born men in Quarter 1 2025 was 42.4 million. We set the target to be 44 million, which is the level in 2000 before China joined the WTO."
@@ -484,13 +523,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Employment-to-Population Ratio (%)",
-        x = "Time (Quarterly)",
-        caption = "Current Population Survey. Quarterly averages of seasonally adjusted monthly rates."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_employment_pop_native <- renderText({
     "The Administration hopes to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 63.3%. We set the target to be 71.1%, which is the 2000 level before China joined the WTO."
@@ -514,13 +548,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), manu_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Employment (Millions of Workers)",
-        x = "Time (Quarterly)",
-        caption = "Bureau of Labor Statistics, seasonally adjusted."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+        ))
   
   output$text_emp_manu <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Manufacturing employment stands at 12.8 million in Quarter 1 2025, down from the chosen target of 17.3 in 2000, the level before China joined the WTO in 2001."
@@ -544,13 +573,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), manu_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Share of Private-Sector Workers (%)",
-        x = "Time (Quarterly)",
-        caption = "Bureau of Labor Statistics, seasonally adjusted."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+        ))
   
   output$text_share_manu <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" In  Quarter 1 2025 Manufacturing jobs made up 9.4% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
@@ -574,13 +598,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Employment (Millions of Workers)",
-        x = "Time (Quarterly)",
-        caption = "Bureau of Labor Statistics, seasonally adjusted."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_motor_qt <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
@@ -605,13 +624,8 @@ server <- function(input, output) {
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
       labs(
         y = "Share of Private-Sector Employment (%)",
-        x = "Time (Quarterly)",
-        caption = "Bureau of Labor Statistics, seasonally adjusted."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Quarterly)"
+      ))
   
   output$text_motor_share <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Vehicle-related manufacturing jobs made up 0.7% of total U.S. jobs in Quarter 1 2025, down from 1.2% in 2000, the level before China joined the WTO in 2001."
@@ -634,13 +648,8 @@ server <- function(input, output) {
       scale_x_continuous(limits = c(1989, 2023), breaks = c(seq(1990,2020,5), 2022)) +
       labs(
         y = "Manufacturing Employment (Thousands of Workers)",
-        x = "Time (Annual)",
-        caption = "Source: Census Bureau County Business Patterns 1990-2022. Quarterly data is not available."
-      ) +
-      theme(
-        plot.caption = element_text(face = "italic", hjust = 0)
-      )
-  )
+        x = "Time (Annual)"
+      ))
   
   output$text_china_shock <- renderText({
     "Identified by Autor et al. (2016), manufacturing employment in the 145 counties most impacted by trade with China are 0.47 million (2022). The target is 0.65 million, total employment in these counties before China joined the WTO in 2001."
