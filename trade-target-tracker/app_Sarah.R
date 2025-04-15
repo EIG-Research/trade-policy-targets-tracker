@@ -1,7 +1,7 @@
 # Project: Trump Trade Policy Targets Dashboard
 # File Description: R Shiny application
 
-# last update: 4/14/2025 by Jiaxin He
+# last update: 4/15/2025 by Sarah E
 
 # remove dependencies
 rm(list = ls())
@@ -24,6 +24,7 @@ library(ggfortify)
 library(dichromat)
 library(cowplot)
 library(readxl)
+
 
 # R Shiny
 library(shiny)
@@ -52,6 +53,8 @@ path_project <- project_directories[[current_user]]
 path_app <- file.path(path_project, "trade-target-tracker")
 setwd(path_app)
 
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+
 #################
 ### Load Data ###
 #################
@@ -60,6 +63,7 @@ load(file.path("./cleaned_data", "fred_data.RData"))
 load(file.path("./cleaned_data", "bea_data.RData"))
 load(file.path("./cleaned_data", "cps_employment.RData"))
 load(file.path("./cleaned_data", "china_shock.RData"))
+
 
 
 ######################
@@ -148,26 +152,30 @@ ui <- page_fillable(
     
     ## Trade deficit with China ##
 
-    ## Employment rate, native born men 16+ ##
-    nav_panel("Native Male Employment Rate", 
-              fluidRow(
-                column(8, plotOutput("plot_employment_pop_native")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_employment_pop_native"))
-                ))
-    ),
     
-    ## Employment, native born men prime age ##
-    nav_panel("Prime-Age Native Male Employment Level", 
-              fluidRow(
-                column(8, plotOutput("plot_employment_lvl_native_prime")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_employment_lvl_native_prime"))
-                ))
-    ),
+    nav_panel("Employment",
+              navset_tab(
+                ## Employment rate, native born men 16+ ##
+                nav_panel("Native Male Employment Rate", 
+                          fluidRow(
+                            column(8, plotOutput("plot_employment_pop_native")),  # Plot on the left
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              textOutput("text_employment_pop_native"))
+                            ))),
+                          ## Employment, native born men prime age ##
+                          nav_panel("Prime-Age Native Male Employment Level", 
+                                    fluidRow(
+                                      column(8, plotOutput("plot_employment_lvl_native_prime")),  # Plot on the left
+                                      column(4, div(
+                                        style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                                        textOutput("text_employment_lvl_native_prime"))
+                                      )))
+                          )),
     
+
+    
+  
     ## Total Private Construction Spending in Manufacturing ##
     
     ## Real value added, manufacturing ##
@@ -288,7 +296,7 @@ server <- function(input, output) {
   
   
   ## Employment, native born men prime age ##
-  output$plot_employment_lvl_native_prime <- renderPlot(
+  output$plot_employment_lvl_native_prime <- renderPlot(  
     autoplot(emp_lvl_prime_age, ts.colour = eig_colors[1]) +
       geom_hline(yintercept = 43.3, color = eig_colors[4]) +
       geom_text(aes(x = as.Date(as.yearmon(2011)), y = 43.1, label = "2000 level"),
@@ -296,9 +304,9 @@ server <- function(input, output) {
       
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       labs(
-        y = "Prime-Age Native Men Employment (Millions of Workers)",
+        y = "Employment (Millions of Workers)",
         x = "Time (Quarter)",
-        caption = "Source: Current Population Survey. Quarterly averages of monthly rates"
+        caption = "Source: Current Population Survey. Quarterly averages of monthly rates (seasonally adjusted)"
       ) +
         theme(
           plot.caption = element_text(face = "italic", hjust = 0)
@@ -371,4 +379,3 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
-
