@@ -19,7 +19,8 @@ library(scales)
 # Define user-specific project directories
 project_directories <- list(
   "name" = "PATH TO GITHUB REPO",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker"
+  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker",
+  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker"
 )
 
 # Setting project path based on current user
@@ -69,4 +70,19 @@ for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:22))){
 manu_emp_cn_most_hit <- china_most_hit %>% ungroup() %>% mutate_all(~replace(., is.na(.), 0)) %>%
   select(-1:-3) %>% summarise_all(sum)
 
-write.csv(manu_emp_cn_most_hit, file.path(path_appdata, "manufacturing employment in counties most affected by the china shock.csv"))
+# save as time series
+  china_shock = china_shock %>%
+    pivot_longer(cols = names(china_shock)[2:length(names(china_shock))]) %>%
+    mutate(year = as.numeric(gsub("man_emp_", "", name)),
+           year = case_when(
+             year >= 60 ~ 1900 + year,
+             TRUE ~ 2000 + year
+           ), value = as.numeric(value)) %>% select(year, value)
+  
+  # convert to time series
+  china_shock_yr = ts(china_shock$value, start = c(1990), frequency = 1)
+
+setwd(path_appdata)
+save(china_shock_yr, file = "china_shock.RData")
+
+# write.csv(manu_emp_cn_most_hit, file.path(path_appdata, "manufacturing employment in counties most affected by the china shock.csv"))

@@ -59,6 +59,8 @@ setwd(path_app)
 load(file.path("./cleaned_data", "fred_data.RData"))
 load(file.path("./cleaned_data", "bea_data.RData"))
 load(file.path("./cleaned_data", "cps_employment.RData"))
+load(file.path("./cleaned_data", "china_shock.RData"))
+
 
 ######################
 ### Build Shiny UI ###
@@ -185,10 +187,18 @@ ui <- page_fillable(
                   style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                   textOutput("text_motor_qt"))
                 ))
-    )
+    ),
     
     ## Employment in manufacturing, counties most affected by the "China shock"  ##
-    
+    nav_panel("Manufacturing Employment - China Shock", 
+              fluidRow(
+                column(8, plotOutput("plot_china_shock")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_china_shock"))
+                ))
+    )
+
   )
 )
 
@@ -314,7 +324,20 @@ server <- function(input, output) {
   
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
+  output$plot_china_shock <- renderPlot(
+    autoplot(china_shock_yr / 1e6 , ts.colour = eig_colors[1]) +
+      geom_hline(yintercept = 649212 / 1e6, color = eig_colors[4]) +
+      geom_text(aes(x = as.Date(2010), y = 643000 / 1e6, label = "2000 level"),
+                stat = "unique", color = eig_colors[4]) +
+      
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      ylab("Manufacturing Employment (Millions of Workers)") +
+      xlab("Time (Annual)")
+  )
   
+  output$text_china_shock <- renderText({
+    "Identified by Autor et al. (2016), manufacturing employment in the 145 counties most impacted by trade with China are 0.47 million (2022). The target is 0.65 million, total employment in these counties before China joined the WTO in 2001."
+  })
   
 }
 
