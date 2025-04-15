@@ -103,10 +103,10 @@ cpi_basis <- mean(cpi_basis$value)
 cpi_inflation <- (as.numeric(cpi_qt) / c(cpi_basis, as.numeric(cpi_qt)[-length(cpi_qt)]) - 1) %>%
   ts(., start = c(1990,1), frequency = 4)
 
-# Adjust to 2017 dollars
+# Adjust to billions of 2017 dollars
 cpi_adj <- cpi_qt / mean(cpi_qt[((2017-1990)*4 + 1):((2017-1990)*4 + 4)])
-budget_real <- budget_qt / cpi_adj
-construction_real <- construction_qt / cpi_adj
+budget_real <- budget_qt / (cpi_adj*1000)
+construction_real <- construction_qt / (cpi_adj*1000)
 
 # Calculate manufacturing and automotive shares of private employment
 manu_share <- manu_qt / priv_qt
