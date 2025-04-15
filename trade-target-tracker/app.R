@@ -124,7 +124,7 @@ ui <- page_fillable(
     ),
     
     ### Federal Budget Balance ###
-    nav_panel("Federal Budget Balance", 
+    nav_panel("Budget Balance", 
               fluidRow(
                 column(8, plotOutput("plot_budget")),  # Plot on the left
                 column(4, div(
@@ -143,95 +143,111 @@ ui <- page_fillable(
                 ))
     ),
     
-    ## Employment rate, native born men 16+ ##
-    nav_panel("Native Male Employment Rate", 
-              fluidRow(
-                column(8, plotOutput("plot_employment_pop_native")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_employment_pop_native"))
-                ))
+    ## Native Employment ##
+    nav_panel("Native Employment",
+      navset_tab(
+        ## Employment rate, native born men 16+ ##
+        nav_panel("Native Male Employment Rate", 
+                  fluidRow(
+                    column(8, plotOutput("plot_employment_pop_native")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_employment_pop_native"))
+                    ))
+        ),
+        
+        ## Employment, native born men prime age ##
+        nav_panel("Prime-Age Native Male Employment Level", 
+                  fluidRow(
+                    column(8, plotOutput("plot_employment_lvl_native_prime")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_employment_lvl_native_prime"))
+                    ))
+        ),
+      )
     ),
     
-    ## Employment, native born men prime age ##
-    nav_panel("Prime-Age Native Male Employment Level", 
-              fluidRow(
-                column(8, plotOutput("plot_employment_lvl_native_prime")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_employment_lvl_native_prime"))
-                ))
+    ## Manufacturing Employment ##
+    nav_panel("Manufacturing Employment",
+      navset_tab(
+        ## Employment, manufacturing ##
+        nav_panel("Manufacturing Employment Level", 
+                  fluidRow(
+                    column(8, plotOutput("plot_emp_manu")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_emp_manu"))
+                    ))
+        ),
+        
+        ## Manufacturing share of private employment ##
+        nav_panel("Manufacturing Employment Share", 
+                  fluidRow(
+                    column(8, plotOutput("plot_share_manu")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_share_manu"))
+                    ))
+        ),
+        
+        ## Employment, motor vehicles and parts ## 
+        nav_panel("Automotive Employment Level", 
+                  fluidRow(
+                    column(8, plotOutput("plot_motor_qt")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_motor_qt"))
+                    ))
+        ),
+        
+        ## Motor vehicles and parts share of private employment ##
+        nav_panel("Automotive Employment Share", 
+                  fluidRow(
+                    column(8, plotOutput("plot_motor_share")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_motor_share"))
+                    ))
+        ),
+        
+        ## Employment in manufacturing, counties most affected by the "China shock"  ##
+        nav_panel("Manufacturing Employment - China Shock", 
+                  fluidRow(
+                    column(8, plotOutput("plot_china_shock")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_china_shock"))
+                    ))
+        )
+      )
     ),
     
-    ## Total Private Construction Spending in Manufacturing ##
-    nav_panel("Construction Spending", 
-              fluidRow(
-                column(8, plotOutput("plot_const")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_const"))
-                ))
-    ),
-    
-    ## Real value added, manufacturing ##
-    nav_panel("Value Added", 
-              fluidRow(
-                column(8, plotOutput("plot_va")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_va"))
-                ))
-    ),
-    
-    ## Employment, manufacturing ##
-    nav_panel("Manufacturing Employment", 
-              fluidRow(
-                column(8, plotOutput("plot_emp_manu")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_emp_manu"))
-                ))
-    ),
-    
-    ## Manufacturing share of private employment ##
-    nav_panel("Manufacturing Share", 
-              fluidRow(
-                column(8, plotOutput("plot_share_manu")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_share_manu"))
-                ))
-    ),
-    
-    ## Motor vehicles and parts share of private employment ##
-    nav_panel("Vehicle Employment Share", 
-              fluidRow(
-                column(8, plotOutput("plot_motor_share")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_motor_share"))
-                ))
-    ),
-    
-    ## Employment, motor vehicles and parts ## 
-    nav_panel("Vehicle Employment Level", 
-              fluidRow(
-                column(8, plotOutput("plot_motor_qt")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_motor_qt"))
-                ))
-    ),
-    
-    ## Employment in manufacturing, counties most affected by the "China shock"  ##
-    nav_panel("Manufacturing Employment - China Shock", 
-              fluidRow(
-                column(8, plotOutput("plot_china_shock")),  # Plot on the left
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_china_shock"))
-                ))
+    ## Manufacturing Output ##
+    nav_panel("Manufacturing Output",
+      navset_tab(
+        ## Total Private Construction Spending in Manufacturing ##
+        nav_panel("Construction Spending", 
+                  fluidRow(
+                    column(8, plotOutput("plot_const")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_const"))
+                    ))
+        ),
+        
+        ## Real value added, manufacturing ##
+        nav_panel("Value Added", 
+                  fluidRow(
+                    column(8, plotOutput("plot_va")),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_va"))
+                    ))
+        )
+      )
     )
+    
   )
 )
 
@@ -389,6 +405,56 @@ server <- function(input, output) {
   output$text_va <- renderText({
     "White House trade policy is aimed to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity. Real value added in manufacturing – or net output – stands at 2.4 trillion, and has risen steadily."
   })
+
+  ## Employment, native born men prime age ##
+  output$plot_employment_lvl_native_prime <- renderPlot(
+    autoplot(emp_lvl_prime_age, ts.colour = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = native_end, y = tail(emp_lvl_prime_age, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = native_end, y = tail(emp_lvl_prime_age, 1),
+               label = paste0(as.character(round(tail(emp_lvl_prime_age, 1), digits = 1)), "M"),
+               vjust = -1, color = eig_colors[1]) +
+      # Add policy target
+      geom_hline(yintercept = mean(emp_lvl_prime_age[25:28]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_lvl_prime_age[25:28]),
+               label = paste0("Pre-China PNTR Level", " = ", round(mean(emp_lvl_prime_age[25:28]), digits = 1), "M"),
+               hjust = 0, vjust = -1, color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
+      ylab("Employment (Millions of Workers)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_employment_lvl_native_prime <- renderText({
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The prime age employment rate for native-born men is 41.4 million. We set the target to be 43.3, which is the level before China joined the WTO in 2001."
+  })
+  
+  ## Employment rate, native born men 16+ ##
+  output$plot_employment_pop_native <- renderPlot(
+    autoplot(emp_pop_ratio, ts.colour = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = native_end, y = tail(emp_pop_ratio, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = native_end, y = tail(emp_pop_ratio, 1),
+               label = paste0(as.character(round(tail(emp_pop_ratio, 1)*100, digits = 1)), "%"),
+               vjust = 2, color = eig_colors[1]) +
+      # Add policy target
+      geom_hline(yintercept = mean(emp_pop_ratio[25:28]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_pop_ratio[25:28]),
+               label = paste0("Pre-China PNTR Level", " = ", round(mean(emp_pop_ratio[25:28])*100, digits = 1), "%"),
+               hjust = 0, vjust = -1, color = eig_colors[4]) +
+      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_y_continuous(labels = scales::percent) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
+      ylab("Employment-to-Population Ratio (%)") +
+      xlab("Time (Quarter)")
+  )
+  
+  output$text_employment_pop_native <- renderText({
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 65.5%. We set the target to be 69.7%, which is the level before China joined the WTO in 2001."
+  })
+  
   
   output$plot_emp_manu <- renderPlot(
     autoplot(manu_qt, ts.colour = eig_colors[1]) +
@@ -437,44 +503,19 @@ server <- function(input, output) {
     "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Manufacturing jobs currently make up 9.5% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
   })
   
-  ## Employment rate, native born men 16+ ##
-  output$plot_employment_pop_native <- renderPlot(
-    autoplot(emp_pop_ratio, ts.colour = eig_colors[1]) +
+  ## Employment, motor vehicles and parts ## 
+  output$plot_motor_qt <- renderPlot(
+    autoplot(motor_qt, ts.colour = eig_colors[1]) +
       # Add current level
-      geom_point(aes(x = native_end, y = tail(emp_pop_ratio, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = native_end, y = tail(emp_pop_ratio, 1),
-               label = paste0(as.character(round(tail(emp_pop_ratio, 1)*100, digits = 1)), "%"),
+      geom_point(aes(x = manu_end, y = tail(motor_qt, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = manu_end, y = tail(motor_qt, 1),
+               label = paste0(as.character(round(tail(motor_qt, 1), digits = 1)), "M"),
                vjust = 2, color = eig_colors[1]) +
       # Add policy target
-      geom_hline(yintercept = mean(emp_pop_ratio[25:28]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_pop_ratio[25:28]),
-               label = paste0("Pre-China PNTR Level", " = ", round(mean(emp_pop_ratio[25:28])*100, digits = 1), "%"),
-               hjust = 0, vjust = -1, color = eig_colors[4]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_y_continuous(labels = scales::percent) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      ylab("Employment-to-Population Ratio (%)") +
-      xlab("Time (Quarter)")
-  )
-  
-  output$text_employment_pop_native <- renderText({
-    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 65.5%. We set the target to be 69.7%, which is the level before China joined the WTO in 2001."
-  })
-  
-  ## Employment, native born men prime age ##
-  output$plot_employment_lvl_native_prime <- renderPlot(
-    autoplot(emp_lvl_prime_age, ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = native_end, y = tail(emp_lvl_prime_age, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = native_end, y = tail(emp_lvl_prime_age, 1),
-               label = paste0(as.character(round(tail(emp_lvl_prime_age, 1)*100, digits = 1)), "M"),
-               vjust = -1, color = eig_colors[1]) +
-      # Add policy target
-      geom_hline(yintercept = mean(emp_lvl_prime_age[25:28]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_lvl_prime_age[25:28]),
-               label = paste0("Pre-China PNTR Level", " = ", round(mean(emp_lvl_prime_age[25:28])*100, digits = 1), "M"),
-               hjust = 0, vjust = -1, color = eig_colors[4]) +
+      geom_hline(yintercept = mean(motor_qt[41:44]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(motor_qt[41:44]),
+               label = paste0("Pre-China PNTR Level", " = ", round(mean(motor_qt[41:44]), digits = 1), "M"),
+               hjust = 0, vjust = 2, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
                    breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
@@ -482,40 +523,33 @@ server <- function(input, output) {
       xlab("Time (Quarter)")
   )
   
-  output$text_employment_lvl_native_prime <- renderText({
-    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The prime age employment rate for native-born men is 41.4 million. We set the target to be 43.3, which is the level before China joined the WTO in 2001."
+  output$text_motor_qt <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0  million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
   })
   
   ## Motor vehicles and parts share of private employment ##
   output$plot_motor_share <- renderPlot(
     autoplot(motor_share, ts.colour = eig_colors[1]) +
-      geom_hline(yintercept = 0.0118, color = eig_colors[4]) +
-      geom_text(aes(x = as.Date(as.yearmon(2010)), y = 0.0116, label = "2000 level"),
-                stat = "unique", color = eig_colors[4]) +
+      # Add current level
+      geom_point(aes(x = manu_end, y = tail(motor_share, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = manu_end, y = tail(motor_share, 1),
+               label = paste0(as.character(round(tail(motor_share, 1)*100, digits = 1)), "%"),
+               vjust = 2, color = eig_colors[1]) +
+      # Add policy target
+      geom_hline(yintercept = mean(motor_share[41:44]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(motor_share[41:44]),
+               label = paste0("Pre-China PNTR Level", " = ", round(mean(motor_share[41:44])*100, digits = 1), "%"),
+               hjust = 0, vjust = 2, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_y_continuous(breaks = seq(0.00, 0.02, 0.0025), labels = scales::percent) +
+      scale_y_continuous(labels = scales::percent) +
+      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
+                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
       ylab("Share of Private Employment (%)") +
       xlab("Time (Quarter)")
   )
   
   output$text_motor_share <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs make up less than 1% of total U.S. jobs, down from 1.18% in 2000,  the level before China joined the WTO in 2001."
-  })
-  
-  ## Employment, motor vehicles and parts ## 
-  output$plot_motor_qt <- renderPlot(
-    autoplot(motor_qt, ts.colour = eig_colors[1]) +
-      geom_hline(yintercept = 1.3, color = eig_colors[4]) +
-      geom_text(aes(x = as.Date(as.yearmon(2010)), y = 1.3, label = "2000 level"),
-                stat = "unique", color = eig_colors[4]) +
-      
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      ylab("Motor Vehicle Employment (Millions of Workers)") +
-      xlab("Time (Quarter)")
-  )
-  
-  output$text_motor_qt <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0  million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
   })
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
