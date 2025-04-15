@@ -91,9 +91,9 @@ trade_china_qt_99_24 <- trade_china_qt$balance %>% ts(., start = c(1999,1), freq
 trade_china_qt <- round(ts(c(trade_china_qt_92_98, trade_china_qt_99_24), start = start(trade_china_qt_92_98),
                      frequency = 4), digits = 0)
 
-# Adjust to 2017 dollars
-trade_agg_qt <- trade_agg_qt / cpi_adj[9:(length(cpi_adj)-1)]
-trade_china_qt <- trade_china_qt / cpi_adj[9:(length(cpi_adj)-1)]
+# Adjust to billions of 2017 dollars
+trade_agg_qt <- trade_agg_qt / (cpi_adj[9:(length(cpi_adj)-1)]*1000)
+trade_china_qt <- trade_china_qt / (cpi_adj[9:(length(cpi_adj)-1)]*1000)
 
 # Export data
 save(trade_agg_qt, trade_china_qt, va_manu_1997_2004_year, va_manu_2005_2024_qt,
