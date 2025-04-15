@@ -37,7 +37,8 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 # Define user-specific project directories
 project_directories <- list(
   "name" = "PATH TO GITHUB REPO",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker"
+  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker",
+  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker"
 )
 
 # Setting project path based on current user
@@ -66,17 +67,93 @@ eig_colors <- c("#1a654d", "#5e9c86", "#008080", "#044140")	  # EIG green colors
 
 ui <- page_fillable(
   
-  titlePanel("Welcome to the Trade Policy Dashboard", windowTitle = "Welcome to the Trade Policy Dashboard"),
+  ## Pull in EIG theme font and set the look of the header ##
+  tags$head(
+    tags$link(
+      href = "https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;700&display=swap",
+      rel = "stylesheet"
+    ),
+    tags$style(HTML("
+      h1 {
+        font-family: 'Source Serif Pro', serif;
+        font-weight: bold;
+        margin: 0;
+        font-size: 2.5em;
+      }
+      .header-container {
+        display: flex;
+        align-items: center;
+        background-color: #044140;
+        padding: 20px;
+        color: white;
+        justify-content: center;
+      }
+    "))
+  ),
+  
+  
+  ## Title ##
+  div(
+    class = "header-container",
+
+    # Title with bold font
+    h1("Welcome to the Trade Policy Dashboard")
+  ),
+  
+  ## Tracker description ##
   textOutput("description"),
+  
   navset_card_tab(
+  
     ### Inflation ###
-    nav_panel("Inflation", plotOutput("plot_inflation")),
+    nav_panel("Inflation", 
+              fluidRow(
+                column(8, plotOutput("plot_inflation")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_inflation"))
+                ))
+    ),
     
     ### Federal Budget Balance ###
-    nav_panel("Federal Budget Balance", plotOutput("plot_budget")),
+    nav_panel("Federal Budget Balance", 
+              fluidRow(
+                column(8, plotOutput("plot_budget")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_budget"))
+                ))
+    ),
     
     ### Trade Balance ###
-    nav_panel("Trade Balance", plotOutput("plot_trade")),
+    nav_panel("Trade Balance", 
+              fluidRow(
+                column(8, plotOutput("plot_trade")),  # Plot on the left
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  textOutput("text_trade"))
+                ))
+    ),
+    
+    ## Trade deficit with China ##
+    
+    ## Employment rate, native born men 16+ ##
+    
+    ## Employment, native born men prime age ##
+    
+    ## Total Private Construction Spending in Manufacturing ##
+    
+    ## Real value added, manufacturing ##
+  
+    ## Manufacturing share of private employment ##
+
+    ## Employment, manufacturing ##
+    
+    ## Motor vehicles and parts share of private employment ##
+
+    ## Employment, motor vehicles and parts ## 
+    
+    ## Employment in manufacturing, counties most affected by the "China shock"  ##
     
   )
 )
@@ -103,6 +180,10 @@ server <- function(input, output) {
       xlab("Time (Quarter)")
   )
   
+  output$text_inflation <- renderText({
+    "Bringing down inflation is a major goal for the current administration. During a campaign speech, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” The federal reserve’s inflation target is 2%."
+  })
+  
   output$plot_budget <- renderPlot(
     autoplot(budget_real, ts.colour = eig_colors[1]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
@@ -110,12 +191,22 @@ server <- function(input, output) {
       xlab("Time (Quarter)")
   )
   
+  output$text_budget <- renderText({
+    "The Trump administration has called for a balanced budget, to be achieved through spending reductions that offset planned tax cuts. The budget deficit currently stands at $1.8 trillion."
+  })
+  
+  
   output$plot_trade <- renderPlot(
     autoplot(trade_agg_qt, ts.colour = eig_colors[1]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       ylab("Trade Balance (Millions of Dollars)") +
       xlab("Time (Quarter)")
   )
+  
+  output$text_trade <- renderText({
+    "The administration advocates for an “America First Trade Policy,” aimed at reducing the trade deficit in goods by raising tariffs on U.S. trading partners. The deficit currently stands at $917.8 billion."
+  })
 }
 
 shinyApp(ui = ui, server = server)
+
