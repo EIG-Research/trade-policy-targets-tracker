@@ -1,7 +1,7 @@
 # Project: Trump Trade Policy Targets Dashboard
 # File Description: R Shiny application
 
-# last update: 4/14/2025 by Jiaxin He
+# last update: 4/15/2025 by Jiaxin He
 
 # remove dependencies
 rm(list = ls())
@@ -278,8 +278,8 @@ server <- function(input, output) {
   const_end <- as.Date(as.yearmon(end(construction_real)[1] + (end(construction_real)[2] - 1)/4))
   va_end <- as.Date(as.yearmon(end(va_manu_2005_2024_qt)[1] + (end(va_manu_2005_2024_qt)[2] - 1)/4))
   manu_end <- as.Date(as.yearmon(end(manu_qt)[1] + (end(manu_qt)[2] - 1)/4))
-  native_end <- as.Date(as.yearmon(end(emp_lvl_prime_age)[1] + (end(emp_lvl_prime_age)[2] - 1)/4))
-  
+  native_end <- as.Date(as.yearmon(end(emp_lvl_prime_age_m)[1] + (end(emp_lvl_prime_age_m)[2] - 1)/4))
+
   df_trade <- data.frame(quarter = as.Date(time(trade_agg_qt)), agg_balance = as.matrix(trade_agg_qt),
                          china_balance = as.matrix(trade_china_qt)) %>%
     pivot_longer(cols = c(agg_balance, china_balance),
@@ -408,16 +408,16 @@ server <- function(input, output) {
 
   ## Employment, native born men prime age ##
   output$plot_employment_lvl_native_prime <- renderPlot(
-    autoplot(emp_lvl_prime_age, ts.colour = eig_colors[1]) +
+    autoplot(emp_lvl_prime_age_m, ts.colour = eig_colors[1]) +
       # Add current level
-      geom_point(aes(x = native_end, y = tail(emp_lvl_prime_age, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = native_end, y = tail(emp_lvl_prime_age, 1),
-               label = paste0(as.character(round(tail(emp_lvl_prime_age, 1), digits = 1)), "M"),
+      geom_point(aes(x = native_end, y = tail(emp_lvl_prime_age_m, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = native_end, y = tail(emp_lvl_prime_age_m, 1),
+               label = paste0(as.character(round(tail(emp_lvl_prime_age_m, 1), digits = 1)), "M"),
                vjust = -1, color = eig_colors[1]) +
       # Add policy target
-      geom_hline(yintercept = mean(emp_lvl_prime_age[25:28]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_lvl_prime_age[25:28]),
-               label = paste0("Pre-China PNTR Level", " = ", round(mean(emp_lvl_prime_age[25:28]), digits = 1), "M"),
+      geom_hline(yintercept = mean(emp_lvl_prime_age_m[25:28]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_lvl_prime_age_m[25:28]),
+               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(emp_lvl_prime_age_m[25:28]), digits = 1), "M"),
                hjust = 0, vjust = -1, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
@@ -432,16 +432,16 @@ server <- function(input, output) {
   
   ## Employment rate, native born men 16+ ##
   output$plot_employment_pop_native <- renderPlot(
-    autoplot(emp_pop_ratio, ts.colour = eig_colors[1]) +
+    autoplot(emp_pop_ratio_m, ts.colour = eig_colors[1]) +
       # Add current level
-      geom_point(aes(x = native_end, y = tail(emp_pop_ratio, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = native_end, y = tail(emp_pop_ratio, 1),
-               label = paste0(as.character(round(tail(emp_pop_ratio, 1)*100, digits = 1)), "%"),
+      geom_point(aes(x = native_end, y = tail(emp_pop_ratio_m, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = native_end, y = tail(emp_pop_ratio_m, 1),
+               label = paste0(as.character(round(tail(emp_pop_ratio_m, 1)*100, digits = 1)), "%"),
                vjust = 2, color = eig_colors[1]) +
       # Add policy target
-      geom_hline(yintercept = mean(emp_pop_ratio[25:28]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_pop_ratio[25:28]),
-               label = paste0("Pre-China PNTR Level", " = ", round(mean(emp_pop_ratio[25:28])*100, digits = 1), "%"),
+      geom_hline(yintercept = mean(emp_pop_ratio_m[25:28]), color = eig_colors[4]) +
+      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_pop_ratio_m[25:28]),
+               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(emp_pop_ratio_m[25:28])*100, digits = 1), "%"),
                hjust = 0, vjust = -1, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_y_continuous(labels = scales::percent) +
@@ -466,7 +466,7 @@ server <- function(input, output) {
       # Add policy target
       geom_hline(yintercept = mean(manu_qt[41:44]), color = eig_colors[4]) +
       annotate(geom = "text", x = as.Date("2000-01-01"), y = mean(manu_qt[41:44]),
-               label = paste0("Pre-China PNTR Level", " = ", round(mean(manu_qt[41:44]), digits = 1), "M"),
+               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(manu_qt[41:44]), digits = 1), "M"),
                hjust = 0, vjust = -1, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
@@ -489,7 +489,7 @@ server <- function(input, output) {
       # Add policy target
       geom_hline(yintercept = mean(manu_share[41:44]), color = eig_colors[4]) +
       annotate(geom = "text", x = as.Date("2000-01-01"), y = mean(manu_share[41:44]),
-               label = paste0("Pre-China PNTR Level", " = ", round(mean(manu_share[41:44])*100, digits = 1), "%"),
+               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(manu_share[41:44])*100, digits = 1), "%"),
                hjust = 0, vjust = -1, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_y_continuous(labels = scales::percent) +
@@ -514,7 +514,7 @@ server <- function(input, output) {
       # Add policy target
       geom_hline(yintercept = mean(motor_qt[41:44]), color = eig_colors[4]) +
       annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(motor_qt[41:44]),
-               label = paste0("Pre-China PNTR Level", " = ", round(mean(motor_qt[41:44]), digits = 1), "M"),
+               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(motor_qt[41:44]), digits = 1), "M"),
                hjust = 0, vjust = 2, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
@@ -538,7 +538,7 @@ server <- function(input, output) {
       # Add policy target
       geom_hline(yintercept = mean(motor_share[41:44]), color = eig_colors[4]) +
       annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(motor_share[41:44]),
-               label = paste0("Pre-China PNTR Level", " = ", round(mean(motor_share[41:44])*100, digits = 1), "%"),
+               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(motor_share[41:44])*100, digits = 1), "%"),
                hjust = 0, vjust = 2, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
       scale_y_continuous(labels = scales::percent) +
@@ -554,12 +554,19 @@ server <- function(input, output) {
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
   output$plot_china_shock <- renderPlot(
-    autoplot(china_shock_yr / 1e3 , ts.colour = eig_colors[1]) +
-      geom_hline(yintercept = 649212 / 1e3, color = eig_colors[4]) +
-      geom_text(aes(x = as.Date(2010), y = 642000 / 1e3, label = "2000 level"),
-                stat = "unique", color = eig_colors[4]) +
-      
+    autoplot(china_shock_yr , ts.colour = eig_colors[1]) +
+      # Add current level
+      geom_point(aes(x = 2022, y = tail(china_shock_yr, 1)), color = eig_colors[1], size = 1.5) +
+      annotate(geom = "text", x = 2022, y = tail(china_shock_yr, 1),
+               label = paste0(as.character(round(tail(china_shock_yr, 1), digits = 1)), "K"),
+               vjust = 2, color = eig_colors[1]) +
+      # Add policy target
+      geom_hline(yintercept = china_shock_yr[11], color = eig_colors[4]) +
+      annotate(geom = "text", x = 2001, y = china_shock_yr[11],
+               label = paste0("2000 level, before China joined the WTO", " = ", round(china_shock_yr[11], digits = 1), "K"),
+               hjust = 0, vjust = 2, color = eig_colors[4]) +
       theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
+      scale_x_continuous(limits = c(1989, 2023), breaks = c(seq(1990,2020,5), 2022)) +
       labs(
         y = "Manufacturing Employment (Thousands of Workers)",
         x = "Time (Annual)",

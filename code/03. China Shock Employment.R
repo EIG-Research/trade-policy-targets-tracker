@@ -1,6 +1,6 @@
 # Project: Trump Trade Policy Targets Dashboard
 # File description: Aggregating manufacturing employment in counties most affected by the China shock
-# last update: 4/10/2025 by Jiaxin He
+# last update: 4/15/2025 by Jiaxin He
 
 # remove dependencies
 rm(list = ls())
@@ -71,18 +71,15 @@ manu_emp_cn_most_hit <- china_most_hit %>% ungroup() %>% mutate_all(~replace(., 
   select(-1:-3) %>% summarise_all(sum)
 
 # save as time series
-  china_shock = china_shock %>%
-    pivot_longer(cols = names(china_shock)[2:length(names(china_shock))]) %>%
+  china_shock = manu_emp_cn_most_hit %>%
+    pivot_longer(cols = names(manu_emp_cn_most_hit)) %>%
     mutate(year = as.numeric(gsub("man_emp_", "", name)),
            year = case_when(
              year >= 60 ~ 1900 + year,
              TRUE ~ 2000 + year
-           ), value = as.numeric(value)) %>% select(year, value)
+           ), value = as.numeric(value)/1000) %>% select(year, value)
   
   # convert to time series
   china_shock_yr = ts(china_shock$value, start = c(1990), frequency = 1)
 
-setwd(path_appdata)
-save(china_shock_yr, file = "china_shock.RData")
-
-# write.csv(manu_emp_cn_most_hit, file.path(path_appdata, "manufacturing employment in counties most affected by the china shock.csv"))
+save(china_shock_yr, file = file.path(path_appdata, "china_shock.RData"))
