@@ -1,0 +1,10 @@
+name: trade-target-tracker
+title:
+username: jbourbaki
+account: jbourbaki
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14532367
+bundleId: 10121384
+url: https://jbourbaki.shinyapps.io/trade-target-tracker/
+version: 1
