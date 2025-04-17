@@ -520,7 +520,6 @@ server <- function(input, output) {
     
   })
   
-  
   output$text_budget <- renderText({
     "During his first joint-address to congress, the president said that “in the near future, I want to do what has not been done in 24 years: balance the federal budget.” The administration aims to achieve this through a series of spending reductions that offset planned tax cuts. The budget deficit was $400 billion for Q1 2025."
   })
@@ -613,47 +612,112 @@ server <- function(input, output) {
     "The administration advocates for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate US trade deficit stood at $193.6 billion. As of publication, China has the highest planned tariff rate of 125%. The trade deficit with China stands at $53.3 billion as of Quarter 4 2024, which the administration aims to bring to zero."
   })
   
-
-  output$plot_const <- renderPlot(
-    autoplot(construction_real, ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = const_end, y = tail(construction_real, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = const_end, y = tail(construction_real, 1),
-               label = paste0(as.character(round(tail(construction_real, 1), digits = 1)), "B"),
-               vjust = -1, color = eig_colors[1]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), const_end), labels = date2qt, expand = c(0,0)) +
-      labs(
-        y = "Construction Spending (Billions of Dollars)",
-        x = "Time (Quarterly)"
-      ))
+  
+  ## Construction Spending ##
+  const_df <- tibble(
+    quarter = as.Date(time(construction_real)),
+    const_spending = as.numeric(construction_real),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plot_const <- renderPlotly({
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(const_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0(tick_years, " Q1")
+    
+    plot_ly(
+      data = const_df,
+      x = ~quarter,
+      y = ~const_spending,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{y:$,.1f}B<extra></extra>"
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Construction Spending (Billions of Dollars)",
+                     tickformat = "$,.1f",
+                     ticksuffix = "",
+                     rangemode = "tozero"),
+        
+        legend = list(title = list(text = "Manufacturing Value Added")),
+        
+        hovermode = "x unified"
+      )
+  })
   
   output$text_const <- renderText({
     "The Trump administration aims to re-shore factories, with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $45.8 billion in Q4 2024, which rose markedly during the Biden administration."
   })
   
-  output$plot_va <- renderPlot(
-    ggplot(df_va, aes(x = quarter, y = value_added)) +
-      geom_line(color = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = va_end, y = tail(va_manu_2005_2024_qt, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = va_end, y = tail(va_manu_2005_2024_qt, 1),
-               label = paste0(as.character(round(tail(va_manu_2005_2024_qt, 1), digits = 1)), "B"),
-               vjust = -1, color = eig_colors[1]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), va_end), labels = date2qt, expand = c(0,0)) +
-      labs(
-        y = "Value Added (Billions of Dollars)",
-        x = "Time (Quarterly)"
-      ))
+  ## Value Added ##
+  va_df <- tibble(
+    quarter = c(as.Date(time(va_manu_1997_2004_year)), as.Date(time(va_manu_2005_2024_qt))),
+    value_added = c(as.matrix(va_manu_1997_2004_year), as.matrix(va_manu_2005_2024_qt)),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plot_va <- renderPlotly({
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(va_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0(tick_years, " Q1")
+    
+    plot_ly(
+      data = va_df,
+      x = ~quarter,
+      y = ~value_added,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "<extra></extra>%{y:$,.0f}B"
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Value Added (Billions of Dollars)",
+                     tickformat = "$,.0f",
+                     ticksuffix = "",
+                     rangemode = "tozero"),
+        
+        legend = list(title = list(text = "Manufacturing Value Added")),
+        
+        hovermode = "x unified"
+      )
+  })
   
   output$text_va <- renderText({
     "White House trade policy aims to reverse the \"hollowing out of our manufacturing base\" and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades."
   })
-  
-  
   
   ## Employment, native born men prime age ##
   
