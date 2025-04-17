@@ -129,7 +129,7 @@ ui <- page_fillable(
   
   navset_card_tab(
     ### Inflation ###
-    nav_panel("Inflation Interactive",
+    nav_panel("Inflation",
               fluidRow(
                 column(8,  plotlyOutput("plotly_inflation", height = "500px"),
                 div(
@@ -220,7 +220,7 @@ ui <- page_fillable(
         ## Employment, manufacturing ##
         nav_panel("Manufacturing Employment Level", 
                   fluidRow(
-                    column(8, plotOutput("plot_emp_manu"),
+                    column(8, plotlyOutput("plotly_emp_manu", height = "500px"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
@@ -359,22 +359,11 @@ server <- function(input, output) {
     paste(y, q)
   }
   
-  cpi_end <- as.Date(as.yearmon(end(cpi_inflation)[1] + (end(cpi_inflation)[2] - 1)/4))
-  budget_end <- as.Date(as.yearmon(end(budget_real)[1] + (end(budget_real)[2] - 1)/4))
-  trade_end <- as.Date(as.yearmon(end(trade_agg_qt)[1] + (end(trade_agg_qt)[2] - 1)/4))
   const_end <- as.Date(as.yearmon(end(construction_real)[1] + (end(construction_real)[2] - 1)/4))
   va_end <- as.Date(as.yearmon(end(va_manu_2005_2024_qt)[1] + (end(va_manu_2005_2024_qt)[2] - 1)/4))
-  manu_end <- as.Date(as.yearmon(end(manu_qt)[1] + (end(manu_qt)[2] - 1)/4))
   native_end <- as.Date(as.yearmon(end(emp_lvl_prime_age_m)[1] + (end(emp_lvl_prime_age_m)[2] - 1)/4))
-
-  df_trade <- data.frame(quarter = as.Date(time(trade_agg_qt)), agg_balance = as.matrix(trade_agg_qt),
-                         china_balance = as.matrix(trade_china_qt)) %>%
-    pivot_longer(cols = c(agg_balance, china_balance),
-                 names_to = "series", values_to = "value")
   df_va <- data.frame(quarter = c(as.Date(time(va_manu_1997_2004_year)), as.Date(time(va_manu_2005_2024_qt))),
                       value_added = c(as.matrix(va_manu_1997_2004_year), as.matrix(va_manu_2005_2024_qt)))
-  
-  
   
   ## Inflation ##
   
@@ -607,7 +596,6 @@ server <- function(input, output) {
     
   })
   
-  
   output$text_trade <- renderText({
     "The administration advocates for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate US trade deficit stood at $193.6 billion. As of publication, China has the highest planned tariff rate of 125%. The trade deficit with China stands at $53.3 billion as of Quarter 4 2024, which the administration aims to bring to zero."
   })
@@ -654,12 +642,78 @@ server <- function(input, output) {
   
   
   ## Employment, native born men prime age ##
+  emp_lvl_prime_age_df = tibble(
+    quarter = as.Date(as.yearqtr(time(emp_lvl_prime_age_m))),
+    employment_lvl = as.numeric(emp_lvl_prime_age_m)
+  )
   
-  
-  otput$plotly_employment_lvl_native_prime <- renderPlotly({
+  output$plotly_employment_lvl_native <- renderPlotly({
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(trade_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
     
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0("Q1 ", tick_years)
+    
+    
+    plot_ly(
+      data = trade_df,
+      x = ~quarter,
+      y = ~deficit,
+      color = ~type,
+      colors = c("Total" =eig_colors[1], "China" = eig_colors[3]),
+      type = 'scatter',
+      mode = 'lines'
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     xtickvals = tick_dates,
+                     ticktext = tick_texts),
+        
+        yaxis = list(title = "Trade Balance (Billions of Dollars)",
+                     tickformat = "$,.0f",
+                     ticksuffix = "",
+                     rangemode = "tozero"),
+        
+        legend = list(title = list(text = "Deficit Type")),
+        
+        hovermode = "x unified",
+        
+        # add horizontal line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = 0, y1 = 0,
+            line = list(color = eig_colors[1], width = 2, dash = "dash")
+          )
+        ),
+        
+        # label for balance 
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.01,
+            y = 5,
+            text = "Target: Eliminate Deficit",
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
   })
   
+  
+  # DO THESE PLOTS NOW!!!
   
   output$plot_employment_lvl_native_prime <- renderPlot(
     autoplot(emp_lvl_prime_age_m, ts.colour = eig_colors[1]) +
@@ -712,25 +766,76 @@ server <- function(input, output) {
   })
   
   
-  output$plot_emp_manu <- renderPlot(
-    autoplot(manu_qt, ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = manu_end, y = tail(manu_qt, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = manu_end, y = tail(manu_qt, 1),
-               label = paste0(as.character(round(tail(manu_qt, 1), digits = 1)), "M"),
-               vjust = -1, color = eig_colors[1]) +
-      # Add policy target
-      geom_hline(yintercept = mean(manu_qt[41:44]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2000-01-01"), y = mean(manu_qt[41:44]),
-               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(manu_qt[41:44]), digits = 1), "M"),
-               hjust = 0, vjust = -1, color = eig_colors[4]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), manu_end), labels = date2qt, expand = c(0,0)) +
-      labs(
-        y = "Employment (Millions of Workers)",
-        x = "Time (Quarterly)"
-        ))
+  ## Employment Manufacturing ##
+  manu_df = tibble(
+    quarter = as.Date(as.yearqtr(time(manu_qt))),
+    manufacturing = as.numeric(manu_qt)
+  )
+  
+  output$plotly_emp_manu <- renderPlotly({
+    
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(manu_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0("Q1 ", tick_years)
+    
+    y_lvl = manu_df %>% mutate(year = lubridate::year(quarter)) %>%
+      filter(year == 2000) %>% summarise(y = mean(manufacturing))
+    y_lvl = as.numeric(y_lvl[1,1])
+    
+    plot_ly(
+      data = manu_df,
+      x = ~quarter,
+      y = ~manufacturing,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2)
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     xtickvals = tick_dates,
+                     ticktext = tick_texts),
+        
+        yaxis = list(title = "Employment (Millions of Dollars)",
+                     tickformat = "$,.0f",
+                     ticksuffix = ""),
+
+        hovermode = "x unified",
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[1], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.3,
+            y = y_lvl + 0.5,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"M"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
+  })
   
   output$text_emp_manu <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Manufacturing employment stands at 12.8 million in Quarter 1 2025, down from the chosen target of 17.3 in 2000, the level before China joined the WTO in 2001."
