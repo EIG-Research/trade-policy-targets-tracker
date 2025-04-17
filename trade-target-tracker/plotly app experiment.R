@@ -389,7 +389,6 @@ server <- function(input, output) {
                      rangemode = "tozero"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add horizontal line
         shapes = list(
@@ -467,7 +466,6 @@ server <- function(input, output) {
                      rangemode = "tozero"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add target
         shapes = list(
@@ -638,8 +636,7 @@ server <- function(input, output) {
         
         legend = list(title = list(text = "Manufacturing Value Added")),
         
-        hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3])
+        hovermode = "closest"
       )
   })
   
@@ -692,8 +689,7 @@ server <- function(input, output) {
         
         legend = list(title = list(text = "Manufacturing Value Added")),
         
-        hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3])
+        hovermode = "closest"
       )
   })
   
@@ -750,7 +746,6 @@ server <- function(input, output) {
                      ticksuffix = ""),
 
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add horizontal line
         shapes = list(
@@ -832,7 +827,6 @@ server <- function(input, output) {
                      ticksuffix = "%"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add horizontal line
         shapes = list(
@@ -916,7 +910,6 @@ server <- function(input, output) {
                      ticksuffix = ""),
 
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
 
         # add target line
         shapes = list(
