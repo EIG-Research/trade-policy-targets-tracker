@@ -52,6 +52,7 @@ if (!current_user %in% names(project_directories)) {
 path_project <- project_directories[[current_user]]
 path_app <- file.path(path_project, "trade-target-tracker")
 
+setwd(path_app)
 #################
 ### Load Data ###
 #################
@@ -239,7 +240,7 @@ ui <- page_fillable(
         ## Manufacturing share of private employment ##
         nav_panel("Manufacturing Share", 
                   fluidRow(
-                    column(8, plotOutput("plot_share_manu"),
+                    column(8, plotlyOutput("plotly_share_manu", height = "500px"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
@@ -957,26 +958,83 @@ server <- function(input, output) {
     "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Manufacturing employment stands at 12.8 million in Quarter 1 2025, down from the chosen target of 17.3 in 2000, the level before China joined the WTO in 2001."
   })
   
-  output$plot_share_manu <- renderPlot(
-    autoplot(manu_share, ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = manu_end, y = tail(manu_share, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = manu_end, y = tail(manu_share, 1),
-               label = paste0(as.character(round(tail(manu_share, 1)*100, digits = 1)), "%"),
-               vjust = -1, color = eig_colors[1]) +
-      # Add policy target
-      geom_hline(yintercept = mean(manu_share[41:44]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2000-01-01"), y = mean(manu_share[41:44]),
-               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(manu_share[41:44])*100, digits = 1), "%"),
-               hjust = 0, vjust = -1, color = eig_colors[4]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_y_continuous(labels = scales::percent) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), manu_end), labels = date2qt, expand = c(0,0)) +
-      labs(
-        y = "Share of Private-Sector Workers (%)",
-        x = "Time (Quarterly)"
-        ))
+  ## Manufacturing Share ##
+  
+  manu_share_df = tibble(
+    quarter = as.Date(as.yearqtr(time(manu_share))),
+    manufacturing_share = as.numeric(manu_share) *100
+  )
+  
+  output$plotly_share_manu <- renderPlotly({
+    
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(manu_share_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0("Q1 ", tick_years)
+    
+    y_lvl = manu_share_df %>% mutate(year = lubridate::year(quarter)) %>%
+      filter(year == 2000) %>% summarise(y = mean(manufacturing_share))
+    y_lvl = as.numeric(y_lvl[1,1])
+    
+    plot_ly(
+      data = manu_share_df,
+      x = ~quarter,
+      y = ~manufacturing_share,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      hoverinfo = 'x+y',
+      hovertemplate = paste(
+        "Quarter: %{x}<br>",
+        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
+      )
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     xtickvals = tick_dates,
+                     ticktext = tick_texts),
+        
+        yaxis = list(title = "Share of Private-Sector Workers (%)",
+                     tickformat = ".0f",
+                     ticksuffix = "%"),
+        
+        hovermode = "closest",
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[1], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.3,
+            y = y_lvl + 0.15,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
+  })
+  
   
   output$text_share_manu <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" In  Quarter 1 2025 Manufacturing jobs made up 9.4% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
@@ -1059,3 +1117,4 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
+
