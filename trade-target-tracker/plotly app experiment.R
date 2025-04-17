@@ -558,7 +558,7 @@ server <- function(input, output) {
     
     plot_ly(
       data = trade_df,
-      x = ~date,
+      x = ~quarter,
       y = ~deficit,
       color = ~type,
       colors = c("Total" =eig_colors[1], "China" = eig_colors[3]),
@@ -612,6 +612,7 @@ server <- function(input, output) {
     "The administration advocates for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate US trade deficit stood at $193.6 billion. As of publication, China has the highest planned tariff rate of 125%. The trade deficit with China stands at $53.3 billion as of Quarter 4 2024, which the administration aims to bring to zero."
   })
   
+
   output$plot_const <- renderPlot(
     autoplot(construction_real, ts.colour = eig_colors[1]) +
       # Add current level
@@ -650,8 +651,16 @@ server <- function(input, output) {
   output$text_va <- renderText({
     "White House trade policy aims to reverse the \"hollowing out of our manufacturing base\" and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades."
   })
-
+  
+  
   ## Employment, native born men prime age ##
+  
+  
+  otput$plotly_employment_lvl_native_prime <- renderPlotly({
+    
+  })
+  
+  
   output$plot_employment_lvl_native_prime <- renderPlot(
     autoplot(emp_lvl_prime_age_m, ts.colour = eig_colors[1]) +
       # Add current level
