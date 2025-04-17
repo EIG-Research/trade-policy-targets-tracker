@@ -34,13 +34,13 @@ path_app <- file.path(path_project, "trade-target-tracker")
 path_appdata <- file.path(path_app, "cleaned_data")
 
 # import monthly data
-employment_pop_ratio_m <- read_excel(file.path(path_cps, "employment_pop_ratio_prime_age_native_men_monthly.xlsx")) %>%
+employment_pop_ratio_m <- read_excel(file.path(path_cps, "employment_rate_native_men.xlsx")) %>%
   mutate(employment_rate = employment_rate) %>%
   select(year, month, employment_rate)
 
-employment_prime_m <- read_excel(file.path(path_cps, "employment_native_men_monthly.xlsx")) %>%
+employment_prime_m <- read_excel(file.path(path_cps, "employment_level_native_men.xlsx")) %>%
   mutate(employment_level_millions = employment_level/1000000) %>%
-  select(-c(employment_level, quarter))
+  select(-c(employment_level))
 
 # save as time series, adjust seasonally, and aggregate into quarters
 start_month <- c(employment_prime_m$year[1], match(tools::toTitleCase(employment_prime_m$month[1]), month.name))
