@@ -18,8 +18,6 @@ library(tidyr)
 library(dplyr)
 library(Hmisc)
 library(bslib)
-library(ggplot2)
-library(ggfortify)
 library(dichromat)
 library(cowplot)
 
@@ -384,7 +382,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Inflation rate (%)",
-                     tickformat = ".1f",
+                     tickformat = ".0f",
                      ticksuffix = "%",
                      rangemode = "tozero"),
         
@@ -462,7 +460,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Fiscal Balance (Billions of Dollars)",
-                     tickformat = "$,.1f",
+                     tickformat = ",.0f",
                      ticksuffix = "",
                      rangemode = "tozero"),
         
@@ -552,7 +550,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Trade Balance (Billions of Dollars)",
-                     tickformat = "$,.1f",
+                     tickformat = ",.0f",
                      ticksuffix = "",
                      rangemode = "tozero"),
 
@@ -632,7 +630,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Construction Spending (Billions of Dollars)",
-                     tickformat = "$,.1f",
+                     tickformat = ",.0f",
                      ticksuffix = "",
                      rangemode = "tozero"),
         
@@ -687,7 +685,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Value Added (Billions of Dollars)",
-                     tickformat = "$,.0f",
+                     tickformat = ",.0f",
                      ticksuffix = "",
                      rangemode = "tozero"),
         
@@ -747,7 +745,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment (Millions of Workers)",
-                     tickformat = ".1f",
+                     tickformat = ".0f",
                      ticksuffix = ""),
 
         hovermode = "closest",
@@ -829,7 +827,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment-to-Population Ratio (%)",
-                     tickformat = ".1f",
+                     tickformat = ".0f",
                      ticksuffix = "%"),
         
         hovermode = "closest",
@@ -863,11 +861,9 @@ server <- function(input, output) {
     
   })
   
-  
   output$text_employment_pop_native <- renderText({
     "The Administration hopes to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 63.3%. We set the target to be 71.1%, which is the 2000 level before China joined the WTO."
   })
-  
   
   ## Employment Manufacturing ##
   manu_df = tibble(
@@ -914,7 +910,7 @@ server <- function(input, output) {
         
         yaxis = list(title = "Employment (Millions of Workers)",
                      tickformat = ",.0f",
-                     ticksuffix = "M"),
+                     ticksuffix = ""),
 
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1]),
@@ -985,10 +981,7 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = paste(
-        "Quarter: %{x}<br>",
-        "Value: %{y:,.0f}%<extra></extra> "  # extra hides the trace label (removes green line)
-    )) %>%
+      hovertemplate = "%{x}: %{y:,.1f}%<extra></extra>") %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1069,10 +1062,7 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = paste(
-        "Quarter: %{x}<br>",
-        "Value: %{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
-      )) %>%
+      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>") %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1082,7 +1072,7 @@ server <- function(input, output) {
         
         yaxis = list(title = "Employment (Millions of Workers)",
                      tickformat = ".0f",
-                     ticksuffix = "M"),
+                     ticksuffix = ""),
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1]),
@@ -1114,7 +1104,6 @@ server <- function(input, output) {
       )
   })
   
- 
   output$text_motor_emp <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
   })
@@ -1154,10 +1143,7 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = paste(
-        "Quarter: %{x}<br>",
-        "Value: %{y:,.0f}%<extra></extra> "  # extra hides the trace label (removes green line)
-      )) %>%
+      hovertemplate = "%{x}: %{y:,.1f}%<extra></extra>") %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1166,7 +1152,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Share of Private-Sector Workers (%)",
-                     tickformat = ".1f",
+                     tickformat = ".0f",
                      ticksuffix = "%"),
         
         hovermode = "closest",
@@ -1199,62 +1185,51 @@ server <- function(input, output) {
       )
   })
   
-  
   output$text_motor_share <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Vehicle-related manufacturing jobs made up 0.7% of total U.S. jobs in Quarter 1 2025, down from 1.2% in 2000, the level before China joined the WTO in 2001."
   })
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
-  china_shock_df = tibble(
-    quarter = as.Date(as.yearqtr(time(china_shock_yr))),
-    china_shock = as.numeric(china_shock_yr),
-    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
-  )
+  china_shock_df <- tibble(year = time(china_shock_yr),
+                           cs_manu_emp = as.numeric(china_shock_yr),
+                           hover_label = as.character(year))
   
   output$plotly_china_shock <- renderPlotly({
     
     # Dynamically generate tick dates: Q1 every 5 years
-    date_range <- range(china_shock_df$quarter)
-    start_year <- lubridate::year(date_range[1])
-    end_year   <- lubridate::year(date_range[2])
+    start_year <- china_shock_df$year[1]
+    end_year   <- china_shock_df$year[nrow(china_shock_df)]
     
     # Round to the nearest lower multiple of 5
     start_year <- start_year - (start_year %% 5)
     end_year   <- end_year + (5 - end_year %% 5)
     
     tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    tick_texts <- as.character(tick_years)
     
-    y_lvl = china_shock_df %>% mutate(year = lubridate::year(quarter)) %>%
-      filter(year == 2000) %>% summarise(y = mean(china_shock))
-    y_lvl = as.numeric(y_lvl[1,1])
+    y_lvl <- china_shock_df %>% filter(year == 2000) %>% .$cs_manu_emp
     
     plot_ly(
       data = china_shock_df,
-      x = ~quarter,
-      y = ~china_shock,
+      x = ~year,
+      y = ~cs_manu_emp,
       type = 'scatter',
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = paste(
-        "Quarter: %{x}<br>",
-        "Value: $%{y:,.0f}<extra></extra> "  # extra hides the trace label (removes green line)
-      )) %>%
+      hovertemplate = "%{x}: %{y:,.1f}K<extra></extra>"
+    ) %>%
       layout(
-        xaxis = list(title = "Time (Quarterly)",
-                     tickvals = tick_dates,
-                     ticktext = tick_texts,
+        xaxis = list(title = "Time (Annual)",
+                     tickvals = tick_years,
                      hoverformat = "%Y Q%q",
-                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+                     range = c(tick_years[1], tick_years[length(tick_years)])),
         
         yaxis = list(title = "Employment (Thousands of Workers)",
                      tickformat = ".0f",
                      ticksuffix = ""),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]),
         
         # add target line
         shapes = list(
@@ -1271,9 +1246,9 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.3,
-            y = y_lvl + 2,
-            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+            x = 0.28,
+            y = y_lvl + 8,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"K"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
             xanchor = "left",
