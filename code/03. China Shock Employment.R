@@ -43,12 +43,18 @@ china_shock_counties <- read.csv(file.path(path_data, "china_shock_estimates_2.c
 china_most_hit <- china_shock_counties %>% select(2:11) %>% filter(CA.level.category == "Most hit") %>%
   mutate(county = cnty) %>% select(county, czone_1990, Full.County.name)
 
+sic_naics_crosswalk <- read.csv(file.path(path_cbp, "full_sic87_naics97.csv")) %>%
+  filter(naics97 == "31----") %>% select(sic87, naics97, weight_emp) %>% na.omit()
+sic_naics_crosswalk$sic87
+
 for(year in 90:97){
   emp_var <- paste0("man_emp_", as.character(year))
   cbp_year <- read.table(file.path(path_cbp, paste0("cbp", as.character(year), "co.txt")),
                                    header=TRUE, sep = ',')
-  cbp_year <- cbp_year %>% filter(sic == "20--") %>%
-    mutate(emp = as.numeric(emp), county = fipstate * 1000 + fipscty) %>%
+  cbp_year <- cbp_year %>% filter(sic %in% sic_naics_crosswalk$sic87) %>%
+    mutate(,
+           emp = as.numeric(emp),
+           county = fipstate * 1000 + fipscty) %>%
     group_by(county) %>% summarise(!!emp_var := sum(emp))
   china_most_hit <- china_most_hit %>% left_join(cbp_year, by = "county")
 }
