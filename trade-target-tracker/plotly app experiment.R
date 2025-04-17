@@ -113,6 +113,7 @@ ui <- page_fillable(
   ),
   
   
+  
   ## Title ##
   div(
     class = "header-container",
@@ -124,8 +125,12 @@ ui <- page_fillable(
     h1("Welcome to the Trade Policy Dashboard")
   ),
   
+  
+  
   ## Tracker description ##
   textOutput("description"),
+  
+  
   
   navset_card_tab(
     ### Inflation ###
@@ -141,8 +146,6 @@ ui <- page_fillable(
                 style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                 textOutput("text_inflation"))
               ))
-              
-              
 ),
     
     ### Federal Budget Balance ###
@@ -181,9 +184,9 @@ ui <- page_fillable(
     nav_panel("Native Employment",
       navset_tab(
         ## Employment rate, native born men 16+ ##
-        nav_panel("Native Male Employment Rate", 
+        nav_panel("Native Male Employment Rate (18+)", 
                   fluidRow(
-                    column(8, plotOutput("plot_employment_pop_native"),
+                    column(8, plotlyOutput("plotly_employment_pop_native", height = "500px"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
@@ -197,9 +200,9 @@ ui <- page_fillable(
         ),
         
         ## Employment, native born men prime age ##
-        nav_panel("Prime-Age Native Male Employment Level", 
+        nav_panel("Native Male Employment Level 18-64 ", 
                   fluidRow(
-                    column(8, plotOutput("plot_employment_lvl_native_prime"),
+                    column(8, plotlyOutput("plotly_employment_lvl_native", height = "500px"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
@@ -208,7 +211,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_employment_lvl_native_prime"))
+                      textOutput("text_employment_lvl_native"))
                     ))
         ),
       )
@@ -359,11 +362,21 @@ server <- function(input, output) {
     paste(y, q)
   }
   
+  cpi_end <- as.Date(as.yearmon(end(cpi_inflation)[1] + (end(cpi_inflation)[2] - 1)/4))
+  budget_end <- as.Date(as.yearmon(end(budget_real)[1] + (end(budget_real)[2] - 1)/4))
+  trade_end <- as.Date(as.yearmon(end(trade_agg_qt)[1] + (end(trade_agg_qt)[2] - 1)/4))
   const_end <- as.Date(as.yearmon(end(construction_real)[1] + (end(construction_real)[2] - 1)/4))
   va_end <- as.Date(as.yearmon(end(va_manu_2005_2024_qt)[1] + (end(va_manu_2005_2024_qt)[2] - 1)/4))
+  manu_end <- as.Date(as.yearmon(end(manu_qt)[1] + (end(manu_qt)[2] - 1)/4))
   native_end <- as.Date(as.yearmon(end(emp_lvl_prime_age_m)[1] + (end(emp_lvl_prime_age_m)[2] - 1)/4))
+  
+  df_trade <- data.frame(quarter = as.Date(time(trade_agg_qt)), agg_balance = as.matrix(trade_agg_qt),
+                         china_balance = as.matrix(trade_china_qt)) %>%
+    pivot_longer(cols = c(agg_balance, china_balance),
+                 names_to = "series", values_to = "value")
   df_va <- data.frame(quarter = c(as.Date(time(va_manu_1997_2004_year)), as.Date(time(va_manu_2005_2024_qt))),
                       value_added = c(as.matrix(va_manu_1997_2004_year), as.matrix(va_manu_2005_2024_qt)))
+  
   
   ## Inflation ##
   
@@ -479,7 +492,7 @@ server <- function(input, output) {
         
         hovermode = "x unified",
         
-        # add horizontal line
+        # add target
         shapes = list(
           list(
             type = "line",
@@ -490,7 +503,7 @@ server <- function(input, output) {
           )
         ),
         
-        # label for balance 
+        # label for target 
         annotations = list(
           list(
             xref = "paper",
@@ -641,15 +654,18 @@ server <- function(input, output) {
   })
   
   
+  
   ## Employment, native born men prime age ##
-  emp_lvl_prime_age_df = tibble(
+  
+  emp_lvl_df = tibble(
     quarter = as.Date(as.yearqtr(time(emp_lvl_prime_age_m))),
     employment_lvl = as.numeric(emp_lvl_prime_age_m)
   )
   
   output$plotly_employment_lvl_native <- renderPlotly({
+    
     # Dynamically generate tick dates: Q1 every 5 years
-    date_range <- range(trade_df$quarter)
+    date_range <- range(emp_lvl_df$quarter)
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
@@ -661,28 +677,27 @@ server <- function(input, output) {
     tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
     tick_texts <- paste0("Q1 ", tick_years)
     
+    y_lvl = emp_lvl_df %>% mutate(year = lubridate::year(quarter)) %>%
+      filter(year == 2000) %>% summarise(mean(employment_lvl))
+    y_lvl = as.numeric(y_lvl[1,1])
     
     plot_ly(
-      data = trade_df,
+      data = emp_lvl_df,
       x = ~quarter,
-      y = ~deficit,
-      color = ~type,
-      colors = c("Total" =eig_colors[1], "China" = eig_colors[3]),
+      y = ~employment_lvl,
       type = 'scatter',
-      mode = 'lines'
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2)
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      xtickvals = tick_dates,
                      ticktext = tick_texts),
         
-        yaxis = list(title = "Trade Balance (Billions of Dollars)",
-                     tickformat = "$,.0f",
-                     ticksuffix = "",
-                     rangemode = "tozero"),
-        
-        legend = list(title = list(text = "Deficit Type")),
-        
+        yaxis = list(title = "Employment (Millions of Workers)",
+                     tickformat = ".0f",
+                     ticksuffix = ""),
+
         hovermode = "x unified",
         
         # add horizontal line
@@ -691,7 +706,7 @@ server <- function(input, output) {
             type = "line",
             xref = "paper",
             x0 = 0, x1 = 1,
-            y0 = 0, y1 = 0,
+            y0 = y_lvl, y1 = y_lvl,
             line = list(color = eig_colors[1], width = 2, dash = "dash")
           )
         ),
@@ -700,9 +715,9 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.01,
-            y = 5,
-            text = "Target: Eliminate Deficit",
+            x = 0.03,
+            y = y_lvl+0.1,
+            text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"M"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
             xanchor = "left",
@@ -712,54 +727,84 @@ server <- function(input, output) {
       )
   })
   
-  
-  # DO THESE PLOTS NOW!!!
-  
-  output$plot_employment_lvl_native_prime <- renderPlot(
-    autoplot(emp_lvl_prime_age_m, ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = native_end, y = tail(emp_lvl_prime_age_m, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = native_end, y = tail(emp_lvl_prime_age_m, 1),
-               label = paste0(as.character(round(tail(emp_lvl_prime_age_m, 1), digits = 1)), "M"),
-               vjust = -1, color = eig_colors[1]) +
-      # Add policy target
-      geom_hline(yintercept = mean(emp_lvl_prime_age_m[25:28]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_lvl_prime_age_m[25:28]),
-               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(emp_lvl_prime_age_m[25:28]), digits = 1), "M"),
-               hjust = 0, vjust = -1, color = eig_colors[4]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      labs(
-        y = "Employment (Millions of Workers)",
-        x = "Time (Quarterly)"
-      ))
-  
-  output$text_employment_lvl_native_prime <- renderText({
+  output$text_employment_lvl_native <- renderText({
     "During the election, JD Vance argued that \"we have seven million — just men, not even women, just men — who have completely dropped out of the labor force….we cannot have an entire American business community that is giving up on American workers and then importing millions of illegal laborers.\" The prime age employment rate for native-born men in Quarter 1 2025 was 42.4 million. We set the target to be 44 million, which is the level in 2000 before China joined the WTO."
   })
   
-  ## Employment rate, native born men 16+ ##
-  output$plot_employment_pop_native <- renderPlot(
-    autoplot(emp_pop_ratio_m, ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = native_end, y = tail(emp_pop_ratio_m, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = native_end, y = tail(emp_pop_ratio_m, 1),
-               label = paste0(as.character(round(tail(emp_pop_ratio_m, 1)*100, digits = 1)), "%"),
-               vjust = 2, color = eig_colors[1]) +
-      # Add policy target
-      geom_hline(yintercept = mean(emp_pop_ratio_m[25:28]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(emp_pop_ratio_m[25:28]),
-               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(emp_pop_ratio_m[25:28])*100, digits = 1), "%"),
-               hjust = 0, vjust = -1, color = eig_colors[4]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_y_continuous(labels = scales::percent) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      labs(
-        y = "Employment-to-Population Ratio (%)",
-        x = "Time (Quarterly)"
-      ))
+  
+  ## Employment rate, native born men 18+ ##
+  emp_pop_ratio_df = tibble(
+    quarter = as.Date(as.yearqtr(time(emp_pop_ratio_m))),
+    emp_pop = as.numeric(emp_pop_ratio_m)*100
+  )
+  
+  
+  output$plotly_employment_pop_native <- renderPlotly({
+    
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(emp_pop_ratio_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0("Q1 ", tick_years)
+    
+    y_lvl = emp_pop_ratio_df %>% mutate(year = lubridate::year(quarter)) %>%
+      filter(year == 2000) %>% summarise(mean(emp_pop))
+    y_lvl = as.numeric(y_lvl[1,1])
+    
+    plot_ly(
+      data = emp_pop_ratio_df,
+      x = ~quarter,
+      y = ~emp_pop,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2)
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     xtickvals = tick_dates,
+                     ticktext = tick_texts),
+        
+        yaxis = list(title = "Employment-to-Population Ratio (%)",
+                     tickformat = ".0f",
+                     ticksuffix = "%"),
+        
+        hovermode = "x unified",
+        
+        # add horizontal line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[1], width = 2, dash = "dash")
+          )
+        ),
+        
+        # label for balance 
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.25,
+            y = y_lvl+0.2,
+            text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
+    
+  })
+  
   
   output$text_employment_pop_native <- renderText({
     "The Administration hopes to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 63.3%. We set the target to be 71.1%, which is the 2000 level before China joined the WTO."
@@ -826,7 +871,7 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.3,
-            y = y_lvl + 0.5,
+            y = y_lvl + 0.2,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"M"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
