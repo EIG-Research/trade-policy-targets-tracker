@@ -31,34 +31,13 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
                           secret='/OJ/Oy/GW2sk6ibHJt4JgoqzB80U03mcEyFJn0ev')
 
 #################
-### Set paths ###
-#################
-# Define user-specific project directories
-project_directories <- list(
-  "name" = "PATH TO GITHUB REPO",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker",
-  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker"
-)
-
-# Setting project path based on current user
-current_user <- Sys.info()[["user"]]
-if (!current_user %in% names(project_directories)) {
-  stop("Root folder for current user is not defined.")
-}
-
-path_project <- project_directories[[current_user]]
-path_app <- file.path(path_project, "trade-target-tracker")
-
-#################
 ### Load Data ###
 #################
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
-load(file.path("./cleaned_data", "fred_data.RData"))
-load(file.path("./cleaned_data", "bea_data.RData"))
-load(file.path("./cleaned_data", "cps_employment.RData"))
-load(file.path("./cleaned_data", "china_shock.RData"))
-
-
+load(file.path("cleaned_data", "fred_data.RData"))
+load(file.path("cleaned_data", "bea_data.RData"))
+load(file.path("cleaned_data", "cps_employment.RData"))
+load(file.path("cleaned_data", "china_shock.RData"))
 
 ######################
 ### Build Shiny UI ###
@@ -88,7 +67,7 @@ ui <- page_fillable(
         background-color: #044140;
         padding: 20px;
         color: white;
-        justify-content: flex-start; /* aligns items to the left */
+        justify-content: center; /* aligns items to the left */
       }
       .header-logo {
         height: 60px;
