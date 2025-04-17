@@ -184,7 +184,7 @@ ui <- page_fillable(
     nav_panel("Native Employment",
       navset_tab(
         ## Employment rate, native born men 16+ ##
-        nav_panel("Native Male Employment Rate (18+)", 
+        nav_panel("Native Male Employment Rate (18-64)", 
                   fluidRow(
                     column(8, plotlyOutput("plotly_employment_pop_native", height = "500px"),
                            div(
