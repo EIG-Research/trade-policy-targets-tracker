@@ -128,7 +128,7 @@ ui <- page_fillable(
     ### Inflation ###
     nav_panel("Inflation",
               fluidRow(
-                column(8,  plotlyOutput("plotly_inflation", height = "500px"),
+                column(8,  plotlyOutput("plotly_inflation"),
                 div(
                   style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                   HTML('Source: <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">Bureau of Labor Statistics, CPI-U,</a> seasonally adjusted')
@@ -143,7 +143,7 @@ ui <- page_fillable(
     ### Federal Budget Balance ###
     nav_panel("Budget Balance", 
               fluidRow(
-                column(8, plotlyOutput("plotly_budget", height = "500px"),
+                column(8, plotlyOutput("plotly_budget"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                          HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars')
@@ -159,7 +159,7 @@ ui <- page_fillable(
     ### Trade Balance ###
     nav_panel("Trade Balance", 
               fluidRow(
-                column(8, plotlyOutput("plotly_trade", height = "500px"),
+                column(8, plotlyOutput("plotly_trade"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                          HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars. Available beginning in Q1 1992.')
@@ -178,7 +178,7 @@ ui <- page_fillable(
         ## Employment rate, native born men 16+ ##
         nav_panel("Native Male Employment Rate (18-64)", 
                   fluidRow(
-                    column(8, plotlyOutput("plotly_employment_pop_native", height = "500px"),
+                    column(8, plotlyOutput("plotly_employment_pop_native"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
@@ -194,7 +194,7 @@ ui <- page_fillable(
         ## Employment, native born men prime age ##
         nav_panel("Native Male Employment Level 18-64 ", 
                   fluidRow(
-                    column(8, plotlyOutput("plotly_employment_lvl_native", height = "500px"),
+                    column(8, plotlyOutput("plotly_employment_lvl_native"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
@@ -215,7 +215,7 @@ ui <- page_fillable(
         ## Employment, manufacturing ##
         nav_panel("Manufacturing Employment Level", 
                   fluidRow(
-                    column(8, plotlyOutput("plotly_emp_manu", height = "500px"),
+                    column(8, plotlyOutput("plotly_emp_manu"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
@@ -231,7 +231,7 @@ ui <- page_fillable(
         ## Manufacturing share of private employment ##
         nav_panel("Manufacturing Share", 
                   fluidRow(
-                    column(8, plotlyOutput("plotly_share_manu", height = "500px"),
+                    column(8, plotlyOutput("plotly_share_manu"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
@@ -247,7 +247,7 @@ ui <- page_fillable(
         ## Employment, motor vehicles and parts ## 
         nav_panel("Automotive Employment Level", 
                   fluidRow(
-                    column(8, plotlyOutput("plotly_motor_emp", height = "500px"),
+                    column(8, plotlyOutput("plotly_motor_emp"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
@@ -263,7 +263,7 @@ ui <- page_fillable(
         ## Motor vehicles and parts share of private employment ##
         nav_panel("Automotive Share", 
                   fluidRow(
-                    column(8, plotOutput("plot_motor_share"),
+                    column(8, plotlyOutput("plotly_motor_share"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
@@ -279,7 +279,7 @@ ui <- page_fillable(
         ## Employment in manufacturing, counties most affected by the "China shock"  ##
         nav_panel("Manufacturing Employment - China Shock", 
                   fluidRow(
-                    column(8, plotOutput("plot_china_shock"),
+                    column(8, plotlyOutput("plotly_china_shock"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://www.census.gov/programs-surveys/cbp.html" target="_blank"> Census Bureau County Business Patterns 1990-2022,</a> quarterly data is not available.')
@@ -300,7 +300,7 @@ ui <- page_fillable(
         ## Total Private Construction Spending in Manufacturing ##
         nav_panel("Construction Spending", 
                   fluidRow(
-                    column(8, plotOutput("plot_const"),
+                    column(8, plotlyOutput("plotly_const"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars. Available beginning Q1 1993.')
@@ -316,7 +316,7 @@ ui <- page_fillable(
         ## Real value added, manufacturing ##
         nav_panel("Value Added", 
                   fluidRow(
-                    column(8, plotOutput("plot_va"),
+                    column(8, plotlyOutput("plotly_va"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis,</a>seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
@@ -600,7 +600,7 @@ server <- function(input, output) {
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
-  output$plot_const <- renderPlotly({
+  output$plotly_const <- renderPlotly({
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(const_df$quarter)
     start_year <- lubridate::year(date_range[1])
@@ -655,7 +655,7 @@ server <- function(input, output) {
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
-  output$plot_va <- renderPlotly({
+  output$plotly_va <- renderPlotly({
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(va_df$quarter)
     start_year <- lubridate::year(date_range[1])
@@ -913,8 +913,8 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment (Millions of Workers)",
-                     tickformat = "$,.1f",
-                     ticksuffix = ""),
+                     tickformat = ",.0f",
+                     ticksuffix = "M"),
 
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1]),
@@ -987,8 +987,177 @@ server <- function(input, output) {
       text = ~hover_label,
       hovertemplate = paste(
         "Quarter: %{x}<br>",
-        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
+        "Value: %{y:,.0f}%<extra></extra> "  # extra hides the trace label (removes green line)
     )) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Share of Private-Sector Workers (%)",
+                     tickformat = ".0f",
+                     ticksuffix = "%"),
+        
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[1], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.26,
+            y = y_lvl + 0.3,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
+  })
+  
+  output$text_share_manu <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" In  Quarter 1 2025 Manufacturing jobs made up 9.4% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
+  })
+  
+  ## Employment, motor vehicles and parts ## 
+  
+  motor_df = tibble(
+    quarter = as.Date(as.yearqtr(time(motor_qt))),
+    motor_level = as.numeric(motor_qt) *100,
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plotly_motor_emp <- renderPlotly({
+    
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(motor_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0("Q1 ", tick_years)
+    
+    y_lvl = motor_df %>% mutate(year = lubridate::year(quarter)) %>%
+      filter(year == 2000) %>% summarise(y = mean(motor_level))
+    y_lvl = as.numeric(y_lvl[1,1])
+    
+    plot_ly(
+      data = motor_df,
+      x = ~quarter,
+      y = ~motor_level,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = paste(
+        "Quarter: %{x}<br>",
+        "Value: %{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
+      )) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Employment (Millions of Workers)",
+                     tickformat = ".0f",
+                     ticksuffix = "M"),
+        
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[1], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.26,
+            y = y_lvl + 1.3,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
+  })
+  
+ 
+  output$text_motor_emp <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
+  })
+  
+  ## Motor vehicles and parts share of private employment ##
+  
+  motor_share_df = tibble(
+    quarter = as.Date(as.yearqtr(time(motor_share))),
+    motor_share = as.numeric(motor_share) *100,
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plotly_motor_share <- renderPlotly({
+    
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(motor_share_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0("Q1 ", tick_years)
+    
+    y_lvl = motor_share_df %>% mutate(year = lubridate::year(quarter)) %>%
+      filter(year == 2000) %>% summarise(y = mean(motor_share))
+    y_lvl = as.numeric(y_lvl[1,1])
+    
+    plot_ly(
+      data = motor_share_df,
+      x = ~quarter,
+      y = ~motor_share,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = paste(
+        "Quarter: %{x}<br>",
+        "Value: %{y:,.0f}%<extra></extra> "  # extra hides the trace label (removes green line)
+      )) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1030,23 +1199,22 @@ server <- function(input, output) {
       )
   })
   
-  output$text_share_manu <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" In  Quarter 1 2025 Manufacturing jobs made up 9.4% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
+  
+  output$text_motor_share <- renderText({
+    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Vehicle-related manufacturing jobs made up 0.7% of total U.S. jobs in Quarter 1 2025, down from 1.2% in 2000, the level before China joined the WTO in 2001."
   })
   
-  ## Employment, motor vehicles and parts ## 
-  
-  
-  motor_df = tibble(
-    quarter = as.Date(as.yearqtr(time(motor_qt))),
-    motor_level = as.numeric(motor_qt) *100,
+  ## Employment in manufacturing, counties most affected by the "China shock"  ##
+  china_shock_df = tibble(
+    quarter = as.Date(as.yearqtr(time(china_shock_yr))),
+    china_shock = as.numeric(china_shock_yr),
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
-  output$plotly_motor_emp <- renderPlotly({
+  output$plotly_china_shock <- renderPlotly({
     
     # Dynamically generate tick dates: Q1 every 5 years
-    date_range <- range(motor_df$quarter)
+    date_range <- range(china_shock_df$quarter)
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
@@ -1058,21 +1226,21 @@ server <- function(input, output) {
     tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
     tick_texts <- paste0("Q1 ", tick_years)
     
-    y_lvl = motor_df %>% mutate(year = lubridate::year(quarter)) %>%
-      filter(year == 2000) %>% summarise(y = mean(motor_level))
+    y_lvl = china_shock_df %>% mutate(year = lubridate::year(quarter)) %>%
+      filter(year == 2000) %>% summarise(y = mean(china_shock))
     y_lvl = as.numeric(y_lvl[1,1])
     
     plot_ly(
-      data = motor_df,
+      data = china_shock_df,
       x = ~quarter,
-      y = ~motor_level,
+      y = ~china_shock,
       type = 'scatter',
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
       hovertemplate = paste(
         "Quarter: %{x}<br>",
-        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
+        "Value: $%{y:,.0f}<extra></extra> "  # extra hides the trace label (removes green line)
       )) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
@@ -1081,9 +1249,9 @@ server <- function(input, output) {
                      hoverformat = "%Y Q%q",
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
-        yaxis = list(title = "Employment (Millions of Workers)",
-                     tickformat = ".1f",
-                     ticksuffix = "M"),
+        yaxis = list(title = "Employment (Thousands of Workers)",
+                     tickformat = ".0f",
+                     ticksuffix = ""),
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1]),
@@ -1103,8 +1271,8 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.26,
-            y = y_lvl + 1.3,
+            x = 0.3,
+            y = y_lvl + 2,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
@@ -1114,57 +1282,6 @@ server <- function(input, output) {
         )
       )
   })
-  
- 
-  output$text_motor_emp <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
-  })
-  
-  ## Motor vehicles and parts share of private employment ##
-  output$plot_motor_share <- renderPlot(
-    autoplot(motor_share, ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = manu_end, y = tail(motor_share, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = manu_end, y = tail(motor_share, 1),
-               label = paste0(as.character(round(tail(motor_share, 1)*100, digits = 1)), "%"),
-               vjust = 2, color = eig_colors[1]) +
-      # Add policy target
-      geom_hline(yintercept = mean(motor_share[41:44]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(motor_share[41:44]),
-               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(motor_share[41:44])*100, digits = 1), "%"),
-               hjust = 0, vjust = 2, color = eig_colors[4]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_y_continuous(labels = scales::percent) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      labs(
-        y = "Share of Private-Sector Workers (%)",
-        x = "Time (Quarterly)"
-      ))
-  
-  output$text_motor_share <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Vehicle-related manufacturing jobs made up 0.7% of total U.S. jobs in Quarter 1 2025, down from 1.2% in 2000, the level before China joined the WTO in 2001."
-  })
-  
-  ## Employment in manufacturing, counties most affected by the "China shock"  ##
-  output$plot_china_shock <- renderPlot(
-    autoplot(china_shock_yr , ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = 2022, y = tail(china_shock_yr, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = 2022, y = tail(china_shock_yr, 1),
-               label = paste0(as.character(round(tail(china_shock_yr, 1), digits = 1)), "K"),
-               vjust = 2, color = eig_colors[1]) +
-      # Add policy target
-      geom_hline(yintercept = china_shock_yr[11], color = eig_colors[4]) +
-      annotate(geom = "text", x = 2001, y = china_shock_yr[11],
-               label = paste0("2000 level, before China joined the WTO", " = ", round(china_shock_yr[11], digits = 1), "K"),
-               hjust = 0, vjust = 2, color = eig_colors[4]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_x_continuous(limits = c(1989, 2023), breaks = c(seq(1990,2020,5), 2022)) +
-      labs(
-        y = "Employment (Thousands of Workers)",
-        x = "Time (Annual)"
-      ))
   
   output$text_china_shock <- renderText({
     "Identified by Autor et al. (2016), manufacturing employment in the 145 counties most impacted by trade with China are 0.47 million (2022). The target is 0.65 million, total employment in these counties before China joined the WTO in 2001."
