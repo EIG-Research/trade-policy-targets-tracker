@@ -352,38 +352,12 @@ server <- function(input, output) {
   the buttons below to explore individual indicators, view their associated targets, and assess progress
   across different areas of trade policy. All figures are in 2017 dollars for consistency")
   
-  # Baseline year breaks
-  year_breaks <- seq(as.Date(as.yearqtr("1990 Q1")), as.Date(as.yearqtr("2025 Q1")), by = "5 years")
-  
-  # Convert date into year-quarter
-  date2qt <- function(x) {
-    y <- format(x, "%Y")
-    q <- paste0("Q", as.numeric(format(x, "%m")) %/% 3 + 1)
-    paste(y, q)
-  }
-  
-  cpi_end <- as.Date(as.yearmon(end(cpi_inflation)[1] + (end(cpi_inflation)[2] - 1)/4))
-  budget_end <- as.Date(as.yearmon(end(budget_real)[1] + (end(budget_real)[2] - 1)/4))
-  trade_end <- as.Date(as.yearmon(end(trade_agg_qt)[1] + (end(trade_agg_qt)[2] - 1)/4))
-  const_end <- as.Date(as.yearmon(end(construction_real)[1] + (end(construction_real)[2] - 1)/4))
-  va_end <- as.Date(as.yearmon(end(va_manu_2005_2024_qt)[1] + (end(va_manu_2005_2024_qt)[2] - 1)/4))
-  manu_end <- as.Date(as.yearmon(end(manu_qt)[1] + (end(manu_qt)[2] - 1)/4))
-  native_end <- as.Date(as.yearmon(end(emp_lvl_prime_age_m)[1] + (end(emp_lvl_prime_age_m)[2] - 1)/4))
-  
-  df_trade <- data.frame(quarter = as.Date(time(trade_agg_qt)), agg_balance = as.matrix(trade_agg_qt),
-                         china_balance = as.matrix(trade_china_qt)) %>%
-    pivot_longer(cols = c(agg_balance, china_balance),
-                 names_to = "series", values_to = "value")
-  df_va <- data.frame(quarter = c(as.Date(time(va_manu_1997_2004_year)), as.Date(time(va_manu_2005_2024_qt))),
-                      value_added = c(as.matrix(va_manu_1997_2004_year), as.matrix(va_manu_2005_2024_qt)))
-  
-  
   ## Inflation ##
-  
   # convert inflation timeseries to dataframe
   inflation_df <- tibble(
     quarter = as.Date(as.yearqtr(time(cpi_inflation))),
-    inflation = as.numeric(cpi_inflation)*100
+    inflation = as.numeric(cpi_inflation)*100,
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
 
   output$plotly_inflation <- renderPlotly({
@@ -406,19 +380,24 @@ server <- function(input, output) {
       y = ~inflation,
       type = 'scatter',
       mode = 'lines',
-      line = list(color = eig_colors[1], width = 2)
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:.1f}%<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
-                     xtickvals = tick_dates,
-                     ticktext = tick_texts),
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Inflation rate (%)",
                      tickformat = ".1f",
                      ticksuffix = "%",
                      rangemode = "tozero"),
         
-        hovermode = "x unified",
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add horizontal line
         shapes = list(
@@ -435,8 +414,8 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.01,
-            y = 1.80,
+            x = 0,
+            y = 1.75,
             text = "Long-run Fed target (2%)",
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
@@ -455,7 +434,8 @@ server <- function(input, output) {
   ## Budget ##
   budget_df <- tibble(
     quarter = as.Date(as.yearqtr(time(budget_real))),
-    budget = as.numeric(budget_real)
+    budget = as.numeric(budget_real),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
   output$plotly_budget <- renderPlotly({
@@ -478,19 +458,24 @@ server <- function(input, output) {
       y = ~budget,
       type = 'scatter',
       mode = 'lines',
-      line = list(color = eig_colors[1], width = 2)
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:.1f}B<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
-                     xtickvals = tick_dates,
-                     ticktext = tick_texts),
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Fiscal Balance (Billions of Dollars)",
                      tickformat = "$,.0f",
                      ticksuffix = "",
                      rangemode = "tozero"),
         
-        hovermode = "x unified",
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add target
         shapes = list(
@@ -508,7 +493,7 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.75,
-            y = 40,
+            y = 45,
             text = "Target: Balanced Budget",
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
@@ -517,7 +502,6 @@ server <- function(input, output) {
           )
         )
       )
-    
   })
   
   output$text_budget <- renderText({
@@ -526,20 +510,21 @@ server <- function(input, output) {
   
   
   ## Trade ##
-  trade_agg_df = tibble(
+  trade_agg_df <- tibble(
     quarter = as.Date(as.yearqtr(time(trade_agg_qt))),
     Total = as.numeric(trade_agg_qt)
   )
   
-  trade_china_df = tibble(
+  trade_china_df <- tibble(
     quarter = as.Date(as.yearqtr(time(trade_china_qt))),
     China = as.numeric(trade_china_qt)
   )
   
-  trade_df = left_join(trade_agg_df, trade_china_df, by = "quarter") %>%
+  trade_df <- left_join(trade_agg_df, trade_china_df, by = "quarter") %>%
     pivot_longer(cols = c(Total, China),
                  names_to = "type",
-                 values_to = "deficit")
+                 values_to = "deficit") %>%
+    mutate(hover_label = format(as.yearqtr(quarter), "%Y Q%q"))
   
   
   output$plotly_trade <- renderPlotly({
@@ -556,7 +541,6 @@ server <- function(input, output) {
     tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
     tick_texts <- paste0("Q1 ", tick_years)
     
-    
     plot_ly(
       data = trade_df,
       x = ~quarter,
@@ -564,12 +548,16 @@ server <- function(input, output) {
       color = ~type,
       colors = c("Total" =eig_colors[1], "China" = eig_colors[3]),
       type = 'scatter',
-      mode = 'lines'
+      mode = 'lines',
+      text = ~hover_label,
+      hovertemplate = "%{y:$,.1f}B<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
-                     xtickvals = tick_dates,
-                     ticktext = tick_texts),
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Trade Balance (Billions of Dollars)",
                      tickformat = "$,.0f",
@@ -642,7 +630,7 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{y:$,.1f}B<extra></extra>"
+      hovertemplate = "%{x}: %{y:$,.1f}B<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
@@ -658,7 +646,8 @@ server <- function(input, output) {
         
         legend = list(title = list(text = "Manufacturing Value Added")),
         
-        hovermode = "x unified"
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[3])
       )
   })
   
@@ -695,7 +684,7 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "<extra></extra>%{y:$,.0f}B"
+      hovertemplate = "%{x}: %{y:$,.0f}B<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
@@ -711,7 +700,8 @@ server <- function(input, output) {
         
         legend = list(title = list(text = "Manufacturing Value Added")),
         
-        hovermode = "x unified"
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[3])
       )
   })
   
@@ -723,7 +713,8 @@ server <- function(input, output) {
   
   emp_lvl_df = tibble(
     quarter = as.Date(as.yearqtr(time(emp_lvl_prime_age_m))),
-    employment_lvl = as.numeric(emp_lvl_prime_age_m)
+    employment_lvl = as.numeric(emp_lvl_prime_age_m),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
   output$plotly_employment_lvl_native <- renderPlotly({
@@ -751,18 +742,23 @@ server <- function(input, output) {
       y = ~employment_lvl,
       type = 'scatter',
       mode = 'lines',
-      line = list(color = eig_colors[1], width = 2)
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
-                     xtickvals = tick_dates,
-                     ticktext = tick_texts),
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment (Millions of Workers)",
                      tickformat = ".0f",
                      ticksuffix = ""),
 
-        hovermode = "x unified",
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add horizontal line
         shapes = list(
@@ -779,8 +775,8 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.03,
-            y = y_lvl+0.1,
+            x = 0,
+            y = y_lvl+0.6,
             text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"M"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
@@ -799,9 +795,9 @@ server <- function(input, output) {
   ## Employment rate, native born men 18+ ##
   emp_pop_ratio_df = tibble(
     quarter = as.Date(as.yearqtr(time(emp_pop_ratio_m))),
-    emp_pop = as.numeric(emp_pop_ratio_m)*100
+    emp_pop = as.numeric(emp_pop_ratio_m)*100,
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
-  
   
   output$plotly_employment_pop_native <- renderPlotly({
     
@@ -828,18 +824,23 @@ server <- function(input, output) {
       y = ~emp_pop,
       type = 'scatter',
       mode = 'lines',
-      line = list(color = eig_colors[1], width = 2)
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:,.1f}%<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
-                     xtickvals = tick_dates,
-                     ticktext = tick_texts),
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment-to-Population Ratio (%)",
                      tickformat = ".0f",
                      ticksuffix = "%"),
         
-        hovermode = "x unified",
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add horizontal line
         shapes = list(
@@ -857,7 +858,7 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.25,
-            y = y_lvl+0.2,
+            y = y_lvl+0.3,
             text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
@@ -878,7 +879,8 @@ server <- function(input, output) {
   ## Employment Manufacturing ##
   manu_df = tibble(
     quarter = as.Date(as.yearqtr(time(manu_qt))),
-    manufacturing = as.numeric(manu_qt)
+    manufacturing = as.numeric(manu_qt),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
   output$plotly_emp_manu <- renderPlotly({
@@ -906,18 +908,23 @@ server <- function(input, output) {
       y = ~manufacturing,
       type = 'scatter',
       mode = 'lines',
-      line = list(color = eig_colors[1], width = 2)
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:$,.0f}B<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
-                     xtickvals = tick_dates,
-                     ticktext = tick_texts),
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment (Millions of Dollars)",
                      tickformat = "$,.0f",
                      ticksuffix = ""),
 
-        hovermode = "x unified",
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[3]),
         
         # add target line
         shapes = list(
@@ -934,7 +941,7 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.3,
+            x = 0.27,
             y = y_lvl + 0.2,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"M"),
             showarrow = FALSE,
