@@ -52,7 +52,6 @@ if (!current_user %in% names(project_directories)) {
 path_project <- project_directories[[current_user]]
 path_app <- file.path(path_project, "trade-target-tracker")
 
-setwd(path_app)
 #################
 ### Load Data ###
 #################
@@ -61,8 +60,6 @@ load(file.path("./cleaned_data", "fred_data.RData"))
 load(file.path("./cleaned_data", "bea_data.RData"))
 load(file.path("./cleaned_data", "cps_employment.RData"))
 load(file.path("./cleaned_data", "china_shock.RData"))
-
-
 
 ######################
 ### Build Shiny UI ###
@@ -113,8 +110,6 @@ ui <- page_fillable(
     "))
   ),
   
-  
-  
   ## Title ##
   div(
     class = "header-container",
@@ -126,12 +121,8 @@ ui <- page_fillable(
     h1("Welcome to the Trade Policy Dashboard")
   ),
   
-  
-  
   ## Tracker description ##
   textOutput("description"),
-  
-  
   
   navset_card_tab(
     ### Inflation ###
@@ -962,7 +953,8 @@ server <- function(input, output) {
   
   manu_share_df = tibble(
     quarter = as.Date(as.yearqtr(time(manu_share))),
-    manufacturing_share = as.numeric(manu_share) *100
+    manufacturing_share = as.numeric(manu_share) *100,
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
   output$plotly_share_manu <- renderPlotly({
@@ -991,16 +983,15 @@ server <- function(input, output) {
       type = 'scatter',
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
-      hoverinfo = 'x+y',
-      hovertemplate = paste(
-        "Quarter: %{x}<br>",
-        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
-      )
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:,.0f}%<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
-                     xtickvals = tick_dates,
-                     ticktext = tick_texts),
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Share of Private-Sector Workers (%)",
                      tickformat = ".0f",
@@ -1023,8 +1014,8 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.3,
-            y = y_lvl + 0.15,
+            x = 0.26,
+            y = y_lvl + 0.3,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
@@ -1034,7 +1025,6 @@ server <- function(input, output) {
         )
       )
   })
-  
   
   output$text_share_manu <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" In  Quarter 1 2025 Manufacturing jobs made up 9.4% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
