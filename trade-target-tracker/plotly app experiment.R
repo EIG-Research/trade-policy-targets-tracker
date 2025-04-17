@@ -896,8 +896,11 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.0f}M<extra></extra>"
-    ) %>%
+      hovertemplate = paste(
+        "Quarter: %{x}<br>",
+        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
+      )
+      ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
