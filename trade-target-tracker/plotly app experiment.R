@@ -247,7 +247,7 @@ ui <- page_fillable(
         ## Employment, motor vehicles and parts ## 
         nav_panel("Automotive Employment Level", 
                   fluidRow(
-                    column(8, plotOutput("plot_motor_qt"),
+                    column(8, plotlyOutput("plotly_motor_emp", height = "500px"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                              HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
@@ -256,7 +256,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_motor_qt"))
+                      textOutput("text_motor_emp"))
                     ))
         ),
         
@@ -389,7 +389,7 @@ server <- function(input, output) {
                      rangemode = "tozero"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
+        hoverlabel = list(bgcolor = eig_colors[1]),
         
         # add horizontal line
         shapes = list(
@@ -467,7 +467,7 @@ server <- function(input, output) {
                      rangemode = "tozero"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
+        hoverlabel = list(bgcolor = eig_colors[1]),
         
         # add target
         shapes = list(
@@ -639,7 +639,7 @@ server <- function(input, output) {
         legend = list(title = list(text = "Manufacturing Value Added")),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3])
+        hoverlabel = list(bgcolor = eig_colors[1])
       )
   })
   
@@ -693,7 +693,7 @@ server <- function(input, output) {
         legend = list(title = list(text = "Manufacturing Value Added")),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3])
+        hoverlabel = list(bgcolor = eig_colors[1])
       )
   })
   
@@ -750,7 +750,7 @@ server <- function(input, output) {
                      ticksuffix = ""),
 
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
+        hoverlabel = list(bgcolor = eig_colors[1]),
         
         # add horizontal line
         shapes = list(
@@ -832,7 +832,7 @@ server <- function(input, output) {
                      ticksuffix = "%"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
+        hoverlabel = list(bgcolor = eig_colors[1]),
         
         # add horizontal line
         shapes = list(
@@ -919,7 +919,7 @@ server <- function(input, output) {
                      ticksuffix = ""),
 
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[3]),
+        hoverlabel = list(bgcolor = eig_colors[1]),
 
         # add target line
         shapes = list(
@@ -987,8 +987,10 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.0f}%<extra></extra>"
-    ) %>%
+      hovertemplate = paste(
+        "Quarter: %{x}<br>",
+        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
+    )) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1001,6 +1003,7 @@ server <- function(input, output) {
                      ticksuffix = "%"),
         
         hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1]),
         
         # add target line
         shapes = list(
@@ -1034,27 +1037,88 @@ server <- function(input, output) {
   })
   
   ## Employment, motor vehicles and parts ## 
-  output$plot_motor_qt <- renderPlot(
-    autoplot(motor_qt, ts.colour = eig_colors[1]) +
-      # Add current level
-      geom_point(aes(x = manu_end, y = tail(motor_qt, 1)), color = eig_colors[1], size = 1.5) +
-      annotate(geom = "text", x = manu_end, y = tail(motor_qt, 1),
-               label = paste0(as.character(round(tail(motor_qt, 1), digits = 1)), "M"),
-               vjust = 2, color = eig_colors[1]) +
-      # Add policy target
-      geom_hline(yintercept = mean(motor_qt[41:44]), color = eig_colors[4]) +
-      annotate(geom = "text", x = as.Date("2001-01-01"), y = mean(motor_qt[41:44]),
-               label = paste0("2000 level, before China joined the WTO", " = ", round(mean(motor_qt[41:44]), digits = 1), "M"),
-               hjust = 0, vjust = 2, color = eig_colors[4]) +
-      theme_half_open() + background_grid(major = c("y"), minor = c("none")) +
-      scale_x_date(limits = c(as.Date(as.yearqtr("1989 Q1")), as.Date(as.yearqtr("2026 Q2"))),
-                   breaks = c(head(year_breaks, -1), native_end), labels = date2qt, expand = c(0,0)) +
-      labs(
-        y = "Employment (Millions of Workers)",
-        x = "Time (Quarterly)"
-      ))
   
-  output$text_motor_qt <- renderText({
+  
+  motor_df = tibble(
+    quarter = as.Date(as.yearqtr(time(motor_qt))),
+    motor_level = as.numeric(motor_qt) *100,
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plotly_motor_emp <- renderPlotly({
+    
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(motor_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Round to the nearest lower multiple of 5
+    start_year <- start_year - (start_year %% 5)
+    end_year   <- end_year + (5 - end_year %% 5)
+    
+    tick_years <- seq(start_year, end_year, by = 5)
+    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
+    tick_texts <- paste0("Q1 ", tick_years)
+    
+    y_lvl = motor_df %>% mutate(year = lubridate::year(quarter)) %>%
+      filter(year == 2000) %>% summarise(y = mean(motor_level))
+    y_lvl = as.numeric(y_lvl[1,1])
+    
+    plot_ly(
+      data = motor_df,
+      x = ~quarter,
+      y = ~motor_level,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = paste(
+        "Quarter: %{x}<br>",
+        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
+      )) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Employment (Millions of Workers)",
+                     tickformat = ".1f",
+                     ticksuffix = "M"),
+        
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[1], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.26,
+            y = y_lvl + 1.3,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
+  })
+  
+ 
+  output$text_motor_emp <- renderText({
     "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
   })
   
