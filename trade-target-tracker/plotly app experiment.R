@@ -462,7 +462,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Fiscal Balance (Billions of Dollars)",
-                     tickformat = "$,.0f",
+                     tickformat = "$,.1f",
                      ticksuffix = "",
                      rangemode = "tozero"),
         
@@ -552,7 +552,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Trade Balance (Billions of Dollars)",
-                     tickformat = "$,.0f",
+                     tickformat = "$,.1f",
                      ticksuffix = "",
                      rangemode = "tozero"),
 
@@ -640,6 +640,7 @@ server <- function(input, output) {
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1])
+
       )
   })
   
@@ -746,7 +747,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment (Millions of Workers)",
-                     tickformat = ".0f",
+                     tickformat = ".1f",
                      ticksuffix = ""),
 
         hovermode = "closest",
@@ -828,7 +829,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment-to-Population Ratio (%)",
-                     tickformat = ".0f",
+                     tickformat = ".1f",
                      ticksuffix = "%"),
         
         hovermode = "closest",
@@ -902,10 +903,7 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = paste(
-        "Quarter: %{x}<br>",
-        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
-      )
+      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>"
       ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
@@ -915,7 +913,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Employment (Millions of Workers)",
-                     tickformat = "$,.0f",
+                     tickformat = "$,.1f",
                      ticksuffix = ""),
 
         hovermode = "closest",
@@ -999,7 +997,7 @@ server <- function(input, output) {
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
         yaxis = list(title = "Share of Private-Sector Workers (%)",
-                     tickformat = ".0f",
+                     tickformat = ".1f",
                      ticksuffix = "%"),
         
         hovermode = "closest",
