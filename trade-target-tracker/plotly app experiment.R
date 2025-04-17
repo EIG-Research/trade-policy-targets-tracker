@@ -909,9 +909,18 @@ server <- function(input, output) {
       type = 'scatter',
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
+<<<<<<< HEAD
       text = ~hover_label,
       hovertemplate = "%{x}: %{y:$,.0f}B<extra></extra>"
     ) %>%
+=======
+      hoverinfo = 'x+y',
+      hovertemplate = paste(
+        "Quarter: %{x}<br>",
+        "Value: $%{y:,.0f}M<extra></extra> "  # extra hides the trace label (removes green line)
+      )
+      ) %>%
+>>>>>>> ed02e05513ee3013066a6c420919035cc8dd2c68
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -922,10 +931,15 @@ server <- function(input, output) {
         yaxis = list(title = "Employment (Millions of Dollars)",
                      tickformat = "$,.0f",
                      ticksuffix = ""),
+<<<<<<< HEAD
 
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[3]),
+=======
+>>>>>>> ed02e05513ee3013066a6c420919035cc8dd2c68
         
+        hovermode = "closest",
+
         # add target line
         shapes = list(
           list(
