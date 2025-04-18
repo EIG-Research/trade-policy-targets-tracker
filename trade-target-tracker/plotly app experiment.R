@@ -356,13 +356,12 @@ server <- function(input, output) {
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     plot_ly(
       data = inflation_df,
@@ -434,13 +433,12 @@ server <- function(input, output) {
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     plot_ly(
       data = budget_df,
@@ -523,13 +521,12 @@ server <- function(input, output) {
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     plot_ly(
       data = trade_df,
@@ -604,13 +601,12 @@ server <- function(input, output) {
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0(tick_years, " Q1")
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     plot_ly(
       data = const_df,
@@ -664,7 +660,6 @@ server <- function(input, output) {
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
@@ -709,10 +704,7 @@ server <- function(input, output) {
           y = 1,          # 1 = top side
           xanchor = "left",
           yanchor = "top",
-          title = list(text = ""),
-          bgcolor = 'rgba(255,255,255,0.5)',  # optional: semi-transparent white background
-          bordercolor = "black",              # optional: border color
-          borderwidth = 1
+          title = list(text = "")
         ),
         
         hovermode = "closest",
@@ -744,19 +736,17 @@ server <- function(input, output) {
     mutate(fitted_lvl = predict(fit_model, newdata = .))
   
   output$plotly_employment_lvl_native <- renderPlotly({
-    
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(emp_lvl_df$quarter)
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 2)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     plot_ly(
       data = emp_lvl_df,
@@ -824,13 +814,12 @@ server <- function(input, output) {
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 2)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     y_lvl = emp_pop_ratio_df %>% mutate(year = lubridate::year(quarter)) %>%
       filter(year == 2000) %>% summarise(mean(emp_pop))
@@ -900,19 +889,17 @@ server <- function(input, output) {
   )
   
   output$plotly_emp_manu <- renderPlotly({
-    
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(manu_df$quarter)
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     y_lvl = manu_df %>% mutate(year = lubridate::year(quarter)) %>%
       filter(year == 2000) %>% summarise(y = mean(manufacturing))
@@ -982,19 +969,16 @@ server <- function(input, output) {
   )
   
   output$plotly_share_manu <- renderPlotly({
-    
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(manu_share_df$quarter)
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     y_lvl = manu_share_df %>% mutate(year = lubridate::year(quarter)) %>%
       filter(year == 2000) %>% summarise(y = mean(manufacturing_share))
@@ -1063,19 +1047,16 @@ server <- function(input, output) {
   )
   
   output$plotly_motor_emp <- renderPlotly({
-    
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(motor_df$quarter)
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     y_lvl = motor_df %>% mutate(year = lubridate::year(quarter)) %>%
       filter(year == 2000) %>% summarise(y = mean(motor_level))
@@ -1144,19 +1125,16 @@ server <- function(input, output) {
   )
   
   output$plotly_motor_share <- renderPlotly({
-    
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(motor_share_df$quarter)
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0("Q1 ", tick_years)
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     y_lvl = motor_share_df %>% mutate(year = lubridate::year(quarter)) %>%
       filter(year == 2000) %>% summarise(y = mean(motor_share))
@@ -1227,11 +1205,7 @@ server <- function(input, output) {
     start_year <- china_shock_df$year[1]
     end_year   <- china_shock_df$year[nrow(china_shock_df)]
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
+    tick_years <- c(seq(start_year, end_year, by = 5), end_year)
     tick_texts <- as.character(tick_years)
     
     y_lvl <- china_shock_df %>% filter(year == 2000) %>% .$cs_manu_emp
@@ -1291,5 +1265,3 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
-
-
