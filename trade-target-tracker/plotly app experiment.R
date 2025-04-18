@@ -174,7 +174,7 @@ ui <- page_fillable(
     nav_panel("Native Employment",
       navset_tab(
         ## Employment rate, native born men 16+ ##
-        nav_panel("Native Employment Rate (18-64)", 
+        nav_panel("Native Employment Rate (16+)", 
                   fluidRow(
                     column(8, plotlyOutput("plotly_employment_pop_native"),
                            div(
@@ -190,7 +190,7 @@ ui <- page_fillable(
         ),
         
         ## Employment, native born men prime age ##
-        nav_panel("Native Male Employment Level 18-64 ", 
+        nav_panel("Native Male Employment Level (16+)", 
                   fluidRow(
                     column(8, plotlyOutput("plotly_employment_lvl_native"),
                            div(
