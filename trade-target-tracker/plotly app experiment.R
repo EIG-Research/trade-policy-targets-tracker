@@ -721,8 +721,7 @@ server <- function(input, output) {
     tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
     tick_texts <- paste0("Q1 ", tick_years)
     
-    y_lvl = emp_lvl_df %>% mutate(year = lubridate::year(quarter)) %>%
-      filter(year == 2000) %>% summarise(mean(employment_lvl))
+    y_lvl = emp_lvl_df %>% filter(quarter == "2019-10-01") %>% select(employment_lvl)
     y_lvl = as.numeric(y_lvl[1,1])
     
     plot_ly(
@@ -765,8 +764,8 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0,
-            y = y_lvl+0.6,
-            text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"M"),
+            y = y_lvl-0.6,
+            text = paste0("2019 Q4 level = ",round(y_lvl,1),"M"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
             xanchor = "left",
@@ -777,7 +776,7 @@ server <- function(input, output) {
   })
   
   output$text_employment_lvl_native <- renderText({
-    "During the election, JD Vance argued that \"we have seven million — just men, not even women, just men — who have completely dropped out of the labor force….we cannot have an entire American business community that is giving up on American workers and then importing millions of illegal laborers.\" The prime age employment rate for native-born men in Quarter 1 2025 was 42.4 million. We set the target to be 44 million, which is the level in 2000 before China joined the WTO."
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigrations and creating new manufacturing jobs by restricting trade. JD Vance has repeatedly asserted that “100% of net job creation under the Biden administration has gone to the foreign born.” We set the target to be 129.1M, which is the native employment level in the last non-COVID quarter of the first Trump administration. Native employment currently stands at 129.7M."
   })
   
   
@@ -1262,4 +1261,5 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
+
 
