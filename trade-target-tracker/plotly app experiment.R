@@ -651,20 +651,24 @@ server <- function(input, output) {
     value_added = c(as.matrix(va_manu_1997_2004_year), as.matrix(va_manu_2005_2024_qt)),
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
+  va_df_trend <- va_df %>%
+    filter(quarter >= as.Date("2010-01-01"),
+           quarter != as.Date("2020-04-01"))
+  trend_model <- lm(value_added ~ as.numeric(quarter), data = va_df_trend)
+  va_df <- va_df %>%
+    mutate(trend = predict(trend_model, newdata = data.frame(quarter = as.numeric(quarter))))
   
   output$plotly_va <- renderPlotly({
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(va_df$quarter)
     start_year <- lubridate::year(date_range[1])
-    end_year   <- lubridate::year(date_range[2])
     
-    # Round to the nearest lower multiple of 5
-    start_year <- start_year - (start_year %% 5)
-    end_year   <- end_year + (5 - end_year %% 5)
-    
-    tick_years <- seq(start_year, end_year, by = 5)
-    tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
-    tick_texts <- paste0(tick_years, " Q1")
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1))  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
     
     plot_ly(
       data = va_df,
@@ -672,10 +676,20 @@ server <- function(input, output) {
       y = ~value_added,
       type = 'scatter',
       mode = 'lines',
+      name = "Real Value Added Levels",
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
       hovertemplate = "%{x}: %{y:$,.0f}B<extra></extra>"
     ) %>%
+      add_lines(
+        data = va_df_trend,
+        x = ~quarter,
+        y = ~predict(trend_model),
+        name = "Trendline after the Great Financial Crisis",
+        line = list(color = eig_colors[2], width = 2, dash = "dash"),
+        hoverinfo = "skip",
+        hovertemplate = "<extra></extra>"
+      ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -687,7 +701,16 @@ server <- function(input, output) {
                      tickformat = ",.0f",
                      ticksuffix = ""),
         
-        legend = list(title = list(text = "Manufacturing Value Added")),
+        legend = list(
+          x = 0,          # 0 = left side
+          y = 1,          # 1 = top side
+          xanchor = "left",
+          yanchor = "top",
+          title = list(text = ""),
+          bgcolor = 'rgba(255,255,255,0.5)',  # optional: semi-transparent white background
+          bordercolor = "black",              # optional: border color
+          borderwidth = 1
+        ),
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1])
