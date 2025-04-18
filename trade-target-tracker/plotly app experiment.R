@@ -638,7 +638,7 @@ server <- function(input, output) {
   })
   
   output$text_const <- renderText({
-    "The Trump administration aims to re-shore factories, with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $45.8 billion in Q4 2024, which rose markedly during the Biden administration."
+    "The Trump administration aims to re-shore factories, with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $45.8 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target."
   })
   
   ## Value Added ##
@@ -713,7 +713,7 @@ server <- function(input, output) {
   })
   
   output$text_va <- renderText({
-    "White House trade policy aims to reverse the \"hollowing out of our manufacturing base\" and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades."
+    "White House trade policy aims to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades. We set the target to be the growth rate since Q1 2010."
   })
   
   ## Employment, native born men prime age ##
@@ -796,7 +796,7 @@ server <- function(input, output) {
   })
   
   output$text_employment_lvl_native <- renderText({
-    "Administration officials hope to raise native-born employment in part by imposing more severe immigrations and creating new manufacturing jobs by restricting trade. JD Vance has repeatedly asserted that “100% of net job creation under the Biden administration has gone to the foreign born.” We set the target to be 129.1M, which is the native employment level in the last non-COVID quarter of the first Trump administration. Native employment currently stands at 129.7M."
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigrations and creating new manufacturing jobs by restricting trade. JD Vance has repeatedly asserted that “100% of net job creation under the Biden administration has gone to the foreign born.” We set the target to be the rate of employment growth 2010-2020, which is the most recent non-recession period. Native employment currently stands at 129.7 million."
   })
   
   
