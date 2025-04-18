@@ -539,8 +539,8 @@ server <- function(input, output) {
       colors = c("Total" =eig_colors[1], "China" = eig_colors[3]),
       type = 'scatter',
       mode = 'lines',
-      text = ~hover_label,
-      hovertemplate = "%{y:$,.1f}B<extra></extra>"
+      text = ~type,
+      hovertemplate = "%{fullData.name}: %{y:$,.1f}B<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
@@ -556,7 +556,7 @@ server <- function(input, output) {
 
           legend = list(title = list(text = "Deficit Type")),
         
-        hovermode = "x unified",
+        hovermode = "closest",
         
         # add horizontal line
         shapes = list(
@@ -683,14 +683,15 @@ server <- function(input, output) {
       text = ~hover_label,
       hovertemplate = "%{x}: %{y:$,.0f}B<extra></extra>"
     ) %>%
-      add_lines(
+      add_trace(
         data = va_df_trend,
         x = ~quarter,
         y = ~predict(trend_model),
         name = "Trendline after the Great Financial Crisis",
         line = list(color = eig_colors[2], width = 2, dash = "dash"),
-        hoverinfo = "skip",
-        hovertemplate = "<extra></extra>"
+        hoverinfo = "none",
+        hovertemplate = NULL,
+        showlegend = TRUE
       ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
@@ -777,8 +778,9 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[2], dash = "dash", width = 2),
       name = "2010–2020 Growth Trend",
-      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>",  # Same format as main line
-      hoverlabel = list(bgcolor = eig_colors[2])
+      hoverinfo = "none",
+      hovertemplate = NULL,
+      showlegend = TRUE
     ) %>%
       
       layout(
