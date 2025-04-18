@@ -66,7 +66,7 @@ ui <- page_fillable(
         background-color: #044140;
         padding: 20px;
         color: white;
-        justify-content: flex-start; /* aligns items to the left */
+        justify-content: center;
       }
       .header-logo {
         height: 60px;
