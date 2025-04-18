@@ -174,7 +174,7 @@ ui <- page_fillable(
     nav_panel("Native Employment",
       navset_tab(
         ## Employment rate, native born men 16+ ##
-        nav_panel("Native Male Employment Rate (18-64)", 
+        nav_panel("Native Employment Rate (18-64)", 
                   fluidRow(
                     column(8, plotlyOutput("plotly_employment_pop_native"),
                            div(
@@ -631,8 +631,7 @@ server <- function(input, output) {
         
         yaxis = list(title = "Construction Spending (Billions of Dollars)",
                      tickformat = ",.0f",
-                     ticksuffix = "",
-                     rangemode = "tozero"),
+                     ticksuffix = ""),
         
         legend = list(title = list(text = "Manufacturing Value Added")),
         
@@ -686,8 +685,7 @@ server <- function(input, output) {
         
         yaxis = list(title = "Value Added (Billions of Dollars)",
                      tickformat = ",.0f",
-                     ticksuffix = "",
-                     rangemode = "tozero"),
+                     ticksuffix = ""),
         
         legend = list(title = list(text = "Manufacturing Value Added")),
         
@@ -1093,7 +1091,7 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.26,
-            y = y_lvl + 1.3,
+            y = y_lvl + 1.5,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
@@ -1174,7 +1172,7 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.26,
-            y = y_lvl + 0.3,
+            y = y_lvl + 0.015,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
