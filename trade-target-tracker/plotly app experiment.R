@@ -716,6 +716,7 @@ server <- function(input, output) {
         hoverlabel = list(bgcolor = eig_colors[1])
       )
   })
+  })
   
   output$text_va <- renderText({
     "White House trade policy aims to reverse the \"hollowing out of our manufacturing base\" and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades."
