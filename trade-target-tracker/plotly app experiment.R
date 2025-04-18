@@ -662,6 +662,8 @@ server <- function(input, output) {
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(va_df$quarter)
     start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
     
     # Add ticks
     tick_years <- c(start_year,
@@ -716,7 +718,6 @@ server <- function(input, output) {
         hoverlabel = list(bgcolor = eig_colors[1])
       )
   })
-  })
   
   output$text_va <- renderText({
     "White House trade policy aims to reverse the \"hollowing out of our manufacturing base\" and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades."
@@ -729,6 +730,17 @@ server <- function(input, output) {
     employment_lvl = as.numeric(emp_lvl_prime_age_m),
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
+  
+  fit_emp_lvl_df = emp_lvl_df %>%
+    filter(quarter >= as.Date("2010-01-01") & quarter <= as.Date("2020-01-01")) %>%
+    mutate(time_index = as.numeric(quarter))
+  
+  fit_model <- lm(employment_lvl ~ time_index, data = fit_emp_lvl_df)
+  
+  fitted_line <- emp_lvl_df %>%
+    filter(quarter >= as.Date("2010-01-01")) %>%
+    mutate(time_index = as.numeric(quarter)) %>%
+    mutate(fitted_lvl = predict(fit_model, newdata = .))
   
   output$plotly_employment_lvl_native <- renderPlotly({
     
@@ -745,9 +757,6 @@ server <- function(input, output) {
     tick_dates <- as.Date(paste0(tick_years, "-01-01"))  # Q1 of each year
     tick_texts <- paste0("Q1 ", tick_years)
     
-    y_lvl = emp_lvl_df %>% filter(quarter == "2019-10-01") %>% select(employment_lvl)
-    y_lvl = as.numeric(y_lvl[1,1])
-    
     plot_ly(
       data = emp_lvl_df,
       x = ~quarter,
@@ -756,8 +765,22 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>"
+      name = "Employment Levels",
+      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>",
+      hoverlabel = list(bgcolor = eig_colors[1])
+    )  %>%
+    add_trace(
+      data = fitted_line,
+      x = ~quarter,
+      y = ~fitted_lvl,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[2], dash = "dash", width = 2),
+      name = "2010–2020 Growth Trend",
+      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>",  # Same format as main line
+      hoverlabel = list(bgcolor = eig_colors[2])
     ) %>%
+      
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -768,35 +791,16 @@ server <- function(input, output) {
         yaxis = list(title = "Employment (Millions of Workers)",
                      tickformat = ".0f",
                      ticksuffix = ""),
-
-        hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]),
         
-        # add horizontal line
-        shapes = list(
-          list(
-            type = "line",
-            xref = "paper",
-            x0 = 0, x1 = 1,
-            y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
-          )
+        legend = list(
+          x = 0,        # left side
+          y = 1,        # top
+          xanchor = "left",
+          yanchor = "top"
         ),
-        
-        # label for balance 
-        annotations = list(
-          list(
-            xref = "paper",
-            x = 0,
-            y = y_lvl-0.6,
-            text = paste0("2019 Q4 level = ",round(y_lvl,1),"M"),
-            showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
-            xanchor = "left",
-            yanchor = "middle"
-          )
+
+        hovermode = "closest"
         )
-      )
   })
   
   output$text_employment_lvl_native <- renderText({
