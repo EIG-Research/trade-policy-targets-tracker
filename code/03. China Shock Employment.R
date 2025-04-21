@@ -46,7 +46,24 @@ china_most_hit <- china_shock_counties %>% select(2:11) %>% filter(CA.level.cate
 # SIC to NAICS crosswalk from Eckert, Fort, Schott, and Yang (2021)
 sic_naics_crosswalk <- read.csv(file.path(path_cbp, "full_sic87_naics97.csv")) %>%
   filter(naics97 == "31----") %>% mutate(sic = sic87) %>%
-  select(sic, naics97, weight_emp) %>% na.omit()
+  select(sic, weight_emp) %>% na.omit()
+
+# Generate establishment size bins
+estab_bins <- c(
+  n1_4 = (1+4)/2,
+  n5_9 = (5+9)/2,
+  n10_19 = (10+19)/2,
+  n20_49 = (20+49)/2,
+  n50_99 = (50+99)/2,
+  n100_249 = (100+249)/2,
+  n250_499 = (250+499)/2,
+  n500_999 = (500+999)/2,
+  n1000 = 0,
+  n1000_1 = (1000+1499)/2,
+  n1000_2 = (1500+2499)/2,
+  n1000_3 = (2500+4999)/2,
+  n1000_4 = 5000
+)
 
 for(year in 90:97){
   emp_var <- paste0("man_emp_", as.character(year))
@@ -54,7 +71,11 @@ for(year in 90:97){
                                    header=TRUE, sep = ',')
   cbp_year <- cbp_year %>% filter(sic %in% sic_naics_crosswalk$sic) %>%
     left_join(sic_naics_crosswalk, by = "sic") %>%
-    mutate(emp = floor(as.numeric(emp)*weight_emp),
+    mutate(across(starts_with("n"), ~.*estab_bins[cur_column()]),
+           emp = case_when(empflag == "" ~ floor(as.numeric(emp)*weight_emp),
+                           empflag != "" ~ floor((n1_4 + n5_9 + n10_19 + n20_49 + n50_99 +
+                             n100_249 + n250_499 + n500_999 + n1000_1 +
+                             n1000_2 + n1000_3 + n1000_4)*weight_emp)),
            county = fipstate * 1000 + fipscty) %>%
     group_by(county) %>% summarise(!!emp_var := sum(emp))
   china_most_hit <- china_most_hit %>% left_join(cbp_year, by = "county")
@@ -64,18 +85,41 @@ for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:22))){
   emp_var <- paste0("man_emp_", year)
   cbp_year <- read.table(file.path(path_cbp, paste0("cbp", year, "co.txt")),
                          header=TRUE, sep = ',')
-  if(year == "15"){
-    cbp_year <- cbp_year %>% rename(naics = NAICS, emp = EMP, fipstate = FIPSTATE, fipscty = FIPSCTY)
-  }
   
-  cbp_year <- cbp_year %>% filter(naics == "31----") %>%
-    mutate(emp = as.numeric(emp), county = fipstate * 1000 + fipscty) %>%
-    group_by(county) %>% summarise(!!emp_var := sum(emp))
+  cbp_year <- cbp_year %>% rename_with(tolower) %>% filter(naics == "31----") %>% select(-naics)
+  if(year == "17"){
+    cbp_year <- cbp_year %>% mutate(emp = case_when(empflag == "" ~ as.numeric(emp),
+                                                    empflag == "A" ~ 19/2,
+                                                    empflag == "B" ~ (20+99)/2,
+                                                    empflag == "C" ~ (100+249)/2,
+                                                    empflag == "E" ~ (250+499)/2,
+                                                    empflag == "F" ~ (500+999)/2,
+                                                    empflag == "G" ~ (1000+2499)/2,
+                                                    empflag == "H" ~ (2500+4999)/2,
+                                                    empflag == "I" ~ (5000+9999)/2,
+                                                    empflag == "J" ~ (10000+24999)/2,
+                                                    empflag == "K" ~ (25000+49999)/2,
+                                                    empflag == "L" ~ (50000+99999)/2,
+                                                    empflag == "M" ~ 100000,
+                                                    TRUE ~ 0),
+                                    county = fipstate * 1000 + fipscty)
+  }else if(year %in% c(as.character(18:22))){
+    cbp_year <- cbp_year %>% mutate(emp = as.numeric(emp),
+                                    county = fipstate * 1000 + fipscty)
+  }else{
+    cbp_year <- cbp_year %>% mutate(across(starts_with("n"), ~as.numeric(.)*estab_bins[cur_column()]),
+                                    emp = case_when(empflag == "" ~ as.numeric(emp),
+                                                    empflag != "" ~ n1_4 + n5_9 + n10_19 + n20_49 +
+                                                      n50_99 + n100_249 + n250_499 + n500_999 +
+                                                      n1000_1 + n1000_2 + n1000_3 + n1000_4),
+                                    county = fipstate * 1000 + fipscty)
+  }
+  cbp_year <- cbp_year %>% ungroup() %>% group_by(county) %>% summarise(!!emp_var := sum(emp))
   china_most_hit <- china_most_hit %>% left_join(cbp_year, by = "county")
 }
 
 manu_emp_cn_most_hit <- china_most_hit %>% ungroup() %>% mutate_all(~replace(., is.na(.), 0)) %>%
-  select(-1:-3) %>% summarise_all(sum)
+  select(-1:-3) %>% mutate_all(~round(.)) %>% summarise_all(sum)
 
 # save as time series
   china_shock = manu_emp_cn_most_hit %>%
