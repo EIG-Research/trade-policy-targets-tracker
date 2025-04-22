@@ -108,7 +108,7 @@ ui <- page_fillable(
                 column(8,  plotlyOutput("plotly_inflation"),
                 div(
                   style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                  HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis, Personal Consumption Expenditures: Chain-type Price Index</a>, 2017 basis, seasonally adjusted')
+                  HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis, Personal Consumption Expenditures: Chain-type Price Index</a>, 2017 basis, seasonally adjusted. The PCE is the best reflection of how prices change.')
                 )
               ),
               column(4, div(
@@ -123,7 +123,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_budget"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>)')
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method)')
                        )
                 ),  # Plot on the left
                 
@@ -139,7 +139,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_trade"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>). Available beginning in Q1 1992.')
+                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). The PCE is the best reflection of how prices change. Aggregate data is available beginning in Q1 1992. China-specific data is  available beginning in Q1 1992; 1992 to 1998 data only includes goods but not services, from the Census Bureau.')
                        )
                 ),  # Plot on the left
                 
@@ -280,7 +280,7 @@ ui <- page_fillable(
                     column(8, plotlyOutput("plotly_const"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars (adjusted using <a href="https://apps.bea.gov/iTable/?reqid=19&step=2&isuri=1&categories=survey&_gl=1*885yn5*_ga*MTc5MDExNjA3OS4xNzQ0NzQxMTkx*_ga_J4698JNNFT*MTc0NTMzNTgyOS44LjEuMTc0NTMzNjQ4Mi41NS4wLjA.#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDNdLCJkYXRhIjpbWyJjYXRlZ29yaWVzIiwiU3VydmV5Il0sWyJOSVBBX1RhYmxlX0xpc3QiLCIxNDQiXV19" target="_blank">Price Index for Private Fixed Investment in Manufacturing Structures</a>). Available beginning Q1 1993.')
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars (adjusted using <a href="https://apps.bea.gov/iTable/?reqid=19&step=2&isuri=1&categories=survey&_gl=1*885yn5*_ga*MTc5MDExNjA3OS4xNzQ0NzQxMTkx*_ga_J4698JNNFT*MTc0NTMzNTgyOS44LjEuMTc0NTMzNjQ4Mi41NS4wLjA.#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDNdLCJkYXRhIjpbWyJjYXRlZ29yaWVzIiwiU3VydmV5Il0sWyJOSVBBX1RhYmxlX0xpc3QiLCIxNDQiXV19" target="_blank">Price Index for Private Fixed Investment in Manufacturing Structures</a> to be consistent with the Federal Reserve and the BEA). Available beginning Q1 1993.')
                            )
                     ),  # Plot on the left
                     
@@ -319,7 +319,7 @@ server <- function(input, output) {
   the Trump administration’s trade agenda as gauges of success. Each indicator provides insight into
   how policy actions align with stated goals, offering an up-to-date look at economic outcomes. Use
   the buttons below to explore individual indicators, view their associated targets, and assess progress
-  across different areas of trade policy. All figures are in 2017 dollars for consistency")
+  across different areas of trade policy. All figures are in 2017 dollars for consistency with the Bureau of Economic Analysis.")
   
   ## Inflation ##
   # convert inflation timeseries to dataframe
@@ -395,7 +395,7 @@ server <- function(input, output) {
   })
   
   output$text_inflation <- renderText({
-    "Bringing down inflation was a key issue during the 2024 presidential election, and is a major goal for the administration. During a campaign speech, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Quarter 1, 2025, inflation stood at 2.7% The federal reserve’s inflation target is 2%."
+    "Bringing down inflation was a key issue during the 2024 presidential election, and is a major goal for the administration. During a campaign speech, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Quarter 4, 2024, inflation stood at 2.5% The federal reserve’s inflation target is 2%."
   })
   
   
@@ -857,7 +857,7 @@ server <- function(input, output) {
   })
   
   output$text_employment_pop_native <- renderText({
-    "The Administration hopes to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born male employment rate currently stands at 63.3%. We set the target to be 71.1%, which is the 2000 level before China joined the WTO."
+    "The Administration hopes to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born employment rate currently stands at 59.4%. We set the target to be 64.5%, which is the 2000 level before China joined the WTO."
   })
   
   ## Employment Manufacturing ##
