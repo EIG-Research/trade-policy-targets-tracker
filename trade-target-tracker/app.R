@@ -111,7 +111,7 @@ ui <- page_fillable(
               ),
               column(4, div(
                 style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                textOutput("text_inflation"))
+                uiOutput("text_inflation"))
               ))
 ),
     
@@ -127,7 +127,7 @@ ui <- page_fillable(
                 
                 column(4, div(
                   style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_budget"))
+                  uiOutput("text_budget"))
                 ))
     ),
     
@@ -143,7 +143,7 @@ ui <- page_fillable(
                 
                 column(4, div(
                   style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  textOutput("text_trade"))
+                  uiOutput("text_trade"))
                 ))
     ),
 
@@ -159,7 +159,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_employment_pop_native"))
+                      uiOutput("text_employment_pop_native"))
                     ))
        
     ),
@@ -179,7 +179,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_emp_manu"))
+                      uiOutput("text_emp_manu"))
                     ))
         ),
         
@@ -195,7 +195,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_share_manu"))
+                      uiOutput("text_share_manu"))
                     ))
         ),
         
@@ -211,7 +211,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_motor_emp"))
+                      uiOutput("text_motor_emp"))
                     ))
         ),
         
@@ -227,7 +227,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_motor_share"))
+                      uiOutput("text_motor_share"))
                     ))
         ),
         
@@ -243,7 +243,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_china_shock"))
+                      uiOutput("text_china_shock"))
                     ))
         )
       )
@@ -264,7 +264,7 @@ ui <- page_fillable(
                     
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_const"))
+                      uiOutput("text_const"))
                     ))
         ),
         
@@ -279,7 +279,7 @@ ui <- page_fillable(
                     ),  # Plot on the left
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      textOutput("text_va"))
+                      uiOutput("text_va"))
                     ))
         )
       )
@@ -367,9 +367,9 @@ server <- function(input, output) {
       )
   })
   
-  output$text_inflation <- renderText({
-    "Bringing down inflation was a key issue during the 2024 presidential election, and is a major goal for the administration. During a campaign speech, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Quarter 4, 2024, inflation stood at 2.5% The federal reserve’s inflation target is 2%."
-  })
+  output$text_inflation <- renderUI({
+    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank"> campaign speech</a> in August 2024, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Q4 2024, inflation stood at 2.5% The federal reserve’s inflation target is 2%.</p>'
+  )})
   
   
   ## Budget ##
@@ -444,9 +444,9 @@ server <- function(input, output) {
       )
   })
   
-  output$text_budget <- renderText({
-    "During his first joint-address to congress, the president said that “in the near future, I want to do what has not been done in 24 years: balance the federal budget.” The administration aims to achieve this through a series of spending reductions that offset planned tax cuts. The budget deficit was $400 billion for Q1 2025."
-  })
+  output$text_budget <- renderUI({
+    HTML('<p><a href="https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank"> During</a> his first address to a joint session of Congress on March 4, 2025, the president said, “In the near future, I want to do what has not been done in 24 years: balance the federal budget.” The administration aims to achieve this through a series of spending reductions that more than offset planned tax cuts. The budget deficit was $400 billion for Q1 2025.</p>'
+  )})
   
   
   ## Trade ##
@@ -535,9 +535,9 @@ server <- function(input, output) {
     
   })
   
-  output$text_trade <- renderText({
-    "The administration advocates for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate US trade deficit stood at $200.9 billion. As of publication, China has the highest planned tariff rate of 125%. The trade deficit with China stands at $55.3 billion as of Quarter 4 2024, which the administration aims to bring to zero."
-  })
+  output$text_trade <- renderUI({
+    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit stood at $201 billion, while the bilateral trade deficit with China stands at $53 billion. The administration aims to bring both down to zero.</p>'
+  )})
   
   
   ## Construction Spending ##
@@ -589,9 +589,9 @@ server <- function(input, output) {
       )
   })
   
-  output$text_const <- renderText({
-    "The Trump administration aims to re-shore factories, with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target."
-  })
+  output$text_const <- renderUI({
+    HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target.</p>'
+  )})
   
   ## Value Added ##
   va_df <- tibble(
@@ -664,93 +664,10 @@ server <- function(input, output) {
       )
   })
   
-  output$text_va <- renderText({
-    "White House trade policy aims to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing $2.4 trillion in Quarter 4, 2024, and has risen steadily over the past few decades. We set the target to be the growth rate since Q1 2010."
-  })
-  
-  ## Employment, native born men prime age ##
-  
-  emp_lvl_df = tibble(
-    quarter = as.Date(as.yearqtr(time(emp_lvl_prime_age_m))),
-    employment_lvl = as.numeric(emp_lvl_prime_age_m),
-    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
-  )
-  
-  fit_emp_lvl_df = emp_lvl_df %>%
-    filter(quarter >= as.Date("2010-01-01") & quarter <= as.Date("2020-01-01")) %>%
-    mutate(time_index = as.numeric(quarter))
-  
-  fit_model <- lm(employment_lvl ~ time_index, data = fit_emp_lvl_df)
-  
-  fitted_line <- emp_lvl_df %>%
-    filter(quarter >= as.Date("2010-01-01")) %>%
-    mutate(time_index = as.numeric(quarter)) %>%
-    mutate(fitted_lvl = predict(fit_model, newdata = .))
-  
-  output$plotly_employment_lvl_native <- renderPlotly({
-    # Dynamically generate tick dates: Q1 every 5 years
-    date_range <- range(emp_lvl_df$quarter)
-    start_year <- lubridate::year(date_range[1])
-    end_year   <- lubridate::year(date_range[2])
-    
-    # Add ticks
-    tick_years <- c(start_year,
-                    seq((start_year %/% 5 + 2)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
-                    tail(date_range, 1)) %>% unique()  # Q1 of each year
-    tick_texts <- as.character(as.yearqtr(tick_dates))
-    
-    plot_ly(
-      data = emp_lvl_df,
-      x = ~quarter,
-      y = ~employment_lvl,
-      type = 'scatter',
-      mode = 'lines',
-      line = list(color = eig_colors[1], width = 2),
-      text = ~hover_label,
-      name = "Employment Levels",
-      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>",
-      hoverlabel = list(bgcolor = eig_colors[1])
-    )  %>%
-    add_trace(
-      data = fitted_line,
-      x = ~quarter,
-      y = ~fitted_lvl,
-      type = 'scatter',
-      mode = 'lines',
-      line = list(color = eig_colors[2], dash = "dash", width = 2),
-      name = "2010–2020 Growth Trend",
-      hoverinfo = "none",
-      hovertemplate = NULL,
-      showlegend = TRUE
-    ) %>%
-      
-      layout(
-        xaxis = list(title = "Time (Quarterly)",
-                     tickvals = tick_dates,
-                     ticktext = tick_texts,
-                     hoverformat = "%Y Q%q",
-                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
-        
-        yaxis = list(title = "Employment (Millions of Workers)",
-                     tickformat = ".0f",
-                     ticksuffix = ""),
-        
-        legend = list(
-          x = 0,        # left side
-          y = 1,        # top
-          xanchor = "left",
-          yanchor = "top"
-        ),
+  output$text_va <- renderUI({
+    HTML('<p>White House <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/report-to-the-president-on-the-america-first-trade-policy-executive-summary/?utm_source=chatgpt.com" target="_blank"> trade</a> policy aims to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing was $2.4 trillion in Q4, 2024, and has risen steadily over the past few decades. We set the target to be the growth rate since Q1 2010.</p>'
+  )})
 
-        hovermode = "closest"
-        )
-  })
-  
-  output$text_employment_lvl_native <- renderText({
-    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new manufacturing jobs by restricting trade. JD Vance has repeatedly asserted that “100% of net job creation under the Biden administration has gone to the foreign born.” We set the target to be the rate of employment growth 2010-2020, which is the most recent non-recession period. Native employment currently stands at 129.7 million."
-  })
-  
   
   ## Employment rate, native born men 18+ ##
   emp_pop_ratio_df = tibble(
@@ -829,9 +746,9 @@ server <- function(input, output) {
     
   })
   
-  output$text_employment_pop_native <- renderText({
-    "The Administration hopes to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born employment rate currently stands at 59.4%. We set the target to be 64.5%, which is the 2000 level before China joined the WTO."
-  })
+  output$text_employment_pop_native <- renderUI({
+    HTML('<p>According to Vice President J.D. Vance, the Trump Administration <a href="https://www.nytimes.com/2024/10/12/magazine/jd-vance-interview.html" target="_blank"> hopes</a> to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born employment rate currently stands at 59.4 percent. We set the target to be 64.5 percent, which is the 2000 level before China joined the WTO.</p>'
+  )})
   
   ## Employment Manufacturing ##
   manu_df = tibble(
@@ -908,9 +825,9 @@ server <- function(input, output) {
       )
   })
   
-  output$text_emp_manu <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Manufacturing employment stands at 12.8 million in Quarter 1 2025, down from the chosen target of 17.3 in 2000, the level before China joined the WTO in 2001."
-  })
+  output$text_emp_manu <- renderUI({
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Manufacturing employment stands at 12.8 million in Q1 2025, down from the chosen target of 17.3 in 2000, the level from just before China joined the WTO in 2001.</p>'
+  )})
   
   ## Manufacturing Share ##
   
@@ -986,9 +903,9 @@ server <- function(input, output) {
       )
   })
   
-  output$text_share_manu <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" In  Quarter 1 2025 Manufacturing jobs made up 9.4% of employment, down from the chosen target of 15.5%, the level before China joined the WTO in 2001."
-  })
+  output$text_share_manu <- renderUI({
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level from just before China joined the WTO in 2001.</p>'
+  )})
   
   ## Employment, motor vehicles and parts ## 
   
@@ -1064,9 +981,9 @@ server <- function(input, output) {
       )
   })
   
-  output$text_motor_emp <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level before China joined the WTO in 2001."
-  })
+  output$text_motor_emp <- renderUI({
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
+  )})
   
   ## Motor vehicles and parts share of private employment ##
   
@@ -1142,9 +1059,9 @@ server <- function(input, output) {
       )
   })
   
-  output$text_motor_share <- renderText({
-    "With the introduction of reciprocal tariffs on April 2nd, the president said that \"jobs and factories will come roaring back.\" Vehicle-related manufacturing jobs made up 0.7% of total U.S. jobs in Quarter 1 2025, down from 1.2% in 2000, the level before China joined the WTO in 2001."
-  })
+  output$text_motor_share <- renderUI({
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs made up 0.7 percent of total U.S. jobs in Q1 2025, down from 1.2 percent in 2000, the level from just before China joined the WTO in 2001.</p>'
+      )})
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
   china_shock_df <- tibble(year = time(china_shock_yr),
@@ -1211,9 +1128,9 @@ server <- function(input, output) {
       )
   })
   
-  output$text_china_shock <- renderText({
-    "Identified by Autor et al. (2016), manufacturing employment in the 145 counties most impacted by trade with China are 0.47 million (2022). The target is 0.65 million, total employment in these counties before China joined the WTO in 2001."
-  })
+  output$text_china_shock <- renderUI({
+    HTML('<p>Identified by <a href = "https://www.nber.org/papers/w21906" target="_blank"> Autor et al. (2016),</a> manufacturing employment in the 145 counties most impacted by trade with China is 473 thousand jobs (2022). The target is set at 649 thousand, the total employment in these counties just before China joined the WTO in 2001.</p>'
+      )})
 }
 
 shinyApp(ui = ui, server = server)
