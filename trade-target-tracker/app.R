@@ -563,7 +563,7 @@ server <- function(input, output) {
   })
   
   output$text_trade <- renderText({
-    "The administration advocates for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate US trade deficit stood at $193.6 billion. As of publication, China has the highest planned tariff rate of 125%. The trade deficit with China stands at $53.3 billion as of Quarter 4 2024, which the administration aims to bring to zero."
+    "The administration advocates for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate US trade deficit stood at $200.9 billion. As of publication, China has the highest planned tariff rate of 125%. The trade deficit with China stands at $55.3 billion as of Quarter 4 2024, which the administration aims to bring to zero."
   })
   
   
