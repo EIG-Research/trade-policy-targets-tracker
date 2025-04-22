@@ -617,7 +617,7 @@ server <- function(input, output) {
   })
   
   output$text_const <- renderText({
-    "The Trump administration aims to re-shore factories, with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $45.8 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target."
+    "The Trump administration aims to re-shore factories, with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target."
   })
   
   ## Value Added ##
@@ -1021,7 +1021,7 @@ server <- function(input, output) {
   
   motor_df = tibble(
     quarter = as.Date(as.yearqtr(time(motor_qt))),
-    motor_level = as.numeric(motor_qt) *1000,
+    motor_level = as.numeric(motor_qt),
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
@@ -1057,8 +1057,8 @@ server <- function(input, output) {
                      hoverformat = "%Y Q%q",
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
-        yaxis = list(title = "Employment (Thousands of Workers)",
-                     tickformat = ".0f",
+        yaxis = list(title = "Employment (Millions of Workers)",
+                     tickformat = ".1f",
                      ticksuffix = ""),
         
         hovermode = "closest",
@@ -1080,8 +1080,8 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.33,
-            y = y_lvl + 15,
-            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"K"),
+            y = y_lvl + 0.025,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"M"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
             xanchor = "left",

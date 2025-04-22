@@ -1,1 +1,2 @@
 load("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker/cleaned_data/bea_data.RData")
+load("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker/cleaned_data/china_shock.RData")
