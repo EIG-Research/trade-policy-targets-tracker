@@ -32,7 +32,6 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 #################
 ### Load Data ###
 #################
-setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
@@ -96,8 +95,11 @@ ui <- page_fillable(
     img(src = "EIG_reverse.png", alt = "EIG Logo", class = "header-logo"),
     
     # Title with bold font
-    h1("The Trade Policy Dashboard")
+    h1("Welcome to the Trade Policy Dashboard")
   ),
+  
+  ## Tracker description ##
+  textOutput("description"),
   
   navset_card_tab(
     ### Inflation ###
@@ -106,7 +108,7 @@ ui <- page_fillable(
                 column(8,  plotlyOutput("plotly_inflation"),
                 div(
                   style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                  HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis, Personal Consumption Expenditures: Chain-type Price Index</a>, 2017 basis, seasonally adjusted.')
+                  HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis, Personal Consumption Expenditures: Chain-type Price Index</a>, 2017 basis, seasonally adjusted. The PCE is the best reflection of how prices change.')
                 )
               ),
               column(4, div(
@@ -137,7 +139,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_trade"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). Aggregate data is available beginning in Q1 1992. China-specific data is  available beginning in Q1 1992; 1992 to 1998 data only includes goods but not services, from the Census Bureau.')
+                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). The PCE is the best reflection of how prices change. Aggregate data is available beginning in Q1 1992. China-specific data is  available beginning in Q1 1992; 1992 to 1998 data only includes goods but not services, from the Census Bureau.')
                        )
                 ),  # Plot on the left
                 
@@ -149,6 +151,9 @@ ui <- page_fillable(
 
     ## Native Employment ##
     nav_panel("Native Employment",
+      navset_tab(
+        ## Employment rate, native born men 16+ ##
+        nav_panel("Native Employment Rate (16+)", 
                   fluidRow(
                     column(8, plotlyOutput("plotly_employment_pop_native"),
                            div(
@@ -161,7 +166,24 @@ ui <- page_fillable(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
                       textOutput("text_employment_pop_native"))
                     ))
-       
+        ),
+        
+        ## Employment, native born men prime age ##
+        nav_panel("Native Employment Level (16+)", 
+                  fluidRow(
+                    column(8, plotlyOutput("plotly_employment_lvl_native"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
+                           )
+                    ),  # Plot on the left
+                    
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      textOutput("text_employment_lvl_native"))
+                    ))
+        ),
+      )
     ),
     
     ## Manufacturing Employment ##
@@ -293,6 +315,11 @@ ui <- page_fillable(
 ##########################
 
 server <- function(input, output) {
+  output$description <- renderText("This tool tracks quarterly trends in key economic indicators identified by
+  the Trump administration’s trade agenda as gauges of success. Each indicator provides insight into
+  how policy actions align with stated goals, offering an up-to-date look at economic outcomes. Use
+  the buttons below to explore individual indicators, view their associated targets, and assess progress
+  across different areas of trade policy. All figures are in 2017 dollars for consistency with the Bureau of Economic Analysis.")
   
   ## Inflation ##
   # convert inflation timeseries to dataframe

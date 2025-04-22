@@ -72,8 +72,8 @@ for(year in 90:97){
   cbp_year <- cbp_year %>% filter(sic %in% sic_naics_crosswalk$sic) %>%
     left_join(sic_naics_crosswalk, by = "sic") %>%
     mutate(across(starts_with("n"), ~.*estab_bins[cur_column()]),
-           emp = case_when(empflag == "" ~ floor(as.numeric(emp)*weight_emp),
-                           empflag != "" ~ floor((n1_4 + n5_9 + n10_19 + n20_49 + n50_99 +
+           emp = case_when(empflag == "" ~ floor(as.numeric(emp)*weight_emp), # if no suppression, employment is total employment
+                           empflag != "" ~ floor((n1_4 + n5_9 + n10_19 + n20_49 + n50_99 + # if suppression, employment is mean employment in supressed bins.
                              n100_249 + n250_499 + n500_999 + n1000_1 +
                              n1000_2 + n1000_3 + n1000_4)*weight_emp)),
            county = fipstate * 1000 + fipscty) %>%
