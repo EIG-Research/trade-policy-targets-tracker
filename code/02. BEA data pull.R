@@ -35,7 +35,7 @@ if (!current_user %in% names(project_directories)) {
 
 path_project <- project_directories[[current_user]]
 path_data <- file.path(path_project, "data")
-path_trade <- file.path(path_data, "Trade")
+path_bea <- file.path(path_data, "BEA")
 path_va <- file.path(path_data, "Value Added")
 path_app <- file.path(path_project, "trade-target-tracker")
 path_appdata <- file.path(path_app, "cleaned_data")
@@ -51,19 +51,19 @@ load(file.path(path_appdata, "fred_data.RData"))
 # Link: https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services
 # Monthly aggregate: U.S. Trade in Goods and Services, 1960-present, Table 1
 # Quarterly with China: U.S. Trade in Goods and Services by Selected Countries and Areas, 1999-present, Table 3
-trade_agg_month <- read_xlsx(file.path(path_trade, "trad-time-series-0225.xlsx"),
+trade_agg_month <- read_xlsx(file.path(path_bea, "trad-time-series-0225.xlsx"),
                              sheet = "Table 1",
                              skip = 74) %>% select(1:2) %>%
   na.omit() %>% rename(month = Monthly, balance = `...2`)
 
-trade_china_qt <- read_xlsx(file.path(path_trade, "trad-geo-time-series-0125.xlsx"),
+trade_china_qt <- read_xlsx(file.path(path_bea, "trad-geo-time-series-0125.xlsx"),
                             sheet = "Table 3",
                             skip = 5) %>% slice(29:n()) %>% select(Period, China) %>%
   na.omit() %>% rename(quarter = Period, balance = China)
 
 # Monthly goods trade with China from 1992 to 1998 are obtained from Census
 # Link: https://www.census.gov/foreign-trade/balance/c5700.html
-trade_china_hist <- read.csv(file.path(path_trade, "trad-china-hist-92-98.csv")) %>%
+trade_china_hist <- read.csv(file.path(path_bea, "trad-china-hist-92-98.csv")) %>%
   select(Month, Balance) %>% rename(month = Month, balance = Balance)
 trade_china_hist$balance <- round(as.numeric(sub(",", "", trade_china_hist$balance)), digits = 0)
 

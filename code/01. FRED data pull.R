@@ -6,11 +6,10 @@
 #   3. Employment, Manufacturing
 #   4. Employment, Motor Vehicles and Parts
 #   5. Employment, Total Private
-# last update: 4/11/2025 by Jiaxin He
+# last update: 4/22/2025 by Jiaxin He
 
 # remove dependencies
 rm(list = ls())
-
 
 ###########################
 ###   Load Packages     ###
@@ -59,6 +58,11 @@ api_key <- Sys.getenv("FRED_API_KEY")
 start_date <- "1990-01-01"
 end_date <- "2025-03-01"
 
+# Query quarterly chained PCE (2017 basis)
+PCE_id <- "PCECTPI"
+PCE_qt <- fredo(FRED_API_KEY, PCE_id, "1989-01-01", end_date) %>% select(value) %>%
+  ts(., start = c(1989,1), frequency = 4)
+
 # Query monthly CPI-U
 CPI_id <- "CPIAUCSL"
 CPI_month <- fredo(FRED_API_KEY, CPI_id, "1989-01-01", end_date)
@@ -100,15 +104,20 @@ motor_qt <- quarterly(motor_month, c(1990,1), mean, FALSE)
 priv_qt <- quarterly(priv_month, c(1990,1), mean, FALSE)
 
 # Calculate quarterly inflation
-cpi_inflation <- (cpi_qt[5:length(cpi_qt)] / cpi_qt[1:(length(cpi_qt)-4)] - 1) %>%
+pce_inflation <- (PCE_qt[5:length(PCE_qt)] / PCE_qt[1:(length(PCE_qt)-4)] - 1) %>%
   ts(., start = c(1990,1), frequency = 4)
 
-
-
-# Adjust to billions of 2017 dollars
+# Adjust budegt to billions of 2017 dollars, using CPI-U
 cpi_adj <- cpi_qt[5:length(cpi_qt)] / mean(cpi_qt[((2017-1989)*4 + 1):((2017-1989)*4 + 4)])
 budget_real <- budget_qt / (cpi_adj*1000)
-construction_real <- construction_qt / (cpi_adj[((1993-1990)*4 + 1):((2024-1990)*4 + 4)]*1000)
+
+# Adjust construction spending to billions of 2017 dollars
+path_bea <- file.path(path_project, "data/BEA")
+manu_const_price_index <- read_xlsx(file.path(path_bea, "bea_const_price_indices.xlsx"),
+                                    sheet = "Table",
+                                    skip = 5) %>% filter(`...2` == "Manufacturing") %>% select(-1:-2)
+manu_const_adj <- as.numeric(unlist(manu_const_price_index))/100
+construction_real <- construction_qt / (manu_const_adj*1000)
 
 # Calculate manufacturing and automotive shares of private employment
 manu_share <- manu_qt / priv_qt
@@ -117,5 +126,5 @@ manu_qt <- manu_qt / 1000
 motor_qt <- motor_qt / 1000
 
 # Export data
-save(cpi_adj, cpi_inflation, budget_real, construction_real,
+save(cpi_adj, pce_inflation, budget_real, construction_real,
      manu_qt, motor_qt, manu_share, motor_share, file = file.path(path_appdata, "fred_data.RData"))

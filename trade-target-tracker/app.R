@@ -108,7 +108,7 @@ ui <- page_fillable(
                 column(8,  plotlyOutput("plotly_inflation"),
                 div(
                   style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                  HTML('Source: <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">Bureau of Labor Statistics, CPI-U,</a> seasonally adjusted')
+                  HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis, Personal Consumption Expenditures: Chain-type Price Index</a>, 2017 basis, seasonally adjusted')
                 )
               ),
               column(4, div(
@@ -123,7 +123,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_budget"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars')
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>)')
                        )
                 ),  # Plot on the left
                 
@@ -139,7 +139,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_trade"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars. Available beginning in Q1 1992.')
+                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>). Available beginning in Q1 1992.')
                        )
                 ),  # Plot on the left
                 
@@ -169,7 +169,7 @@ ui <- page_fillable(
         ),
         
         ## Employment, native born men prime age ##
-        nav_panel("Native Male Employment Level (16+)", 
+        nav_panel("Native Employment Level (16+)", 
                   fluidRow(
                     column(8, plotlyOutput("plotly_employment_lvl_native"),
                            div(
@@ -280,7 +280,7 @@ ui <- page_fillable(
                     column(8, plotlyOutput("plotly_const"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars. Available beginning Q1 1993.')
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars (adjusted using <a href="https://apps.bea.gov/iTable/?reqid=19&step=2&isuri=1&categories=survey&_gl=1*885yn5*_ga*MTc5MDExNjA3OS4xNzQ0NzQxMTkx*_ga_J4698JNNFT*MTc0NTMzNTgyOS44LjEuMTc0NTMzNjQ4Mi41NS4wLjA.#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDNdLCJkYXRhIjpbWyJjYXRlZ29yaWVzIiwiU3VydmV5Il0sWyJOSVBBX1RhYmxlX0xpc3QiLCIxNDQiXV19" target="_blank">Price Index for Private Fixed Investment in Manufacturing Structures</a>). Available beginning Q1 1993.')
                            )
                     ),  # Plot on the left
                     
@@ -324,8 +324,8 @@ server <- function(input, output) {
   ## Inflation ##
   # convert inflation timeseries to dataframe
   inflation_df <- tibble(
-    quarter = as.Date(as.yearqtr(time(cpi_inflation))),
-    inflation = as.numeric(cpi_inflation)*100,
+    quarter = as.Date(as.yearqtr(time(pce_inflation))),
+    inflation = as.numeric(pce_inflation)*100,
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
 
@@ -775,7 +775,7 @@ server <- function(input, output) {
   })
   
   output$text_employment_lvl_native <- renderText({
-    "Administration officials hope to raise native-born employment in part by imposing more severe immigrations and creating new manufacturing jobs by restricting trade. JD Vance has repeatedly asserted that “100% of net job creation under the Biden administration has gone to the foreign born.” We set the target to be the rate of employment growth 2010-2020, which is the most recent non-recession period. Native employment currently stands at 129.7 million."
+    "Administration officials hope to raise native-born employment in part by imposing more severe immigration restrictions and creating new manufacturing jobs by restricting trade. JD Vance has repeatedly asserted that “100% of net job creation under the Biden administration has gone to the foreign born.” We set the target to be the rate of employment growth 2010-2020, which is the most recent non-recession period. Native employment currently stands at 129.7 million."
   })
   
   
@@ -1021,7 +1021,7 @@ server <- function(input, output) {
   
   motor_df = tibble(
     quarter = as.Date(as.yearqtr(time(motor_qt))),
-    motor_level = as.numeric(motor_qt) *100,
+    motor_level = as.numeric(motor_qt) *1000,
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
@@ -1049,7 +1049,7 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>") %>%
+      hovertemplate = "%{x}: %{y:,.1f}K<extra></extra>") %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1057,7 +1057,7 @@ server <- function(input, output) {
                      hoverformat = "%Y Q%q",
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
-        yaxis = list(title = "Employment (Millions of Workers)",
+        yaxis = list(title = "Employment (Thousands of Workers)",
                      tickformat = ".0f",
                      ticksuffix = ""),
         
@@ -1080,8 +1080,8 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.33,
-            y = y_lvl + 1.5,
-            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"M"),
+            y = y_lvl + 15,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"K"),
             showarrow = FALSE,
             font = list(color = eig_colors[2], size = 12),
             xanchor = "left",
