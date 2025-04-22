@@ -106,6 +106,7 @@ priv_qt <- quarterly(priv_month, c(1990,1), mean, FALSE)
 # Calculate quarterly inflation
 pce_inflation <- (PCE_qt[5:length(PCE_qt)] / PCE_qt[1:(length(PCE_qt)-4)] - 1) %>%
   ts(., start = c(1990,1), frequency = 4)
+pce_adj <- PCE_qt[5:length(PCE_qt)]/100
 
 # Adjust budegt to billions of 2017 dollars, using CPI-U
 cpi_adj <- cpi_qt[5:length(cpi_qt)] / mean(cpi_qt[((2017-1989)*4 + 1):((2017-1989)*4 + 4)])
@@ -126,5 +127,5 @@ manu_qt <- manu_qt / 1000
 motor_qt <- motor_qt / 1000
 
 # Export data
-save(cpi_adj, pce_inflation, budget_real, construction_real,
+save(pce_adj, pce_inflation, budget_real, construction_real,
      manu_qt, motor_qt, manu_share, motor_share, file = file.path(path_appdata, "fred_data.RData"))
