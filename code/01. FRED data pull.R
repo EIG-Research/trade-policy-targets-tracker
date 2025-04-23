@@ -19,6 +19,7 @@ library(tidyr)
 library(dplyr)
 library(tidycensus)
 library(scales)
+library(zoo)
 
 # Install and load FRED API
 # Link: https://fredblog.stlouisfed.org/2024/12/leveraging-r-for-powerful-data-analysis/
@@ -63,9 +64,19 @@ PCE_id <- "PCECTPI"
 PCE_qt <- fredo(FRED_API_KEY, PCE_id, "1989-01-01", end_date) %>% select(value) %>%
   ts(., start = c(1989,1), frequency = 4)
 
-# Query monthly CPI-U
-CPI_id <- "CPIAUCSL"
-CPI_month <- fredo(FRED_API_KEY, CPI_id, "1989-01-01", end_date)
+# Query monthly C-CPI-U
+CPI_id <- "SUUR0000SA0"
+CPI_month <- fredo(FRED_API_KEY, CPI_id, "1999-12-01", end_date)
+
+# Import monthly R-CPI-U-RS from BLS and combine with C-CPI-U, replicating Census' approach
+path_bls <- file.path(path_project, "data/BLS")
+rcpi_rs <- read_xlsx(file.path(path_bls, "r-cpi-u-rs-allitems.xlsx"), sheet = "All items", skip = 5)
+rcpi_rs <- rcpi_rs %>% filter(YEAR >= 1989 & YEAR <= 1999) %>% select(-AVG) %>%
+  pivot_longer(cols = -YEAR, names_to = "month", values_to = "value") %>%
+  mutate(date = as.Date(as.yearmon(paste(month, YEAR, sep = " ")))) %>%
+  select(date, value)
+rcpi_rs$value <- rcpi_rs$value / tail(rcpi_rs$value, 1) * 100
+CPI_month <- bind_rows(rcpi_rs, CPI_month %>% select(date, value)) %>% distinct(date, .keep_all = TRUE)
 
 # Query monthly federal budget balance
 budget_id <- "MTSDS133FMS"
@@ -74,6 +85,11 @@ budget_month <- fredo(FRED_API_KEY, budget_id, start_date, end_date)
 # Query private construction spending, manufacturing
 construction_id <- "PRMFGCON"
 contruction_month <- fredo(FRED_API_KEY, construction_id, start_date, end_date)
+
+# Query real annual median household income
+income_id <- "MEHOINUSA672N"
+income_yr <- fredo(FRED_API_KEY, income_id, start_date, end_date) %>% select(value) %>%
+  ts(., start = c(1990,1), frequency = 1)
 
 # Query all employees, manufacturing
 emp_manu <- "MANEMP"
@@ -86,6 +102,11 @@ motor_month <- fredo(FRED_API_KEY, emp_motor, start_date, end_date)
 # Query all employees, private
 emp_priv <- "USPRIV"
 priv_month <- fredo(FRED_API_KEY, emp_priv, start_date, end_date)
+
+# Query industrial production, manufacturing (seasonally adjusted)
+ip_manu <- "IPGMFSQ"
+ipman_qt <- fredo(FRED_API_KEY, ip_manu, start_date, end_date)
+ipman_qt <- ipman_qt %>% select(value) %>% ts(., start = c(1990,1), frequency = 4)
 
 # Tabulate by quarters, seasonally adjust the unadjusted ones
 quarterly <- function(df, start_month, func, seasonal = FALSE){
@@ -120,6 +141,13 @@ manu_const_price_index <- read_xlsx(file.path(path_bea, "bea_const_price_indices
 manu_const_adj <- as.numeric(unlist(manu_const_price_index))/100
 construction_real <- construction_qt / (manu_const_adj*1000)
 
+# Adjust median household income to 2017 PCE dollars
+cpi_yr <- cpi_qt %>% aggregate(., nfrequency = 1, FUN = mean)
+cpi_adj_yr <- cpi_yr[2:(length(cpi_yr)-1)]/cpi_yr[2017-1989+1]
+pce_adj_yr <- PCE_qt[5:(length(PCE_qt)-4)] %>% ts(., start = c(1990,1), frequency = 4) %>%
+  aggregate(., nfrequency = 1, FUN = mean) / 100
+income_yr <- income_yr * cpi_adj_yr / pce_adj_yr
+
 # Calculate manufacturing and automotive shares of private employment
 manu_share <- manu_qt / priv_qt
 motor_share <- motor_qt / priv_qt
@@ -127,5 +155,5 @@ manu_qt <- manu_qt / 1000
 motor_qt <- motor_qt / 1000
 
 # Export data
-save(pce_adj, pce_inflation, budget_real, construction_real,
+save(pce_adj, pce_inflation, ipman_qt, income_yr, budget_real, construction_real,
      manu_qt, motor_qt, manu_share, motor_share, file = file.path(path_appdata, "fred_data.RData"))
