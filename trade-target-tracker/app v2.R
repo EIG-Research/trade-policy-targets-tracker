@@ -120,7 +120,7 @@ ui <- page_fillable(
     ## Household Income ##
     nav_panel("Income",
               fluidRow(
-                column(8, plotlyOutput("plotly_hh_income"),
+                column(8, plotlyOutput("plotly_hh_income", height = "500px"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                          HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau,</a> in 2017 dollars (adjusted using the PCE), seasonally adjusted.')
@@ -421,6 +421,7 @@ server <- function(input, output) {
   )})
   
   ## Real Median Household Income ##
+  output$plotly_hh_income <- renderPlotly({
   
   income_df <- tibble(
     quarter = as.Date(time(income_yr)),
@@ -446,12 +447,14 @@ server <- function(input, output) {
   future_df <- tibble(
     year = years,
     quarter = as.Date(paste0(years, "-01-01")),
-    trend = start_val + growth_rate * (years - start_year)
-  )
+    income = NA_real_,  # placeholder for missing actual values
+    trend = start_val + growth_rate * (years - start_year),
+    hover_label = as.character(year)
+  ) %>% select(-c(year))
   
+  income_df = income_df %>% mutate(trend = NA_real_)
   income_df = bind_rows(income_df, future_df)
   
-  output$plotly_hh_income <- renderPlotly({
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(income_df$quarter)
     start_year <- lubridate::year(date_range[1])
@@ -501,7 +504,14 @@ server <- function(input, output) {
                      ticksuffix = ""),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1])
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        legend = list(
+          x = 0,          # 0 = left side
+          y = 1,          # 1 = top side
+          xanchor = "left",
+          yanchor = "top",
+          title = list(text = ""))
       )
   })
   
