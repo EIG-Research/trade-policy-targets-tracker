@@ -96,41 +96,10 @@ ui <- page_fillable(
     img(src = "EIG_reverse.png", alt = "EIG Logo", class = "header-logo"),
     
     # Title with bold font
-    h1("The Trade Policy Dashboard")
+    h1("Trade Policy Dashboard")
   ),
   
   navset_card_tab(
-    ### Inflation ###
-    nav_panel("Inflation",
-              fluidRow(
-                column(8,  plotlyOutput("plotly_inflation"),
-                div(
-                  style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                  HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis, Personal Consumption Expenditures: Chain-type Price Index</a>, 2017 basis, seasonally adjusted.')
-                )
-              ),
-              column(4, div(
-                style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                uiOutput("text_inflation"))
-              ))
-),
-    
-    ### Federal Budget Balance ###
-    nav_panel("Budget Balance", 
-              fluidRow(
-                column(8, plotlyOutput("plotly_budget"),
-                       div(
-                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method)')
-                       )
-                ),  # Plot on the left
-                
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  uiOutput("text_budget"))
-                ))
-    ),
-    
     ### Trade Balance ###
     nav_panel("Trade Balance", 
               fluidRow(
@@ -283,6 +252,37 @@ ui <- page_fillable(
                     ))
         )
       )
+    ),
+    
+    ### Inflation ###
+    nav_panel("Inflation",
+              fluidRow(
+                column(8,  plotlyOutput("plotly_inflation"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis, Personal Consumption Expenditures: Chain-type Price Index</a>, 2017 basis, seasonally adjusted.')
+                       )
+                ),
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  uiOutput("text_inflation"))
+                ))
+    ),
+    
+    ### Federal Budget Balance ###
+    nav_panel("Budget Balance", 
+              fluidRow(
+                column(8, plotlyOutput("plotly_budget"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method)')
+                       )
+                ),  # Plot on the left
+                
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  uiOutput("text_budget"))
+                ))
     )
     
   )
@@ -939,7 +939,7 @@ server <- function(input, output) {
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.1f}K<extra></extra>") %>%
+      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>") %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
