@@ -21,7 +21,7 @@ library(cowplot)
 
 # plotly
 library(plotly)
- 
+
 # R Shiny
 library(shiny)
 library(rsconnect)
@@ -32,7 +32,6 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 #################
 ### Load Data ###
 #################
-setwd("/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker/trade-target-tracker")
 
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
@@ -120,7 +119,7 @@ ui <- page_fillable(
     ## Household Income ##
     nav_panel("Income",
               fluidRow(
-                column(8, plotlyOutput("plotly_hh_income"),
+                column(8, plotlyOutput("plotly_hh_income", height = "500px"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                          HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau,</a> in 2017 dollars (adjusted using the PCE), seasonally adjusted.')
@@ -133,174 +132,174 @@ ui <- page_fillable(
               )
     ),
     
-
+    
     ## Native Employment ##
     nav_panel("Native Employment",
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_employment_pop_native"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
-                           )
-                     ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_employment_pop_native"))
-                    ))
-       
+              fluidRow(
+                column(8, plotlyOutput("plotly_employment_pop_native"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
+                       )
+                ),  # Plot on the left
+                
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  uiOutput("text_employment_pop_native"))
+                ))
+              
     ),
     
     ## Manufacturing Employment ##
     nav_panel("Manufacturing Employment",
-      navset_tab(
-        ## Employment, manufacturing ##
-        nav_panel("Manufacturing Employment Level", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_emp_manu"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
-                           )
-                    ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_emp_manu"))
-                    ))
-        ),
-        
-        ## Manufacturing share of private employment ##
-        nav_panel("Manufacturing Share", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_share_manu"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
-                           )
-                    ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_share_manu"))
-                    ))
-        ),
-        
-        ## Employment, motor vehicles and parts ## 
-        nav_panel("Automotive Employment Level", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_motor_emp"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
-                           )
-                    ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_motor_emp"))
-                    ))
-        ),
-        
-        ## Motor vehicles and parts share of private employment ##
-        nav_panel("Automotive Share", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_motor_share"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
-                           )
-                    ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_motor_share"))
-                    ))
-        ),
-        
-        ## Employment in manufacturing, counties most affected by the "China shock"  ##
-        nav_panel("Manufacturing Employment - China Shock", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_china_shock"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://www.census.gov/programs-surveys/cbp.html" target="_blank"> Census Bureau County Business Patterns 1990-2022,</a> quarterly data is not available.')
-                           )
-                    ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_china_shock"))
-                    ))
-        )
-      )
+              navset_tab(
+                ## Employment, manufacturing ##
+                nav_panel("Manufacturing Employment Level", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_emp_manu"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                                   )
+                            ),  # Plot on the left
+                            
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_emp_manu"))
+                            ))
+                ),
+                
+                ## Manufacturing share of private employment ##
+                nav_panel("Manufacturing Share", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_share_manu"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                                   )
+                            ),  # Plot on the left
+                            
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_share_manu"))
+                            ))
+                ),
+                
+                ## Employment, motor vehicles and parts ## 
+                nav_panel("Automotive Employment Level", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_motor_emp"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                                   )
+                            ),  # Plot on the left
+                            
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_motor_emp"))
+                            ))
+                ),
+                
+                ## Motor vehicles and parts share of private employment ##
+                nav_panel("Automotive Share", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_motor_share"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                                   )
+                            ),  # Plot on the left
+                            
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_motor_share"))
+                            ))
+                ),
+                
+                ## Employment in manufacturing, counties most affected by the "China shock"  ##
+                nav_panel("Manufacturing Employment - China Shock", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_china_shock"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://www.census.gov/programs-surveys/cbp.html" target="_blank"> Census Bureau County Business Patterns 1990-2022,</a> quarterly data is not available.')
+                                   )
+                            ),  # Plot on the left
+                            
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_china_shock"))
+                            ))
+                )
+              )
     ),
     
     ## Manufacturing Output ##
     nav_panel("Manufacturing Capacity",
-      navset_tab(
-        
-        ## Real value added, manufacturing ##
-        nav_panel("Value Added", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_va"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis,</a>seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
-                           )
-                    ),  # Plot on the left
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_va"))
-                    ))
-        ),
-        
-        ## Manufacturing share of GDP##
-        nav_panel("Value Added Share of GDP", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_va_share"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis</a>. Available beginning in 1997; 1997 to 2004 data are annual.')
-                           )
-                    ),  # Plot on the left
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_va_share"))
-                    ))
-        ),
-        
-        ## Total Private Construction Spending in Manufacturing ##
-        nav_panel("Construction Spending", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_const"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars (adjusted using <a href="https://apps.bea.gov/iTable/?reqid=19&step=2&isuri=1&categories=survey&_gl=1*885yn5*_ga*MTc5MDExNjA3OS4xNzQ0NzQxMTkx*_ga_J4698JNNFT*MTc0NTMzNTgyOS44LjEuMTc0NTMzNjQ4Mi41NS4wLjA.#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDNdLCJkYXRhIjpbWyJjYXRlZ29yaWVzIiwiU3VydmV5Il0sWyJOSVBBX1RhYmxlX0xpc3QiLCIxNDQiXV19" target="_blank">Price Index for Private Fixed Investment in Manufacturing Structures</a> to be consistent with the Federal Reserve and the BEA). Available beginning Q1 1993.')
-                           )
-                    ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_const"))
-                    ))
-        ),
-        
-        ## Industrial Production, Manufacturing ##
-        nav_panel("Industrial Production", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_ind_prod"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/IPGMFSQ" target="_blank"> Federal Reserve</a>, seasonally adjusted, 2017 basis = 100.')
-                           )
-                    ),  # Plot on the left
-                    column(4, div(
-                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_ind_prod"))
-                    ))
-        ),
-      )
+              navset_tab(
+                
+                ## Real value added, manufacturing ##
+                nav_panel("Value Added", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_va"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis,</a>seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
+                                   )
+                            ),  # Plot on the left
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_va"))
+                            ))
+                ),
+                
+                ## Manufacturing share of GDP##
+                nav_panel("Value Added Share of GDP", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_va_share"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis</a>. Available beginning in 1997; 1997 to 2004 data are annual.')
+                                   )
+                            ),  # Plot on the left
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_va_share"))
+                            ))
+                ),
+                
+                ## Total Private Construction Spending in Manufacturing ##
+                nav_panel("Construction Spending", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_const"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars (adjusted using <a href="https://apps.bea.gov/iTable/?reqid=19&step=2&isuri=1&categories=survey&_gl=1*885yn5*_ga*MTc5MDExNjA3OS4xNzQ0NzQxMTkx*_ga_J4698JNNFT*MTc0NTMzNTgyOS44LjEuMTc0NTMzNjQ4Mi41NS4wLjA.#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDNdLCJkYXRhIjpbWyJjYXRlZ29yaWVzIiwiU3VydmV5Il0sWyJOSVBBX1RhYmxlX0xpc3QiLCIxNDQiXV19" target="_blank">Price Index for Private Fixed Investment in Manufacturing Structures</a> to be consistent with the Federal Reserve and the BEA). Available beginning Q1 1993.')
+                                   )
+                            ),  # Plot on the left
+                            
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_const"))
+                            ))
+                ),
+                
+                ## Industrial Production, Manufacturing ##
+                nav_panel("Industrial Production", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_ind_prod"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/IPGMFSQ" target="_blank"> Federal Reserve</a>, seasonally adjusted, 2017 basis = 100.')
+                                   )
+                            ),  # Plot on the left
+                            column(4, div(
+                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              uiOutput("text_ind_prod"))
+                            ))
+                ),
+              )
     ),
     
     ### Inflation ###
@@ -350,7 +349,7 @@ server <- function(input, output) {
     inflation = as.numeric(pce_inflation)*100,
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
-
+  
   output$plotly_inflation <- renderPlotly({
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(inflation_df$quarter)
@@ -418,40 +417,43 @@ server <- function(input, output) {
   
   output$text_inflation <- renderUI({
     HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank"> campaign speech</a> in August 2024, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Q4 2024, inflation stood at 2.5 percent. The Federal Reserve’s inflation target is 2 percent.</p>'
-  )})
+    )})
   
   ## Real Median Household Income ##
-  
-  income_df <- tibble(
-    quarter = as.Date(time(income_yr)),
-    income = as.numeric(income_yr),
-    hover_label = format(as.yearqtr(quarter), "%Y")
-  )
-  
-  income_df_trend <- income_df %>%
-    # get relevant years - trump up until break.
-    filter(quarter >= as.Date("2017-01-01"),
-           quarter < as.Date("2020-01-01"))
-  
-  trend_model <- lm(income ~ as.numeric(quarter), data = income_df_trend)
-  
-  # project 2024 and 2025
-  growth_rate <- coef(trend_model)["as.numeric(quarter)"]*365
-  
-  start_val <- income_df %>% filter(quarter == as.Date("2023-01-01")) %>% pull(income)
-  
-  start_year = 2023
-  years <- 2024:2028
-  
-  future_df <- tibble(
-    year = years,
-    quarter = as.Date(paste0(years, "-01-01")),
-    trend = start_val + growth_rate * (years - start_year)
-  )
-  
-  income_df = bind_rows(income_df, future_df)
-  
   output$plotly_hh_income <- renderPlotly({
+    
+    income_df <- tibble(
+      quarter = as.Date(time(income_yr)),
+      income = as.numeric(income_yr),
+      hover_label = format(as.yearqtr(quarter), "%Y")
+    )
+    
+    income_df_trend <- income_df %>%
+      # get relevant years - trump up until break.
+      filter(quarter >= as.Date("2016-01-01"),
+             quarter < as.Date("2020-01-01"))
+    
+    trend_model <- lm(income ~ as.numeric(quarter), data = income_df_trend)
+    
+    # project 2024 and 2025
+    growth_rate <- coef(trend_model)["as.numeric(quarter)"]*365
+    
+    start_val <- income_df %>% filter(quarter == as.Date("2023-01-01")) %>% pull(income)
+    
+    start_year = 2023
+    years <- 2024:2028
+    
+    future_df <- tibble(
+      year = years,
+      quarter = as.Date(paste0(years, "-01-01")),
+      income = NA_real_,  # placeholder for missing actual values
+      trend = start_val + growth_rate * (years - start_year),
+      hover_label = as.character(year)
+    ) %>% select(-c(year))
+    
+    income_df = income_df %>% mutate(trend = NA_real_)
+    income_df = bind_rows(income_df, future_df)
+    
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(income_df$quarter)
     start_year <- lubridate::year(date_range[1])
@@ -471,7 +473,7 @@ server <- function(input, output) {
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
       name = 'Actual',
-      hovertemplate = "%{x}: %{y:.1f}B<extra></extra>"
+      hovertemplate = "%{x}: %{y:$.0f}<extra></extra>"
     ) %>%  
       add_lines(
         data = income_df,
@@ -481,15 +483,15 @@ server <- function(input, output) {
         line = list(color = eig_colors[5], dash = 'dash')
       ) %>%
       add_trace(
-      data = income_df_trend,
-      x = ~quarter,
-      y = ~predict(trend_model),
-      name = "Income Trendline during Trump's first Administration",
-      line = list(color = eig_colors[4], width = 2, dash = "dash"),
-      hoverinfo = "none",
-      hovertemplate = NULL,
-      showlegend = TRUE
-    ) %>%
+        data = income_df_trend,
+        x = ~quarter,
+        y = ~predict(trend_model),
+        name = "Income Trendline during Trump's first Administration",
+        line = list(color = eig_colors[4], width = 2, dash = "dash"),
+        hoverinfo = "none",
+        hovertemplate = NULL,
+        showlegend = TRUE
+      ) %>%
       layout(
         xaxis = list(title = "Time (Annual)",
                      tickvals = tick_years,
@@ -501,7 +503,14 @@ server <- function(input, output) {
                      ticksuffix = ""),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1])
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        legend = list(
+          x = 0,          # 0 = left side
+          y = 1,          # 1 = top side
+          xanchor = "left",
+          yanchor = "top",
+          title = list(text = ""))
       )
   })
   
@@ -586,7 +595,7 @@ server <- function(input, output) {
   
   output$text_budget <- renderUI({
     HTML('<p><a href="https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank"> During</a> his first address to a joint session of Congress on March 4, 2025, the president said, “In the near future, I want to do what has not been done in 24 years: balance the federal budget.” The administration aims to achieve this through a series of spending reductions that more than offset planned tax cuts. The budget deficit was $400 billion for Q1 2025.</p>'
-  )})
+    )})
   
   
   ## Trade ##
@@ -641,8 +650,8 @@ server <- function(input, output) {
                      tickformat = ",.0f",
                      ticksuffix = "",
                      rangemode = "tozero"),
-
-          legend = list(title = list(text = "Deficit Type")),
+        
+        legend = list(title = list(text = "Deficit Type")),
         
         hovermode = "closest",
         
@@ -655,8 +664,8 @@ server <- function(input, output) {
             y0 = 0, y1 = 0,
             line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
-      ),
-    
+        ),
+        
         # label for balance 
         annotations = list(
           list(
@@ -676,7 +685,7 @@ server <- function(input, output) {
   
   output$text_trade <- renderUI({
     HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit stood at $201 billion, while the bilateral trade deficit with China stands at $53 billion. The administration aims to bring both down to zero.</p>'
-  )})
+    )})
   
   ## Value Added ##
   va_df <- tibble(
@@ -774,7 +783,7 @@ server <- function(input, output) {
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
     y_lvl <- share_va_df %>% filter(quarter == "2000-01-01") %>% .$share_gdp
-      
+    
     plot_ly(
       data = share_va_df,
       x = ~quarter,
@@ -829,7 +838,7 @@ server <- function(input, output) {
   })
   
   output$text_va_share <- renderUI({
-    HTML('<p>To be filled</p>'
+    HTML('<p>The administration aims to execute a <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda </a> that will accomplish three things: ”an increase in the manufacturing sector’s share of gross domestic product; an increase in real median household income; and a decrease in the size of the trade in goods deficit.” In Q4 2024, the manufacturing sector’s share of GDP was 10 percent. We set the target to be 15.1%, prior to when China joined the WTO.</p>'
     )})
   
   ## Construction Spending ##
@@ -852,10 +861,10 @@ server <- function(input, output) {
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
-
+    
     y_lvl <- const_df %>% filter(quarter == "2024-10-01")
     y_lvl <- as.numeric(y_lvl[1,2])
-
+    
     plot_ly(
       data = const_df,
       x = ~quarter,
@@ -906,13 +915,13 @@ server <- function(input, output) {
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1])
-
+        
       )
   })
   
   output$text_const <- renderUI({
     HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target.</p>'
-  )})
+    )})
   
   ## Industrial Production ##
   ind_prod_df <- tibble(
@@ -989,7 +998,7 @@ server <- function(input, output) {
   })
   
   output$text_ind_prod <- renderUI({
-    HTML('<p>To be filled</p>'
+    HTML('<p>The Trump administration has declared the decline in U.S. manufacturing production level to be a <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target = "_blank" >crisis.</a> The White House declared a national emergency to address goods trade deficits that “have led to the hollowing out of our manufacturing base; resulted in a lack of incentive to increase advanced domestic manufacturing capacity; undermined critical supply chains; and rendered our defense-industrial base dependent on foreign adversaries.“ The industrial manufacturing production indeed stood at 100.5 in Q1 2025. We set the benchmark to be the pre-financial crisis peak of 106.1.</p>'
     )})
   
   ## Employment rate, native born men 18+ ##
@@ -1071,7 +1080,7 @@ server <- function(input, output) {
   
   output$text_employment_pop_native <- renderUI({
     HTML('<p>According to Vice President J.D. Vance, the Trump Administration <a href="https://www.nytimes.com/2024/10/12/magazine/jd-vance-interview.html" target="_blank"> hopes</a> to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born employment rate currently stands at 59.4 percent. We set the target to be 64.5 percent, which is the 2000 level before China joined the WTO.</p>'
-  )})
+    )})
   
   ## Employment Manufacturing ##
   manu_df = tibble(
@@ -1106,7 +1115,7 @@ server <- function(input, output) {
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
       hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>"
-      ) %>%
+    ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1117,10 +1126,10 @@ server <- function(input, output) {
         yaxis = list(title = "Employment (Millions of Workers)",
                      tickformat = ",.0f",
                      ticksuffix = ""),
-
+        
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1]),
-
+        
         # add target line
         shapes = list(
           list(
@@ -1150,7 +1159,7 @@ server <- function(input, output) {
   
   output$text_emp_manu <- renderUI({
     HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Manufacturing employment stands at 12.8 million in Q1 2025, down from the chosen target of 17.3 in 2000, the level from just before China joined the WTO in 2001.</p>'
-  )})
+    )})
   
   ## Manufacturing Share ##
   
@@ -1228,7 +1237,7 @@ server <- function(input, output) {
   
   output$text_share_manu <- renderUI({
     HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level from just before China joined the WTO in 2001.</p>'
-  )})
+    )})
   
   ## Employment, motor vehicles and parts ## 
   
@@ -1306,7 +1315,7 @@ server <- function(input, output) {
   
   output$text_motor_emp <- renderUI({
     HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
-  )})
+    )})
   
   ## Motor vehicles and parts share of private employment ##
   
@@ -1384,7 +1393,7 @@ server <- function(input, output) {
   
   output$text_motor_share <- renderUI({
     HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs made up 0.7 percent of total U.S. jobs in Q1 2025, down from 1.2 percent in 2000, the level from just before China joined the WTO in 2001.</p>'
-      )})
+    )})
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
   china_shock_df <- tibble(year = time(china_shock_yr),
@@ -1453,7 +1462,7 @@ server <- function(input, output) {
   
   output$text_china_shock <- renderUI({
     HTML('<p>Identified by <a href = "https://www.nber.org/papers/w21906" target="_blank"> Autor et al. (2016),</a> manufacturing employment in the 145 counties most impacted by trade with China is 473 thousand jobs (2022). The target is set at 649 thousand, the total employment in these counties just before China joined the WTO in 2001.</p>'
-      )})
+    )})
 }
 
 shinyApp(ui = ui, server = server)
