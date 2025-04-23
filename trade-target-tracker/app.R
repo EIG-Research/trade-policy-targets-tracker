@@ -32,6 +32,7 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 #################
 ### Load Data ###
 #################
+setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
 
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
@@ -44,7 +45,7 @@ load(file.path("cleaned_data", "china_shock.RData"))
 ######################
 
 # Define EIG color palette
-eig_colors <- c("#1a654d", "#5e9c86", "#008080", "#044140")	  # EIG green colors
+eig_colors <- c("#1a654d", "#5e9c86", "#008080", "#044140", "#e1ad28")	  # EIG theme colors
 
 ui <- page_fillable(
   
@@ -219,7 +220,7 @@ ui <- page_fillable(
     ),
     
     ## Manufacturing Output ##
-    nav_panel("Manufacturing Output",
+    nav_panel("Manufacturing Capacity",
       navset_tab(
         ## Total Private Construction Spending in Manufacturing ##
         nav_panel("Construction Spending", 
@@ -347,7 +348,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = 2, y1 = 2,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
         ),
         
@@ -424,7 +425,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = 0, y1 = 0,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
         ),
         
@@ -485,11 +486,11 @@ server <- function(input, output) {
       x = ~quarter,
       y = ~deficit,
       color = ~type,
-      colors = c("Total" =eig_colors[1], "China" = eig_colors[3]),
+      colors = c("Total" =eig_colors[1], "China" = eig_colors[5]),
       type = 'scatter',
       mode = 'lines',
       text = ~type,
-      hovertemplate = "%{fullData.name}: %{y:$,.1f}B<extra></extra>"
+      hovertemplate = "%{x}: %{fullData.name}: %{y:$,.1f}B<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
@@ -514,7 +515,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = 0, y1 = 0,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
       ),
     
@@ -560,6 +561,10 @@ server <- function(input, output) {
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
+
+    y_lvl = const_df %>% filter(quarter == "2024-10-01")
+    y_lvl = as.numeric(y_lvl[1,2])
+
     plot_ly(
       data = const_df,
       x = ~quarter,
@@ -580,6 +585,31 @@ server <- function(input, output) {
         yaxis = list(title = "Construction Spending (Billions of Dollars)",
                      tickformat = ",.0f",
                      ticksuffix = ""),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
+          )
+        ),
+        
+        # label for balance 
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.4,
+            y = y_lvl+0.8,
+            text = paste0("Q4 2024 level: ",round(y_lvl,1),"B"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        ),
         
         legend = list(title = list(text = "Manufacturing Value Added")),
         
@@ -635,7 +665,7 @@ server <- function(input, output) {
         x = ~quarter,
         y = ~predict(trend_model),
         name = "Trendline after the Great Financial Crisis",
-        line = list(color = eig_colors[2], width = 2, dash = "dash"),
+        line = list(color = eig_colors[4], width = 2, dash = "dash"),
         hoverinfo = "none",
         hovertemplate = NULL,
         showlegend = TRUE
@@ -725,7 +755,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
         ),
         
@@ -805,7 +835,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
         ),
         
@@ -883,7 +913,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
         ),
         
@@ -961,7 +991,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
         ),
         
@@ -1039,7 +1069,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
         ),
         
@@ -1108,7 +1138,7 @@ server <- function(input, output) {
             xref = "paper",
             x0 = 0, x1 = 1,
             y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[1], width = 2, dash = "dash")
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
           )
         ),
         
