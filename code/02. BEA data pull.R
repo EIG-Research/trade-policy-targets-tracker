@@ -17,6 +17,7 @@ library(dplyr)
 library(tidycensus)
 library(scales)
 library(readxl)
+library(seasonal)
 
 #################
 ### Set paths ###
@@ -84,12 +85,12 @@ va_manu_1997_2004_year <- as.numeric(unlist(va_manu_a[1,])) %>%
 share_va_manu_q <- read.csv(file.path(path_bea, "manu_share_gdp_2005_2024_Q.csv"), skip = 3, header = TRUE)
 share_va_manu_q <- head(share_va_manu_q, -5) %>% select(-1:-2)
 share_va_manu_2005_2024_qt <- as.numeric(unlist(share_va_manu_q[2,])) %>%
-  ts(., start = c(2005, 1), frequency = 4) / 100
+  ts(., start = c(2005, 1), frequency = 4)
 
 share_va_manu_a <- read.csv(file.path(path_bea, "manu_share_gdp_1997_2004_A.csv"), skip = 3, header = TRUE)
 share_va_manu_a <- head(share_va_manu_a, -5) %>% select(-1:-2) %>% na.omit()
 share_va_manu_1997_2004_year <- as.numeric(unlist(share_va_manu_a[1,])) %>%
-  ts(., start = c(1997, 1), frequency = 1) / 100
+  ts(., start = c(1997, 1), frequency = 1)
 
 # Aggregate quarterly total trade balance
 trade_agg_qt <- trade_agg_month$balance %>% ts(., start = c(1992,1), frequency = 12) %>%
