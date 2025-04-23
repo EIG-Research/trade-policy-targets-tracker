@@ -116,40 +116,6 @@ ui <- page_fillable(
                 ))
     ),
     
-    ## Household Income ##
-    nav_panel("Income",
-              fluidRow(
-                column(8, plotlyOutput("plotly_hh_income", height = "500px"),
-                       div(
-                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau,</a> in 2017 dollars (adjusted using the PCE), seasonally adjusted.')
-                       )
-                ),
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  uiOutput("text_hh_income")
-                ))
-              )
-    ),
-    
-    
-    ## Native Employment ##
-    nav_panel("Native Employment",
-              fluidRow(
-                column(8, plotlyOutput("plotly_employment_pop_native"),
-                       div(
-                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
-                       )
-                ),  # Plot on the left
-                
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  uiOutput("text_employment_pop_native"))
-                ))
-              
-    ),
-    
     ## Manufacturing Employment ##
     nav_panel("Manufacturing Employment",
               navset_tab(
@@ -235,7 +201,7 @@ ui <- page_fillable(
               )
     ),
     
-    ## Manufacturing Output ##
+    ## Manufacturing Capacity ##
     nav_panel("Manufacturing Capacity",
               navset_tab(
                 
@@ -299,6 +265,40 @@ ui <- page_fillable(
                               uiOutput("text_ind_prod"))
                             ))
                 ),
+              )
+    ),
+    
+    
+    ## Native Employment ##
+    nav_panel("Native Employment",
+              fluidRow(
+                column(8, plotlyOutput("plotly_employment_pop_native"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
+                       )
+                ),  # Plot on the left
+                
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  uiOutput("text_employment_pop_native"))
+                ))
+              
+    ),
+    
+    ## Household Income ##
+    nav_panel("Income",
+              fluidRow(
+                column(8, plotlyOutput("plotly_hh_income", height = "500px"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau,</a> in 2017 dollars (adjusted using the PCE), seasonally adjusted.')
+                       )
+                ),
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  uiOutput("text_hh_income")
+                ))
               )
     ),
     
@@ -515,7 +515,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO and asserting that strengthening Trump’s first-term trade restrictions will accelerate income growth. Real median household income in was $81,779 in 2023. We set the benchmark to be the pre-COVID growth rate during Trump’s first term.</p>')
+    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO and asserting that strengthening trade restrictions will raise average annual income growth rate back to 3.4 percent during Trump’s first term. Real median household income in was $81,779 in 2023. We set the benchmark to be the pre-COVID growth rate during Trump’s first term.</p>')
     
   })
   
