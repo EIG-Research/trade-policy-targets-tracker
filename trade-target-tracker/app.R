@@ -116,6 +116,23 @@ ui <- page_fillable(
                   uiOutput("text_trade"))
                 ))
     ),
+    
+    ## Household Income ##
+    nav_panel("Income",
+              fluidRow(
+                column(8, plotlyOutput("plotly_hh_income"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau,</a> in 2017 dollars (adjusted using the PCE), seasonally adjusted.')
+                       )
+                ),
+                column(4, div(
+                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  uiOutput("text_hh_income")
+                ))
+              )
+    ),
+    
 
     ## Native Employment ##
     nav_panel("Native Employment",
@@ -371,6 +388,97 @@ server <- function(input, output) {
   output$text_inflation <- renderUI({
     HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank"> campaign speech</a> in August 2024, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Q4 2024, inflation stood at 2.5 percent. The Federal Reserve’s inflation target is 2 percent.</p>'
   )})
+  
+  ## Real Median Household Income ##
+  
+  income_df <- tibble(
+    quarter = as.Date(time(income_yr)),
+    income = as.numeric(income_yr),
+    hover_label = format(as.yearqtr(quarter), "%Y")
+  )
+  
+  income_df_trend <- income_df %>%
+    # get relevant years - trump up until break.
+    filter(quarter >= as.Date("2017-01-01"),
+           quarter < as.Date("2020-01-01"))
+  
+  trend_model <- lm(income ~ as.numeric(quarter), data = income_df_trend)
+  
+  # project 2024 and 2025
+  growth_rate <- coef(trend_model)["as.numeric(quarter)"]*365
+  
+  start_val <- income_df %>% filter(quarter == as.Date("2023-01-01")) %>% pull(income)
+  
+  start_year = 2023
+  years <- 2024:2028
+  
+  future_df <- tibble(
+    year = years,
+    quarter = as.Date(paste0(years, "-01-01")),
+    trend = start_val + growth_rate * (years - start_year)
+  )
+  
+  income_df = bind_rows(income_df, future_df)
+  
+  output$plotly_hh_income <- renderPlotly({
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(income_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_texts <- as.character((tick_years))
+    
+    plot_ly(
+      data = income_df,
+      x = ~quarter,
+      y = ~income,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      name = 'Actual',
+      hovertemplate = "%{x}: %{y:.1f}B<extra></extra>"
+    ) %>%  
+      add_lines(
+        data = income_df,
+        x = ~quarter,
+        y = ~trend,
+        name = 'Projection at prior Trump Administration rate',
+        line = list(color = eig_colors[5], dash = 'dash')
+      ) %>%
+      add_trace(
+      data = income_df_trend,
+      x = ~quarter,
+      y = ~predict(trend_model),
+      name = "Income Trendline during Trump's first Administration",
+      line = list(color = eig_colors[4], width = 2, dash = "dash"),
+      hoverinfo = "none",
+      hovertemplate = NULL,
+      showlegend = TRUE
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Annual)",
+                     tickvals = tick_years,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y"),
+        
+        yaxis = list(title = "Household Median Income (Dollars)",
+                     tickformat = ",.0f",
+                     ticksuffix = ""),
+        
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1])
+      )
+  })
+  
+  output$text_hh_income <- renderUI({
+    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO and asserting that strengthening Trump’s first-term trade restrictions will accelerate income growth. Real median household income in was $81,779 last year. We set the benchmark to be the pre-COVID growth rate during Trump’s first term.</p>')
+    
+  })
+  
   
   
   ## Budget ##
