@@ -32,7 +32,7 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 #################
 ### Load Data ###
 #################
-setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
+setwd("/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker/trade-target-tracker")
 
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
@@ -239,6 +239,37 @@ ui <- page_fillable(
     ## Manufacturing Output ##
     nav_panel("Manufacturing Capacity",
       navset_tab(
+        
+        ## Real value added, manufacturing ##
+        nav_panel("Value Added", 
+                  fluidRow(
+                    column(8, plotlyOutput("plotly_va"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis,</a>seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
+                           )
+                    ),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      uiOutput("text_va"))
+                    ))
+        ),
+        
+        ## Manufacturing share of GDP##
+        nav_panel("Value Added Share of GDP", 
+                  fluidRow(
+                    column(8, plotlyOutput("plotly_va_share"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis</a>. Available beginning in 1997; 1997 to 2004 data are annual.')
+                           )
+                    ),  # Plot on the left
+                    column(4, div(
+                      style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                      uiOutput("text_va_share"))
+                    ))
+        ),
+        
         ## Total Private Construction Spending in Manufacturing ##
         nav_panel("Construction Spending", 
                   fluidRow(
@@ -255,20 +286,20 @@ ui <- page_fillable(
                     ))
         ),
         
-        ## Real value added, manufacturing ##
-        nav_panel("Value Added", 
+        ## Industrial Production, Manufacturing ##
+        nav_panel("Industrial Production", 
                   fluidRow(
-                    column(8, plotlyOutput("plotly_va"),
+                    column(8, plotlyOutput("plotly_ind_prod"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis,</a>seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/IPGMFSQ" target="_blank"> Federal Reserve</a>, seasonally adjusted, 2017 basis = 100.')
                            )
                     ),  # Plot on the left
                     column(4, div(
                       style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                      uiOutput("text_va"))
+                      uiOutput("text_ind_prod"))
                     ))
-        )
+        ),
       )
     ),
     
@@ -575,7 +606,6 @@ server <- function(input, output) {
                  values_to = "deficit") %>%
     mutate(hover_label = format(as.yearqtr(quarter), "%Y Q%q"))
   
-  
   output$plotly_trade <- renderPlotly({
     # Dynamically generate tick dates: Q1 every 5 years
     date_range <- range(trade_df$quarter)
@@ -646,89 +676,6 @@ server <- function(input, output) {
   
   output$text_trade <- renderUI({
     HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit stood at $201 billion, while the bilateral trade deficit with China stands at $53 billion. The administration aims to bring both down to zero.</p>'
-  )})
-  
-  
-  ## Construction Spending ##
-  const_df <- tibble(
-    quarter = as.Date(time(construction_real)),
-    const_spending = as.numeric(construction_real),
-    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
-  )
-  
-  output$plotly_const <- renderPlotly({
-    # Dynamically generate tick dates: Q1 every 5 years
-    date_range <- range(const_df$quarter)
-    start_year <- lubridate::year(date_range[1])
-    end_year   <- lubridate::year(date_range[2])
-    
-    # Add ticks
-    tick_years <- c(start_year,
-                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
-                    tail(date_range, 1)) %>% unique()  # Q1 of each year
-    tick_texts <- as.character(as.yearqtr(tick_dates))
-    
-
-    y_lvl = const_df %>% filter(quarter == "2024-10-01")
-    y_lvl = as.numeric(y_lvl[1,2])
-
-    plot_ly(
-      data = const_df,
-      x = ~quarter,
-      y = ~const_spending,
-      type = 'scatter',
-      mode = 'lines',
-      line = list(color = eig_colors[1], width = 2),
-      text = ~hover_label,
-      hovertemplate = "%{x}: %{y:$,.1f}B<extra></extra>"
-    ) %>%
-      layout(
-        xaxis = list(title = "Time (Quarterly)",
-                     tickvals = tick_dates,
-                     ticktext = tick_texts,
-                     hoverformat = "%Y Q%q",
-                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
-        
-        yaxis = list(title = "Construction Spending (Billions of Dollars)",
-                     tickformat = ",.0f",
-                     ticksuffix = ""),
-        
-        # add target line
-        shapes = list(
-          list(
-            type = "line",
-            xref = "paper",
-            x0 = 0, x1 = 1,
-            y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[4], width = 2, dash = "dash")
-          )
-        ),
-        
-        # label for balance 
-        annotations = list(
-          list(
-            xref = "paper",
-            x = 0.4,
-            y = y_lvl+0.8,
-            text = paste0("Q4 2024 level: ",round(y_lvl,1),"B"),
-            showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
-            xanchor = "left",
-            yanchor = "middle"
-          )
-        ),
-        
-        legend = list(title = list(text = "Manufacturing Value Added")),
-        
-        hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1])
-
-      )
-  })
-  
-  output$text_const <- renderUI({
-    HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target.</p>'
   )})
   
   ## Value Added ##
@@ -804,8 +751,246 @@ server <- function(input, output) {
   
   output$text_va <- renderUI({
     HTML('<p>White House <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/report-to-the-president-on-the-america-first-trade-policy-executive-summary/?utm_source=chatgpt.com" target="_blank"> trade</a> policy aims to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing was $2.4 trillion in Q4, 2024, and has risen steadily over the past few decades. We set the target to be the growth rate since Q1 2010.</p>'
-  )})
+    )})
+  
+  ## Share of Value Added as a Percentage of GDP##
+  share_va_df <- tibble(
+    quarter = c(as.Date(time(share_va_manu_1997_2004_year)), as.Date(time(share_va_manu_2005_2024_qt))),
+    share_gdp = c(as.matrix(share_va_manu_1997_2004_year), as.matrix(share_va_manu_2005_2024_qt)),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plotly_va_share <- renderPlotly({
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(share_va_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1))  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
+    
+    y_lvl <- share_va_df %>% filter(quarter == "2000-01-01") %>% .$share_gdp
+      
+    plot_ly(
+      data = share_va_df,
+      x = ~quarter,
+      y = ~share_gdp,
+      type = 'scatter',
+      mode = 'lines',
+      name = "Value Added Share of GDP",
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:,.1f}%<extra></extra>"
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Value Added Share of GDP (%)",
+                     tickformat = ",.0f",
+                     ticksuffix = "%"),
+        
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        
+        # add horizontal line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
+          )
+        ),
+        
+        # label for balance 
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.12,
+            y = y_lvl+0.15,
+            text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
+  })
+  
+  output$text_va_share <- renderUI({
+    HTML('<p>To be filled</p>'
+    )})
+  
+  ## Construction Spending ##
+  const_df <- tibble(
+    quarter = as.Date(time(construction_real)),
+    const_spending = as.numeric(construction_real),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plotly_const <- renderPlotly({
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(const_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
+    
 
+    y_lvl <- const_df %>% filter(quarter == "2024-10-01")
+    y_lvl <- as.numeric(y_lvl[1,2])
+
+    plot_ly(
+      data = const_df,
+      x = ~quarter,
+      y = ~const_spending,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:$,.1f}B<extra></extra>"
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Construction Spending (Billions of Dollars)",
+                     tickformat = ",.0f",
+                     ticksuffix = ""),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
+          )
+        ),
+        
+        # label for balance 
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.4,
+            y = y_lvl+0.8,
+            text = paste0("Q4 2024 level: ",round(y_lvl,1),"B"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        ),
+        
+        legend = list(title = list(text = "Manufacturing Value Added")),
+        
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1])
+
+      )
+  })
+  
+  output$text_const <- renderUI({
+    HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target.</p>'
+  )})
+  
+  ## Industrial Production ##
+  ind_prod_df <- tibble(
+    quarter = as.Date(as.yearqtr(time(ipman_qt))),
+    ip = as.numeric(ipman_qt),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plotly_ind_prod <- renderPlotly({
+    # Dynamically generate tick dates: Q1 every 5 years
+    date_range <- range(ind_prod_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    # Add ticks
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
+    
+    y_lvl <- ind_prod_df %>% filter(quarter == "2007-10-01") %>% .$ip
+    
+    plot_ly(
+      data = ind_prod_df,
+      x = ~quarter,
+      y = ~ip,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:.1f}<extra></extra>"
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Industrial Production Index",
+                     tickformat = ".0f",
+                     ticksuffix = "",
+                     rangemode = "tozero"),
+        
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.4,
+            y = y_lvl + 2,
+            text = paste0("2007 Q4 peak, before the Great Financial Crisis = " , round(y_lvl, 1)),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        )
+      )
+  })
+  
+  output$text_ind_prod <- renderUI({
+    HTML('<p>To be filled</p>'
+    )})
   
   ## Employment rate, native born men 18+ ##
   emp_pop_ratio_df = tibble(

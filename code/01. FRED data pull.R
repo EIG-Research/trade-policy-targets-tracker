@@ -1,11 +1,13 @@
 # Project: Trump Trade Policy Targets Dashboard
 # File description: FRED data pull for:
-#   0. CPI-U
+#   0. PCE and Chained CPI-U
 #   1. Federal budget balance
 #   2. Total private construction spending, manufacturing
 #   3. Employment, Manufacturing
 #   4. Employment, Motor Vehicles and Parts
 #   5. Employment, Total Private
+#   6. Median household income
+#   7. Industrial Production
 # last update: 4/22/2025 by Jiaxin He
 
 # remove dependencies
