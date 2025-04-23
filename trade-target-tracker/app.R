@@ -561,6 +561,10 @@ server <- function(input, output) {
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
+
+    y_lvl = const_df %>% filter(quarter == "2024-10-01")
+    y_lvl = as.numeric(y_lvl[1,2])
+
     plot_ly(
       data = const_df,
       x = ~quarter,
@@ -581,6 +585,31 @@ server <- function(input, output) {
         yaxis = list(title = "Construction Spending (Billions of Dollars)",
                      tickformat = ",.0f",
                      ticksuffix = ""),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
+          )
+        ),
+        
+        # label for balance 
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.4,
+            y = y_lvl+0.8,
+            text = paste0("Q4 2024 level: ",round(y_lvl,1),"B"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[2], size = 12),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        ),
         
         legend = list(title = list(text = "Manufacturing Value Added")),
         
