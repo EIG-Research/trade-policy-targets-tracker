@@ -24,6 +24,7 @@ library(readxl)
 # Define user-specific project directories
 project_directories <- list(
   "name" = "PATH TO GITHUB REPO",
+  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker",
   "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker"
 )
 
@@ -53,11 +54,13 @@ load(file.path(path_appdata, "fred_data.RData"))
 # Quarterly with China: U.S. Trade in Goods and Services by Selected Countries and Areas, 1999-present, Table 3
 trade_agg_month <- read_xlsx(file.path(path_bea, "trad-time-series-0225.xlsx"),
                              sheet = "Table 1",
-                             skip = 74) %>% select(1:2) %>%
-  na.omit() %>% rename(month = Monthly, balance = `...2`)
+                             skip = 74) %>%
+  select(1,3) %>%
+  na.omit() %>% rename(month = Monthly, balance = `...3`)
+
 
 trade_china_qt <- read_xlsx(file.path(path_bea, "trad-geo-time-series-0125.xlsx"),
-                            sheet = "Table 3",
+                            sheet = "Table 6", # balance on goods only
                             skip = 5) %>% slice(29:n()) %>% select(Period, China) %>%
   na.omit() %>% rename(quarter = Period, balance = China)
 

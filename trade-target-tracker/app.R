@@ -102,7 +102,7 @@ ui <- page_fillable(
   
   navset_card_tab(
     ### Trade Balance ###
-    nav_panel("Trade Balance", 
+    nav_panel("Goods Trade Balance", 
               fluidRow(
                 column(8, plotlyOutput("plotly_trade"),
                        div(
