@@ -431,7 +431,7 @@ server <- function(input, output) {
   
   income_df_trend <- income_df %>%
     # get relevant years - trump up until break.
-    filter(quarter >= as.Date("2017-01-01"),
+    filter(quarter >= as.Date("2016-01-01"),
            quarter < as.Date("2020-01-01"))
   
   trend_model <- lm(income ~ as.numeric(quarter), data = income_df_trend)
