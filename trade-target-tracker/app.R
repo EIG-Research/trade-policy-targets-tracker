@@ -506,7 +506,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO and asserting that strengthening Trump’s first-term trade restrictions will accelerate income growth. Real median household income in was $81,779 last year. We set the benchmark to be the pre-COVID growth rate during Trump’s first term.</p>')
+    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO and asserting that strengthening Trump’s first-term trade restrictions will accelerate income growth. Real median household income in was $81,779 in 2023. We set the benchmark to be the pre-COVID growth rate during Trump’s first term.</p>')
     
   })
   
