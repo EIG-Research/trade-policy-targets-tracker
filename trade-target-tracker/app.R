@@ -416,7 +416,7 @@ server <- function(input, output) {
   })
   
   output$text_inflation <- renderUI({
-    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank"> campaign speech</a> in August 2024, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Q4 2024, inflation stood at 2.5 percent. The Federal Reserve’s inflation target is 2 percent.</p>'
+    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank"> campaign speech</a> in August 2024, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Q4 2024, inflation stood at 2.5 percent year-over-year. The Federal Reserve’s inflation target is 2 percent.</p>'
     )})
   
   ## Real Median Household Income ##
@@ -515,7 +515,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a>  the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO. The administration  asserts that strengthening trade restrictions will raise average annual income growth rate back to the 3.4 percent during Trump’s first term. Real median household income was $81,779 in 2023. We set the benchmark to be the pre-COVID growth rate during Trump’s first term.</p>')
+    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO. The administration  asserts that strengthening trade restrictions will raise the average annual income growth rate back to the 3.4 percent rate from Trump’s first term. We have thus set the target at 3.4 percent. Real median household income was $81,779 in 2023, and we will update this figure once it is released by the Census Bureau.</p>')
     
   })
   
@@ -594,7 +594,7 @@ server <- function(input, output) {
   })
   
   output$text_budget <- renderUI({
-    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. In early April, the president <a href = "https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08/?utm_source=chatgpt.com" target = "_budget" > said<a/> that the United States is bringing in $2 billion in tariff revenues daily. Peter Navarro provided a different estimate, <a href = "https://www.foxnews.com/video/6370789893112" target="_blank"> arguing<a/> that the then-planned “Liberation Day” tariffs would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, Trump <a href = "https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target = "_blank" >hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025..</p>'
+    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8th, 2025, six days after “Liberation Day”, the president <a href = "https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08/?utm_source=chatgpt.com" target = "_blank">claimed</a> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href = "https://www.foxnews.com/video/6370789893112" target="_blank">argued</a> just prior to the enactment of the new tariffs they would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, <a href = "https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">Trump hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025.</p>'
     )})
   
   
@@ -759,7 +759,7 @@ server <- function(input, output) {
   })
   
   output$text_va <- renderUI({
-    HTML('<p>White House <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/report-to-the-president-on-the-america-first-trade-policy-executive-summary/?utm_source=chatgpt.com" target="_blank"> trade</a> policy aims to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing was $2.4 trillion in Q4, 2024, and has risen steadily over the past few decades. We set the target to be the growth rate since Q1 2010.</p>'
+    HTML('<p>White House <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/report-to-the-president-on-the-america-first-trade-policy-executive-summary/?utm_source=chatgpt.com" target="_blank"> trade</a> policy aims to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing was $2.4 trillion in Q4 2024, and has risen steadily over the past few decades. We set the target to be the growth rate since Q1 2010.</p>'
     )})
   
   ## Share of Value Added as a Percentage of GDP##
@@ -838,7 +838,7 @@ server <- function(input, output) {
   })
   
   output$text_va_share <- renderUI({
-    HTML('<p>The administration aims to execute a <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda </a> that will accomplish three things: ”an increase in the manufacturing sector’s share of gross domestic product; an increase in real median household income; and a decrease in the size of the trade in goods deficit.” In Q4 2024, the manufacturing sector’s share of GDP was 10 percent. We set the target to be 15.1%, prior to when China joined the WTO.</p>'
+    HTML('<p>The administration aims to execute a <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda </a> that will accomplish three things: ”an increase in the manufacturing sector’s share of gross domestic product; an increase in real median household income; and a decrease in the size of the trade in goods deficit.” In Q4 2024, the manufacturing sector’s share of GDP was 10 percent. We set the target to be 15.1 percent, prior to when China joined the WTO.</p>'
     )})
   
   ## Construction Spending ##
@@ -920,7 +920,7 @@ server <- function(input, output) {
   })
   
   output$text_const <- renderUI({
-    HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. As construction spending rose markedly during the Biden administration, it is difficult to set a target.</p>'
+    HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. We set the target to be the manufacturing construction spending amount in Q4 2024, assuming the administration aims to maintain spending at at least the Biden administration levels.</p>'
     )})
   
   ## Industrial Production ##
@@ -998,7 +998,7 @@ server <- function(input, output) {
   })
   
   output$text_ind_prod <- renderUI({
-    HTML('<p>The Trump administration has declared the decline in U.S. manufacturing production level to be a <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target = "_blank" >crisis.</a> The White House declared a national emergency to address goods trade deficits that “have led to the hollowing out of our manufacturing base; resulted in a lack of incentive to increase advanced domestic manufacturing capacity; undermined critical supply chains; and rendered our defense-industrial base dependent on foreign adversaries.“ The industrial manufacturing production indeed stood at 100.5 in Q1 2025. We set the benchmark to be the pre-financial crisis peak of 106.1.</p>'
+    HTML('<p>The Trump administration, in declaring a <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_budget"> national emergency</a> to justify the use of tariffs, cited the decline in manufacturing output as one of the reasons tariffs are needed. Goods trade deficits “have led to the hollowing out of our manufacturing base; resulted in a lack of incentive to increase advanced domestic manufacturing capacity; undermined critical supply chains; and rendered our defense-industrial base dependent on foreign adversaries.“ The industrial manufacturing production stood at 100.5 in Q1 2025. We set the benchmark to be the pre-financial crisis peak of 106.1.</p>'
     )})
   
   ## Employment rate, native born men 18+ ##
@@ -1158,7 +1158,7 @@ server <- function(input, output) {
   })
   
   output$text_emp_manu <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Manufacturing employment stands at 12.8 million in Q1 2025, down from the chosen target of 17.3 in 2000, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Manufacturing employment stands at $12.8 million in Q1 2025, down from the chosen target of $17.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
     )})
   
   ## Manufacturing Share ##
@@ -1236,7 +1236,7 @@ server <- function(input, output) {
   })
   
   output$text_share_manu <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level from just before China joined the WTO in 2001.</p>'
     )})
   
   ## Employment, motor vehicles and parts ## 
@@ -1314,7 +1314,7 @@ server <- function(input, output) {
   })
   
   output$text_motor_emp <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
     )})
   
   ## Motor vehicles and parts share of private employment ##
@@ -1392,7 +1392,7 @@ server <- function(input, output) {
   })
   
   output$text_motor_share <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs made up 0.7 percent of total U.S. jobs in Q1 2025, down from 1.2 percent in 2000, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs made up 0.7 percent of total U.S. jobs in Q1 2025, down from 1.2 percent in 2000, the level from just before China joined the WTO in 2001.</p>'
     )})
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
@@ -1461,7 +1461,7 @@ server <- function(input, output) {
   })
   
   output$text_china_shock <- renderUI({
-    HTML('<p>Identified by <a href = "https://www.nber.org/papers/w21906" target="_blank"> Autor et al. (2016),</a> manufacturing employment in the 145 counties most impacted by trade with China is 473 thousand jobs (2022). The target is set at 649 thousand, the total employment in these counties just before China joined the WTO in 2001.</p>'
+    HTML('<p>Identified by <href = "https://www.nber.org/papers/w21906" target = "_blank">Autor et al. (2016),</a> manufacturing employment in the 145 counties most impacted by trade with China is 473 thousand jobs (2022). The target is set at 649 thousand, the total employment in these counties just before China joined the WTO in 2001. The Trump administration has <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">argued</a> that “China’s non-market policies and practices have given China global dominance in key manufacturing industries, decimating U.S. industry.”</p>'
     )})
 }
 
