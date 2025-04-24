@@ -42,7 +42,7 @@ load(file.path("cleaned_data", "china_shock.RData"))
 ######################
 ### Build Shiny UI ###
 ######################
-
+setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
 # Define EIG color palette
 eig_colors <- c("#1a654d", "#5e9c86", "#008080", "#044140", "#e1ad28")	  # EIG theme colors
 
@@ -432,14 +432,13 @@ server <- function(input, output) {
       # get relevant years - trump up until break.
       filter(quarter >= as.Date("2016-01-01"),
              quarter < as.Date("2020-01-01"))
-    
+
     trend_model <- lm(income ~ as.numeric(quarter), data = income_df_trend)
     
-    # project 2024 and 2025
-    growth_rate <- coef(trend_model)["as.numeric(quarter)"]*365
+    # grow at a rate of 3.4% a year.
+     growth_rate <-0.034
     
     start_val <- income_df %>% filter(quarter == as.Date("2023-01-01")) %>% pull(income)
-    
     start_year = 2023
     years <- 2024:2028
     
@@ -447,7 +446,7 @@ server <- function(input, output) {
       year = years,
       quarter = as.Date(paste0(years, "-01-01")),
       income = NA_real_,  # placeholder for missing actual values
-      trend = start_val + growth_rate * (years - start_year),
+      trend = start_val + start_val * growth_rate * (years - start_year),
       hover_label = as.character(year)
     ) %>% select(-c(year))
     
@@ -473,14 +472,16 @@ server <- function(input, output) {
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
       name = 'Actual',
-      hovertemplate = "%{x}: %{y:$.0f}<extra></extra>"
+      hovertemplate = "%{x}: %{y:$.0f}<extra></extra>",
+      hoverlabel = list(bgcolor = eig_colors[1])
     ) %>%  
       add_lines(
         data = income_df,
         x = ~quarter,
         y = ~trend,
         name = 'Projection at prior Trump Administration rate',
-        line = list(color = eig_colors[5], dash = 'dash')
+        line = list(color = eig_colors[5], dash = 'dash'),
+        hoverlabel = list(bgcolor = eig_colors[5])
       ) %>%
       add_trace(
         data = income_df_trend,
@@ -503,7 +504,6 @@ server <- function(input, output) {
                      ticksuffix = ""),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]),
         
         legend = list(
           x = 0,          # 0 = left side
@@ -515,7 +515,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO and asserting that strengthening trade restrictions will raise average annual income growth rate back to 3.4 percent during Trump’s first term. Real median household income in was $81,779 in 2023. We set the benchmark to be the pre-COVID growth rate during Trump’s first term.</p>')
+    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a>  the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO. The administration  asserts that strengthening trade restrictions will raise average annual income growth rate back to the 3.4 percent during Trump’s first term. Real median household income was $81,779 in 2023. We set the benchmark to be the pre-COVID growth rate during Trump’s first term.</p>')
     
   })
   
@@ -594,7 +594,7 @@ server <- function(input, output) {
   })
   
   output$text_budget <- renderUI({
-    HTML('<p><a href="https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank"> During</a> his first address to a joint session of Congress on March 4, 2025, the president said, “In the near future, I want to do what has not been done in 24 years: balance the federal budget.” The administration aims to achieve this through a series of spending reductions that more than offset planned tax cuts. The budget deficit was $400 billion for Q1 2025.</p>'
+    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. In early April, the president <a href = "https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08/?utm_source=chatgpt.com" target = "_budget" > said<a/> that the United States is bringing in $2 billion in tariff revenues daily. Peter Navarro provided a different estimate, <a href = "https://www.foxnews.com/video/6370789893112" target="_blank"> arguing<a/> that the then-planned “Liberation Day” tariffs would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, Trump <a href = "https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target = "_blank" >hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025..</p>'
     )})
   
   
@@ -684,7 +684,7 @@ server <- function(input, output) {
   })
   
   output$text_trade <- renderUI({
-    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit stood at $201 billion, while the bilateral trade deficit with China stands at $53 billion. The administration aims to bring both down to zero.</p>'
+    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit stood at $201 billion, while the bilateral trade deficit with China stands at $53 billion. The administration aims to bring both down to zero, saying on Truth Social that the US is going to <a href = "https://truthsocial.com/@realDonaldTrump/posts/114293581018893404" target = "_blank" >reverse</a> trade deficits with trading partners.</p>'
     )})
   
   ## Value Added ##
