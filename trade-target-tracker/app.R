@@ -42,7 +42,6 @@ load(file.path("cleaned_data", "china_shock.RData"))
 ######################
 ### Build Shiny UI ###
 ######################
-setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
 
 # Define EIG color palette
 eig_colors <- c("#1a654d", "#5e9c86", "#008080", "#044140", "#e1ad28")	  # EIG theme colors
@@ -429,13 +428,6 @@ server <- function(input, output) {
       hover_label = format(as.yearqtr(quarter), "%Y")
     )
     
-    income_df_trend <- income_df %>%
-      # get relevant years - trump up until break.
-      filter(quarter >= as.Date("2016-01-01"),
-             quarter < as.Date("2020-01-01"))
-
-    trend_model <- lm(income ~ as.numeric(quarter), data = income_df_trend)
-    
     # grow at a rate of 3.4% a year.
      growth_rate <-0.034
     
@@ -483,16 +475,6 @@ server <- function(input, output) {
         name = 'Projection at prior Trump Administration rate',
         line = list(color = eig_colors[5], dash = 'dash'),
         hoverlabel = list(bgcolor = eig_colors[5])
-      ) %>%
-      add_trace(
-        data = income_df_trend,
-        x = ~quarter,
-        y = ~predict(trend_model),
-        name = "Income Trendline during Trump's first Administration",
-        line = list(color = eig_colors[4], width = 2, dash = "dash"),
-        hoverinfo = "none",
-        hovertemplate = NULL,
-        showlegend = TRUE
       ) %>%
       layout(
         xaxis = list(title = "Time (Annual)",
