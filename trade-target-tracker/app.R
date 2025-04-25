@@ -32,7 +32,7 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 #################
 ### Load Data ###
 #################
-setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
+
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
@@ -493,7 +493,8 @@ server <- function(input, output) {
           y = 1,          # 1 = top side
           xanchor = "left",
           yanchor = "top",
-          title = list(text = ""))
+          title = list(text = ""),
+          font = list(size = 18))
       )
   })
   

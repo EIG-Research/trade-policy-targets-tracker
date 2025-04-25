@@ -5,6 +5,6 @@ account: economicinnovationgroup
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 14532284
-bundleId: 10178891
+bundleId: 10179819
 url: https://economicinnovationgroup.shinyapps.io/trade-target-tracker/
 version: 1
