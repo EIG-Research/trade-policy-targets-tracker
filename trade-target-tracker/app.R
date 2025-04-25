@@ -467,16 +467,14 @@ server <- function(input, output) {
       name = 'Actual',
       hovertemplate = "%{x}: %{y:$.0f}<extra></extra>",
       hoverlabel = list(bgcolor = eig_colors[1])
-    ) %>%
-      add_trace(
-        data = income_df_trend,
+    ) %>%  
+      add_lines(
+        data = income_df,
         x = ~quarter,
-        y = ~predict(trend_model),
-        name = "Income Trendline during Trump's first Administration",
-        line = list(color = eig_colors[4], width = 2, dash = "dash"),
-        hoverinfo = "none",
-        hovertemplate = NULL,
-        showlegend = TRUE
+        y = ~trend,
+        name = 'Projection at prior Trump Administration rate',
+        line = list(color = eig_colors[5], dash = 'dash'),
+        hoverlabel = list(bgcolor = eig_colors[5])
       ) %>%
       layout(
         xaxis = list(title = "Time (Annual)",
