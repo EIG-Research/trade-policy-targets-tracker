@@ -32,7 +32,7 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 #################
 ### Load Data ###
 #################
-
+setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
@@ -184,7 +184,7 @@ ui <- page_fillable(
                 ),
                 
                 ## Employment in manufacturing, counties most affected by the "China shock"  ##
-                nav_panel("Manufacturing Employment - China Shock", 
+                nav_panel("China Shock Jobs", 
                           fluidRow(
                             column(8, plotlyOutput("plotly_china_shock"),
                                    div(
@@ -666,7 +666,7 @@ server <- function(input, output) {
   })
   
   output$text_trade <- renderUI({
-    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit in goods stood at $262 billion, while the bilateral trade deficit with China stands at $62 billion. The administration aims to bring both down to zero, saying on Truth Social that the US is going to <a href = "https://truthsocial.com/@realDonaldTrump/posts/114293581018893404" target = "_blank" >reverse</a> trade deficits with trading partners.</p>'
+    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit in goods stood at $262 billion, while the bilateral trade deficit with China stood at $62 billion. The administration aims to bring both down to zero, saying on Truth Social that the US is going to <a href = "https://truthsocial.com/@realDonaldTrump/posts/114293581018893404" target = "_blank" >reverse</a> trade deficits with trading partners.</p>'
     )})
   
   ## Value Added ##
@@ -902,7 +902,7 @@ server <- function(input, output) {
   })
   
   output$text_const <- renderUI({
-    HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. We set the target to be the manufacturing construction spending amount in Q4 2024, assuming the administration aims to maintain spending at least at at at least the Biden administration levels.</p>'
+    HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. We set the target to be the manufacturing construction spending amount in Q4 2024, assuming the administration aims to maintain spending at least at the Biden administration levels.</p>'
     )})
   
   ## Industrial Production ##
@@ -1217,7 +1217,7 @@ server <- function(input, output) {
   })
   
   output$text_share_manu <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level just before China joined the WTO in 2001. The Trump administration has lamented the Chinese entry into WTO as a cause of the fall in American economic well-being, and therefore we have set the target there.</p>'
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level just before China joined the WTO in 2001.</p>'
     )})
   
   ## Employment, motor vehicles and parts ## 
@@ -1295,7 +1295,7 @@ server <- function(input, output) {
   })
   
   output$text_motor_emp <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” There are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” As of Quarter 1 2025 there are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
     )})
   
   ## Motor vehicles and parts share of private employment ##
