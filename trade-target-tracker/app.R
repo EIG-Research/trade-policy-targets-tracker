@@ -43,6 +43,7 @@ load(file.path("cleaned_data", "china_shock.RData"))
 ### Build Shiny UI ###
 ######################
 setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
+
 # Define EIG color palette
 eig_colors <- c("#1a654d", "#5e9c86", "#008080", "#044140", "#e1ad28")	  # EIG theme colors
 
@@ -323,7 +324,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_budget"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method)')
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method).')
                        )
                 ),  # Plot on the left
                 
@@ -404,10 +405,10 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0,
-            y = 1.75,
+            y = 1.5,
             text = "Long-run Fed target (2%)",
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -520,7 +521,6 @@ server <- function(input, output) {
   })
   
   
-  
   ## Budget ##
   budget_df <- tibble(
     quarter = as.Date(as.yearqtr(time(budget_real))),
@@ -581,11 +581,11 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.75,
-            y = 45,
+            x = 0.5,
+            y = 75,
             text = "Target: Balanced Budget",
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -670,11 +670,11 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.01,
-            y = 5,
-            text = "Target: Eliminate Deficit",
+            x = 0.03,
+            y = 10,
+            text = "Target: Eliminate Goods Deficit",
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -684,7 +684,7 @@ server <- function(input, output) {
   })
   
   output$text_trade <- renderUI({
-    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit stood at $201 billion, while the bilateral trade deficit with China stands at $53 billion. The administration aims to bring both down to zero, saying on Truth Social that the US is going to <a href = "https://truthsocial.com/@realDonaldTrump/posts/114293581018893404" target = "_blank" >reverse</a> trade deficits with trading partners.</p>'
+    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit in goods stood at $262 billion, while the bilateral trade deficit with China stands at $62 billion. The administration aims to bring both down to zero, saying on Truth Social that the US is going to <a href = "https://truthsocial.com/@realDonaldTrump/posts/114293581018893404" target = "_blank" >reverse</a> trade deficits with trading partners.</p>'
     )})
   
   ## Value Added ##
@@ -826,10 +826,10 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.12,
-            y = y_lvl+0.15,
+            y = y_lvl+0.25,
             text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -897,15 +897,15 @@ server <- function(input, output) {
           )
         ),
         
-        # label for balance 
+        # label for target 
         annotations = list(
           list(
             xref = "paper",
             x = 0.4,
-            y = y_lvl+0.8,
+            y = y_lvl+1,
             text = paste0("Q4 2024 level: ",round(y_lvl,1),"B"),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -964,8 +964,7 @@ server <- function(input, output) {
         
         yaxis = list(title = "Industrial Production Index",
                      tickformat = ".0f",
-                     ticksuffix = "",
-                     rangemode = "tozero"),
+                     ticksuffix = ""),
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1]),
@@ -985,11 +984,11 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.4,
+            x = 0.02,
             y = y_lvl + 2,
             text = paste0("2007 Q4 peak, before the Great Financial Crisis = " , round(y_lvl, 1)),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -1066,10 +1065,10 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.25,
-            y = y_lvl+0.3,
+            y = y_lvl+0.4,
             text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -1149,7 +1148,7 @@ server <- function(input, output) {
             y = y_lvl + 0.2,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"M"),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -1158,7 +1157,7 @@ server <- function(input, output) {
   })
   
   output$text_emp_manu <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Manufacturing employment stands at $12.8 million in Q1 2025, down from the chosen target of $17.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Manufacturing jobs stand at 12.8 million in Q1 2025, down from the chosen target of 17.3 million jobs in 2000, the level from just before China joined the WTO in 2001.</p>'
     )})
   
   ## Manufacturing Share ##
@@ -1227,7 +1226,7 @@ server <- function(input, output) {
             y = y_lvl + 0.3,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -1236,7 +1235,7 @@ server <- function(input, output) {
   })
   
   output$text_share_manu <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level just before China joined the WTO in 2001. The Trump administration has lamented the Chinese entry into WTO as a cause of the fall in American economic well-being, and therefore we have set the target there.</p>'
     )})
   
   ## Employment, motor vehicles and parts ## 
@@ -1305,7 +1304,7 @@ server <- function(input, output) {
             y = y_lvl + 0.025,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"M"),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -1380,10 +1379,10 @@ server <- function(input, output) {
           list(
             xref = "paper",
             x = 0.31,
-            y = y_lvl + 0.015,
+            y = y_lvl + 0.02,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -1448,11 +1447,11 @@ server <- function(input, output) {
         annotations = list(
           list(
             xref = "paper",
-            x = 0.28,
-            y = y_lvl + 8,
+            x = 0.29,
+            y = y_lvl + 8.5,
             text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"K"),
             showarrow = FALSE,
-            font = list(color = eig_colors[2], size = 12),
+            font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
             yanchor = "middle"
           )
@@ -1466,3 +1465,4 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
+
