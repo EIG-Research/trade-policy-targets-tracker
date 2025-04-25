@@ -416,7 +416,7 @@ server <- function(input, output) {
   })
   
   output$text_inflation <- renderUI({
-    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank"> campaign speech</a> in August 2024, Donald Trump vowed that “starting on Day 1, we will end inflation and make America affordable again.” In Q4 2024, inflation stood at 2.5 percent year-over-year. The Federal Reserve’s inflation target is 2 percent.</p>'
+    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank"> campaign speech</a> in August 2024, then-candidate Donald Trump vowed that “starting on Day 1 [of my administration], we will end inflation and make America affordable again.” In Q4 2024, inflation stood at 2.5 percent year-over-year. The Federal Reserve’s inflation target is 2 percent.</p>'
     )})
   
   ## Real Median Household Income ##
@@ -498,7 +498,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO. The administration  asserts that strengthening trade restrictions will raise the average annual income growth rate back to the 3.4 percent rate from Trump’s first term. We have thus set the target at 3.4 percent. Real median household income was $81,779 in 2023, and we will update this figure once it is released by the Census Bureau.</p>')
+    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the Trump administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO. The administration  asserts that strengthening trade restrictions will raise the average annual income growth rate back to the 3.4 percent rate from Trump’s first term. We have thus set the target at 3.4 percent growth. Real median household income was $81,779 in 2023, and we will update this figure for 2024 once it is released by the Census Bureau.</p>')
     
   })
   
@@ -576,7 +576,7 @@ server <- function(input, output) {
   })
   
   output$text_budget <- renderUI({
-    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8th, 2025, six days after “Liberation Day”, the president <a href = "https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08/?utm_source=chatgpt.com" target = "_blank">claimed</a> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href = "https://www.foxnews.com/video/6370789893112" target="_blank">argued</a> just prior to the enactment of the new tariffs they would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, <a href = "https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">Trump hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025.</p>'
+    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8th, 2025, six days after “Liberation Day,” President Trump <a href = "https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08/?utm_source=chatgpt.com" target = "_blank">claimed</a> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href = "https://www.foxnews.com/video/6370789893112" target="_blank">argued</a> just prior to the enactment of the new tariffs that they would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, <a href = "https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">Trump hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025.</p>'
     )})
   
   
@@ -666,7 +666,7 @@ server <- function(input, output) {
   })
   
   output$text_trade <- renderUI({
-    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy,” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit in goods stood at $262 billion, while the bilateral trade deficit with China stands at $62 billion. The administration aims to bring both down to zero, saying on Truth Social that the US is going to <a href = "https://truthsocial.com/@realDonaldTrump/posts/114293581018893404" target = "_blank" >reverse</a> trade deficits with trading partners.</p>'
+    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit in goods stood at $262 billion, while the bilateral trade deficit with China stands at $62 billion. The administration aims to bring both down to zero, saying on Truth Social that the US is going to <a href = "https://truthsocial.com/@realDonaldTrump/posts/114293581018893404" target = "_blank" >reverse</a> trade deficits with trading partners.</p>'
     )})
   
   ## Value Added ##
