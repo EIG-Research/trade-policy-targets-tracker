@@ -1060,7 +1060,7 @@ server <- function(input, output) {
   })
   
   output$text_employment_pop_native <- renderUI({
-    HTML('<p>According to Vice President J.D. Vance, the Trump Administration <a href="https://www.nytimes.com/2024/10/12/magazine/jd-vance-interview.html" target="_blank"> hopes</a> to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. The native-born employment rate currently stands at 59.4 percent. We set the target to be 64.5 percent, which is the 2000 level before China joined the WTO.</p>'
+    HTML('<p>According to Vice President J.D. Vance, the Trump Administration <a href="https://www.nytimes.com/2024/10/12/magazine/jd-vance-interview.html" target="_blank"> hopes</a> to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. NEC director <a href = "https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target  "_blank"> has also said</a> "China entered the WTO in 2000. In the 15 years that followed, real incomes declined about $1,200 cumulatively over that time … We got the cheap goods at the grocery store, but then we had fewer jobs.” The native-born employment rate currently stands at 59.4 percent. We set the target to be 64.5 percent, which is the 2000 level before China joined the WTO.</p>'
     )})
   
   ## Employment Manufacturing ##
