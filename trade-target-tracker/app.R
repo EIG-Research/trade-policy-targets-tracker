@@ -105,7 +105,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_trade"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). Aggregate data is available beginning in Q1 1992. China-specific data is  available beginning in Q1 1992; 1992 to 1998 data only includes goods but not services, from the Census Bureau.')
+                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). All data is available beginning in Q1 1992; China-specific data from 1992 to 1998 retrieved from the Census Bureau.')
                        )
                 ),  # Plot on the left
                 
@@ -167,7 +167,7 @@ ui <- page_fillable(
                 ),
                 
                 ## Motor vehicles and parts share of private employment ##
-                nav_panel("Automotive Share", 
+                nav_panel("Automotive Employment Share", 
                           fluidRow(
                             column(8, plotlyOutput("plotly_motor_share"),
                                    div(
@@ -705,16 +705,17 @@ server <- function(input, output) {
       text = ~hover_label,
       hovertemplate = "%{x}: %{y:$,.0f}B<extra></extra>"
     ) %>%
-      add_trace(
-        data = va_df_trend,
-        x = ~quarter,
-        y = ~predict(trend_model),
-        name = "Trendline after the Great Financial Crisis",
-        line = list(color = eig_colors[4], width = 2, dash = "dash"),
-        hoverinfo = "none",
-        hovertemplate = NULL,
-        showlegend = TRUE
-      ) %>%
+    # %>%
+    #   add_trace(
+    #     data = va_df_trend,
+    #     x = ~quarter,
+    #     y = ~predict(trend_model),
+    #     name = "Trendline after the Great Financial Crisis",
+    #     line = list(color = eig_colors[4], width = 2, dash = "dash"),
+    #     hoverinfo = "none",
+    #     hovertemplate = NULL,
+    #     showlegend = TRUE
+    #   )
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
