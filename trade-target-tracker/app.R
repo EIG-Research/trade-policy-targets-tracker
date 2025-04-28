@@ -178,7 +178,7 @@ ui <- page_fillable(
                 ),
                 
                 ## Motor vehicles and parts share of private employment ##
-                nav_panel("Automotive Share", 
+                nav_panel("Automotive Employment Share", 
                           fluidRow(
                             column(8, plotlyOutput("plotly_motor_share"),
                                    div(
@@ -1326,10 +1326,7 @@ Spending on factory construction had already climbed steeply in the years before
   })
   
   output$text_motor_emp <- renderUI({
-    HTML('<p>The auto sector is a particular focus of President Trump’s trade agenda, which <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">seeks</a> “better-paying American jobs making beautiful American-made cars.” And, for example, among the reasons given for deploying tariffs is to counter the “variety of non-tariff barriers that impede access to the Japanese and Korean automotive markets, including non-acceptance of certain U.S. standards, duplicative testing and certification requirements, and transparency issues.”<br><br>To be consistent with total manufacturing employment, we have set the target for auto employment at the level from just before China’s entry into the WTO, or 1.3 million auto manufacturing jobs.
-
-         
-         </p>'
+    HTML('<p>The auto sector is a particular focus of President Trump’s trade agenda, which <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">seeks</a> “better-paying American jobs making beautiful American-made cars.” And, for example, among the reasons given for deploying tariffs is to counter the “variety of non-tariff barriers that impede access to the Japanese and Korean automotive markets, including non-acceptance of certain U.S. standards, duplicative testing and certification requirements, and transparency issues.”<br><br>To be consistent with total manufacturing employment, we have set the target for auto employment at the level from just before China’s entry into the WTO, or 1.3 million auto manufacturing jobs.</p>'
     )})
   
   ## Motor vehicles and parts share of private employment ##
