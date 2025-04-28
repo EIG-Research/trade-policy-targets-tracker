@@ -33,6 +33,8 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 ### Load Data ###
 #################
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
+
+setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
 load(file.path("cleaned_data", "cps_employment.RData"))
@@ -105,14 +107,17 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_trade"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). Aggregate data is available beginning in Q1 1992. China-specific data is  available beginning in Q1 1992; 1992 to 1998 data only includes goods but not services, from the Census Bureau.')
+                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). Aggregate and China-specific data is available beginning in Q1 1992.')
                        )
                 ),  # Plot on the left
                 
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                  uiOutput("text_trade"))
-                ))
+                  style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                  div(
+                    style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                    uiOutput("text_trade")
+                    )
+                )))
     ),
     
     ## Manufacturing Employment ##
@@ -129,9 +134,11 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_emp_manu"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_emp_manu"))
+                            )))
                 ),
                 
                 ## Manufacturing share of private employment ##
@@ -145,9 +152,11 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_share_manu"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_share_manu"))
+                            )))
                 ),
                 
                 ## Employment, motor vehicles and parts ## 
@@ -161,9 +170,11 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_motor_emp"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_motor_emp"))
+                            )))
                 ),
                 
                 ## Motor vehicles and parts share of private employment ##
@@ -177,13 +188,15 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_motor_share"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_motor_share"))
+                            )))
                 ),
                 
                 ## Employment in manufacturing, counties most affected by the "China shock"  ##
-                nav_panel("China Shock Jobs", 
+                nav_panel('"China Shock" Jobs', 
                           fluidRow(
                             column(8, plotlyOutput("plotly_china_shock"),
                                    div(
@@ -193,9 +206,11 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_china_shock"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_china_shock"))
+                            )))
                 )
               )
     ),
@@ -214,9 +229,11 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_va"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_va"))
+                            )))
                 ),
                 
                 ## Manufacturing share of GDP##
@@ -229,9 +246,11 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_va_share"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_va_share"))
+                            )))
                 ),
                 
                 ## Total Private Construction Spending in Manufacturing ##
@@ -245,9 +264,11 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_const"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_const"))
+                            )))
                 ),
                 
                 ## Industrial Production, Manufacturing ##
@@ -256,13 +277,15 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_ind_prod"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/IPGMFSQ" target="_blank"> Federal Reserve</a>, seasonally adjusted, 2017 basis = 100.')
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/IPGMFSQ" target="_blank"> Federal Reserve</a>, seasonally adjusted, 2017 basis = 100. The index measures the real output of the manufacturing, mining, and electric and gas utilities industries. Click <a href = "https://www.federalreserve.gov/releases/g17/ipnotes.htm" target="_blank">here</a> for more information.')
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                              uiOutput("text_ind_prod"))
-                            ))
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_ind_prod"))
+                            )))
                 ),
               )
     ),
@@ -295,9 +318,11 @@ ui <- page_fillable(
                        )
                 ),
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                  uiOutput("text_hh_income")
-                ))
+                  style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                  div(
+                    style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                    uiOutput("text_hh_income")
+                )))
               )
     ),
     
@@ -311,9 +336,11 @@ ui <- page_fillable(
                        )
                 ),
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                  uiOutput("text_inflation"))
-                ))
+                  style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                  div(
+                    style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                    uiOutput("text_inflation"))
+                )))
     ),
     
     ### Federal Budget Balance ###
@@ -327,9 +354,11 @@ ui <- page_fillable(
                 ),  # Plot on the left
                 
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
-                  uiOutput("text_budget"))
-                ))
+                  style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                  div(
+                    style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                    uiOutput("text_budget"))
+                )))
     )
     
   )
@@ -705,16 +734,16 @@ server <- function(input, output) {
       text = ~hover_label,
       hovertemplate = "%{x}: %{y:$,.0f}B<extra></extra>"
     ) %>%
-      add_trace(
-        data = va_df_trend,
-        x = ~quarter,
-        y = ~predict(trend_model),
-        name = "Trendline after the Great Financial Crisis",
-        line = list(color = eig_colors[4], width = 2, dash = "dash"),
-        hoverinfo = "none",
-        hovertemplate = NULL,
-        showlegend = TRUE
-      ) %>%
+  #    add_trace(
+  #      data = va_df_trend,
+  #      x = ~quarter,
+  #      y = ~predict(trend_model),
+  #      name = "Trendline after the Great Financial Crisis",
+  #      line = list(color = eig_colors[4], width = 2, dash = "dash"),
+  #      hoverinfo = "none",
+  #      hovertemplate = NULL,
+  #      showlegend = TRUE
+  #    ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -726,13 +755,13 @@ server <- function(input, output) {
                      tickformat = ",.0f",
                      ticksuffix = ""),
         
-        legend = list(
-          x = 0,          # 0 = left side
-          y = 1,          # 1 = top side
-          xanchor = "left",
-          yanchor = "top",
-          title = list(text = "")
-        ),
+  #      legend = list(
+   #       x = 0,          # 0 = left side
+   #       y = 1,          # 1 = top side
+  #        xanchor = "left",
+   #       yanchor = "top",
+    #      title = list(text = "")
+   #     ),
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1])
