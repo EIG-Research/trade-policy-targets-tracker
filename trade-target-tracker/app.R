@@ -136,7 +136,7 @@ ui <- page_fillable(
                 ),
                 
                 ## Manufacturing share of private employment ##
-                nav_panel("Manufacturing Share", 
+                nav_panel("Manufacturing Employment Share", 
                           fluidRow(
                             column(8, plotlyOutput("plotly_share_manu"),
                                    div(
@@ -236,7 +236,7 @@ ui <- page_fillable(
                 ),
                 
                 ## Total Private Construction Spending in Manufacturing ##
-                nav_panel("Construction Spending", 
+                nav_panel("Manufacturing Construction Spending", 
                           fluidRow(
                             column(8, plotlyOutput("plotly_const"),
                                    div(
@@ -270,21 +270,21 @@ ui <- page_fillable(
     
     
     ## Native Employment ##
-    nav_panel("Native Employment",
-              fluidRow(
-                column(8, plotlyOutput("plotly_employment_pop_native"),
-                       div(
-                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
-                       )
-                ),  # Plot on the left
+#    nav_panel("Native Employment",
+#              fluidRow(
+#                column(8, plotlyOutput("plotly_employment_pop_native"),
+#                       div(
+#                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+#                         HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
+#                       )
+#                ),  # Plot on the left
                 
-                column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
-                  uiOutput("text_employment_pop_native"))
-                ))
+#                column(4, div(
+#                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+#                  uiOutput("text_employment_pop_native"))
+#                ))
               
-    ),
+#    ),
     
     ## Household Income ##
     nav_panel("Income",
@@ -416,7 +416,7 @@ server <- function(input, output) {
   })
   
   output$text_inflation <- renderUI({
-    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank"> campaign speech</a> in August 2024, then-candidate Donald Trump vowed that “starting on Day 1 [of my administration], we will end inflation and make America affordable again.” In Q4 2024, inflation stood at 2.5 percent year-over-year. The Federal Reserve’s inflation target is 2 percent.</p>'
+    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank" >campaign speech</a> in August 2024, then-candidate Donald Trump vowed that “starting on Day 1 [of my administration], we will end inflation and make America affordable again,” though he also later <a href="https://apnews.com/article/trump-immigration-tariffs-pardons-abortion-prosecutions-riot-72c08269f0a870d20e29033319201e22" target="_blank">said</a> that he “can’t guarantee” that prices would not rise because of tariffs.<br><br>Heading into the Trump presidency, inflation was running at roughly 2.5 percent year-over-year, above the Federal Reserve’s target of 2 percent.</p>'
     )})
   
   ## Real Median Household Income ##
@@ -498,8 +498,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>As part of its <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda,</a> the Trump administration aims to boost real median household income, attributing sluggish growth in the early 2000s to China’s accession to the WTO. The administration  asserts that strengthening trade restrictions will raise the average annual income growth rate back to the 3.4 percent rate from Trump’s first term. We have thus set the target at 3.4 percent growth. Real median household income was $81,779 in 2023, and we will update this figure for 2024 once it is released by the Census Bureau.</p>')
-    
+    HTML('<p>“An increase in real median household income” was one of the explicit goals of the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda.</a> The administration also celebrated the 3.4 percent annual growth rate of real median household income from 2016 to 2019, coinciding with President Trump’s first term.<br><br>We have thus set the target at 3.4 percent annual growth. Real median household income was $81,779 in 2023, the most recent year for which the data is available, and we will update this figure for 2024 once it is released by the Census Bureau.</p>')
   })
   
   
@@ -576,7 +575,7 @@ server <- function(input, output) {
   })
   
   output$text_budget <- renderUI({
-    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8th, 2025, six days after “Liberation Day,” President Trump <a href = "https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08/?utm_source=chatgpt.com" target = "_blank">claimed</a> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href = "https://www.foxnews.com/video/6370789893112" target="_blank">argued</a> just prior to the enactment of the new tariffs that they would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, <a href = "https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">Trump hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025.</p>'
+    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8th, 2025, six days after “Liberation Day,” President Trump <a href="https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08/?utm_source=chatgpt.com" target="_blank">claimed<a/> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href="https://www.foxnews.com/video/6370789893112" target="_blank">argued</a> just prior to the enactment of the new tariffs that they would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, <a href="https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">Trump hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025.</p>'
     )})
   
   
@@ -666,7 +665,7 @@ server <- function(input, output) {
   })
   
   output$text_trade <- renderUI({
-    HTML('<p>The administration <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf?utm_source=chatgpt.com" taraget="_blank"> advocates</a> for an “America First Trade Policy” aimed at eliminating the trade deficit by raising tariffs on U.S. trading partners. As of Q4 2024, the aggregate U.S. trade deficit in goods stood at $262 billion, while the bilateral trade deficit with China stood at $62 billion. The administration aims to bring both down to zero, saying on Truth Social that the US is going to <a href = "https://truthsocial.com/@realDonaldTrump/posts/114293581018893404" target = "_blank" >reverse</a> trade deficits with trading partners.</p>'
+    HTML('<p>The Trump administration has <a href = "https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">cited</a> as one of its goals a “decrease in the size of the trade in goods deficit,” adding that “reversing the flow of American wealth to foreign countries in the form of the trade deficit” would allow the U.S. to reclaim its technological, economic, and military edge. Such a reversal of capital flows would require running an American trade surplus. And in its <a href="https://web.archive.org/web/20250403054403/https://ustr.gov/issue-areas/reciprocal-tariff-calculations" target="_blanl">original calculation</a> of reciprocal tariffs, the Trump administration explicitly says that the tariffs were set at the level that would eliminate its trade deficit with each country, which if achieved would collectively also imply that its aggregate deficit with the world was also eliminated.<br><br> We have thus set the target deficit at zero, both for the bilateral deficit with China and the aggregate deficit with the rest of the world. We will update this target if the administration clarifies.</p>'
     )})
   
   ## Value Added ##
@@ -741,7 +740,7 @@ server <- function(input, output) {
   })
   
   output$text_va <- renderUI({
-    HTML('<p>White House <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/report-to-the-president-on-the-america-first-trade-policy-executive-summary/?utm_source=chatgpt.com" target="_blank"> trade</a> policy aims to reverse the “hollowing out of our manufacturing base” and strengthen domestic manufacturing capacity by increasing the cost of foreign-manufactured goods. Real value added in manufacturing was $2.4 trillion in Q4 2024, and has risen steadily over the past few decades. We set the target to be the growth rate since Q1 2010.</p>'
+    HTML('<p>The Trump administration <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries" target="_blank">argues</a> that the “decline in manufacturing output has reduced U.S. manufacturing capacity.” The White House also <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries" target="_blank">says</a> that goods trade deficits have led to the “hollowing out” of the manufacturing base and “resulted in a lack of incentive to increase advanced domestic manufacturing capacity.”<br><br>We have set the target for manufacturing value added, a measure of the sector’s contribution to the overall economy, at the growth rate since after the Great Financial Crisis.</p>'
     )})
   
   ## Share of Value Added as a Percentage of GDP##
@@ -789,38 +788,38 @@ server <- function(input, output) {
                      ticksuffix = "%"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]),
+        hoverlabel = list(bgcolor = eig_colors[1])
         
         
         # add horizontal line
-        shapes = list(
-          list(
-            type = "line",
-            xref = "paper",
-            x0 = 0, x1 = 1,
-            y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[4], width = 2, dash = "dash")
-          )
-        ),
+  #      shapes = list(
+   #       list(
+  #          type = "line",
+  #          xref = "paper",
+   #         x0 = 0, x1 = 1,
+  #          y0 = y_lvl, y1 = y_lvl,
+   #         line = list(color = eig_colors[4], width = 2, dash = "dash")
+  #        )
+  #      ),
         
         # label for balance 
-        annotations = list(
-          list(
-            xref = "paper",
-            x = 0.12,
-            y = y_lvl+0.25,
-            text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
-            showarrow = FALSE,
-            font = list(color = eig_colors[4], size = 14),
-            xanchor = "left",
-            yanchor = "middle"
-          )
-        )
+   #     annotations = list(
+  #        list(
+  #          xref = "paper",
+   #         x = 0.12,
+  #          y = y_lvl+0.25,
+  #          text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
+  #          showarrow = FALSE,
+  #          font = list(color = eig_colors[4], size = 14),
+  #          xanchor = "left",
+  #          yanchor = "middle"
+  #        )
+  #      )
       )
   })
   
   output$text_va_share <- renderUI({
-    HTML('<p>The administration aims to execute a <a href = "https://www.wita.org/atp-research/trade-policy-agenda-report/" target = "_blank" > trade policy agenda </a> that will accomplish three things: ”an increase in the manufacturing sector’s share of gross domestic product; an increase in real median household income; and a decrease in the size of the trade in goods deficit.” In Q4 2024, the manufacturing sector’s share of GDP was 10 percent. We set the target to be 15.1 percent, where it was just prior to when China joined the WTO.</p>'
+    HTML('<p>The Trump administration has included “an increase in the manufacturing sector’s share of gross domestic product” as one of the specific goals of its <a href="https://www.wita.org/atp-research/trade-policy-agenda-report/" target="_blank">trade agenda.</a><br><br>We have not set a precise target for this indicator, but we will be monitoring it for a sustained reversal of the long-term downward trend, in accordance with the stated goal of the administration.</p>'
     )})
   
   ## Construction Spending ##
@@ -902,7 +901,10 @@ server <- function(input, output) {
   })
   
   output$text_const <- renderUI({
-    HTML('<p>The Trump administration aims to <a href="https://www.whitehouse.gov/presidential-actions/2025/04/restoring-americas-maritime-dominance/" target="_blank"> re-shore factories,</a> with an emphasis on shipbuilding. Construction spending on manufacturing facilities was $37.7 billion in Q4 2024. We set the target to be the manufacturing construction spending amount in Q4 2024, assuming the administration aims to maintain spending at least at the Biden administration levels.</p>'
+    HTML('<p>The Trump administration has <href ="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">bemoaned</a> that “over 100,000 factories closed between 1997 and 2016.” President Trump has also <a href="https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank">said</a> that owing to his new trade policy, “Jobs and factories will come roaring back into our country.”
+
+Spending on factory construction had already climbed steeply in the years before the Trump presidency, so we have set the target at maintaining those high levels.
+</p>'
     )})
   
   ## Industrial Production ##
@@ -979,10 +981,10 @@ server <- function(input, output) {
   })
   
   output$text_ind_prod <- renderUI({
-    HTML('<p>The Trump administration, in declaring a <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_budget"> national emergency</a> to justify the use of tariffs, cited the decline in manufacturing output as one of the reasons tariffs are needed. Goods trade deficits “have led to the hollowing out of our manufacturing base; resulted in a lack of incentive to increase advanced domestic manufacturing capacity; undermined critical supply chains; and rendered our defense-industrial base dependent on foreign adversaries.“ The industrial manufacturing production stood at 100.5 in Q1 2025. We set the benchmark to be the pre-financial crisis peak of 106.1.</p>'
+    HTML('<p>The Trump administration, in declaring a <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">national emergency</a> to justify the use of tariffs, cited the decline in manufacturing output as one of the reasons tariffs are needed. Goods trade deficits “have led to the hollowing out of our manufacturing base; resulted in a lack of incentive to increase advanced domestic manufacturing capacity; undermined critical supply chains; and rendered our defense-industrial base dependent on foreign adversaries.“<br><br>We set the target to be a return to the pre-financial crisis peak of 106.1, which had been reached after a long upward trajectory.</p>'
     )})
   
-  ## Employment rate, native born men 18+ ##
+  ## Employment rate, native born 16+ ##
   emp_pop_ratio_df = tibble(
     quarter = as.Date(as.yearqtr(time(emp_pop_ratio_m))),
     emp_pop = as.numeric(emp_pop_ratio_m)*100,
@@ -1139,7 +1141,7 @@ server <- function(input, output) {
   })
   
   output$text_emp_manu <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Manufacturing jobs stand at 12.8 million in Q1 2025, down from the chosen target of 17.3 million jobs in 2000, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our Country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">2025 Trade Policy Agenda,</a> which further laments that manufacturing jobs “declined from 17 million in 1993 to 12 million in 2016.”<br><br>We have set the target at 17.3 million manufacturing jobs, a level slightly below the mid-1990s peak but from just before China’s entry into the WTO — which the administration has repeatedly blamed for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs.</a></p>'
     )})
   
   ## Manufacturing Share ##
@@ -1187,37 +1189,37 @@ server <- function(input, output) {
                      ticksuffix = "%"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]),
+        hoverlabel = list(bgcolor = eig_colors[1])
         
         # add target line
-        shapes = list(
-          list(
-            type = "line",
-            xref = "paper",
-            x0 = 0, x1 = 1,
-            y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[4], width = 2, dash = "dash")
-          )
-        ),
+       # shapes = list(
+      #    list(
+      #      type = "line",
+      #      xref = "paper",
+      #      x0 = 0, x1 = 1,
+      #      y0 = y_lvl, y1 = y_lvl,
+      #      line = list(color = eig_colors[4], width = 2, dash = "dash")
+      #    )
+      #  ),
         
         # add label for target
-        annotations = list(
-          list(
-            xref = "paper",
-            x = 0.29,
-            y = y_lvl + 0.3,
-            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
-            showarrow = FALSE,
-            font = list(color = eig_colors[4], size = 14),
-            xanchor = "left",
-            yanchor = "middle"
-          )
-        )
+       # annotations = list(
+      #    list(
+      #      xref = "paper",
+      #      x = 0.29,
+      #      y = y_lvl + 0.3,
+      #      text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+      #      showarrow = FALSE,
+      #      font = list(color = eig_colors[4], size = 14),
+      #      xanchor = "left",
+      #      yanchor = "middle"
+      #    )
+      #  )
       )
   })
   
   output$text_share_manu <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” In Q1 2025, manufacturing jobs made up 9.4 percent of employment, down from the chosen target of 15.5 percent, the level just before China joined the WTO in 2001.</p>'
+    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our Country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">2025 Trade Policy Agenda.</a><br><br>The administration has not set an explicit target for the manufacturing share of total jobs in the labor force, but we include the indicator because we think it will be worth monitoring for a sustained reversal of its decades-long decline.</p>'
     )})
   
   ## Employment, motor vehicles and parts ## 
@@ -1295,7 +1297,10 @@ server <- function(input, output) {
   })
   
   output$text_motor_emp <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” As of Q1 2025, there are 1.0 million vehicle-related manufacturing jobs, down from 1.3 million in 2000, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>The auto sector is a particular focus of President Trump’s trade agenda, which <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">seeks</a> “better-paying American jobs making beautiful American-made cars.” And, for example, among the reasons given for deploying tariffs is to counter the “variety of non-tariff barriers that impede access to the Japanese and Korean automotive markets, including non-acceptance of certain U.S. standards, duplicative testing and certification requirements, and transparency issues.”<br><br>To be consistent with total manufacturing employment, we have set the target for auto employment at the level from just before China’s entry into the WTO, or 1.3 million auto manufacturing jobs.
+
+         
+         </p>'
     )})
   
   ## Motor vehicles and parts share of private employment ##
@@ -1343,37 +1348,37 @@ server <- function(input, output) {
                      ticksuffix = "%"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]),
+        hoverlabel = list(bgcolor = eig_colors[1])
         
         # add target line
-        shapes = list(
-          list(
-            type = "line",
-            xref = "paper",
-            x0 = 0, x1 = 1,
-            y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[4], width = 2, dash = "dash")
-          )
-        ),
+  #      shapes = list(
+  #        list(
+  #          type = "line",
+  #          xref = "paper",
+  #          x0 = 0, x1 = 1,
+  #          y0 = y_lvl, y1 = y_lvl,
+  #          line = list(color = eig_colors[4], width = 2, dash = "dash")
+  #        )
+  #      ),
         
         # add label for target
-        annotations = list(
-          list(
-            xref = "paper",
-            x = 0.31,
-            y = y_lvl + 0.02,
-            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
-            showarrow = FALSE,
-            font = list(color = eig_colors[4], size = 14),
-            xanchor = "left",
-            yanchor = "middle"
-          )
-        )
+   #     annotations = list(
+  #        list(
+  #          xref = "paper",
+  #          x = 0.31,
+  #          y = y_lvl + 0.02,
+  #          text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+  #          showarrow = FALSE,
+  #          font = list(color = eig_colors[4], size = 14),
+  #          xanchor = "left",
+  #          yanchor = "middle"
+  #        )
+  #      )
       )
   })
   
   output$text_motor_share <- renderUI({
-    HTML('<p>With the introduction of reciprocal tariffs on April 2nd, 2025, President Trump <a href = "https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank"> said</a> that “jobs and factories will come roaring back.” Vehicle-related manufacturing jobs made up 0.7 percent of total U.S. jobs in Q1 2025, down from 1.2 percent in 2000, the level from just before China joined the WTO in 2001.</p>'
+    HTML('<p>The auto sector is a particular focus of President Trump’s trade agenda, which <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">seeks</a> “better-paying American jobs making beautiful American-made cars.” And, for example, among the reasons given for deploying tariffs is to counter the “variety of non-tariff barriers that impede access to the Japanese and Korean automotive markets, including non-acceptance of certain U.S. standards, duplicative testing and certification requirements, and transparency issues.”<br><br>The administration has not established a set target for either the total manufacturing share of U.S. jobs or the equivalent share for auto jobs, so we have not added one. But we will monitor this indicator for any meaningful increase.</p>'
     )})
   
   ## Employment in manufacturing, counties most affected by the "China shock"  ##
@@ -1442,7 +1447,9 @@ server <- function(input, output) {
   })
   
   output$text_china_shock <- renderUI({
-    HTML('<p>Identified by <a href = "https://www.nber.org/papers/w21906" target = "_blank">Autor et al. (2016),</a> manufacturing employment in the 145 counties most impacted by trade with China is 473 thousand jobs (2022). The target is set at 649 thousand, the total employment in these counties just before China joined the WTO in 2001. The Trump administration has <a href = "https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">argued</a> that “China’s non-market policies and practices have given China global dominance in key manufacturing industries, decimating U.S. industry.”</p>'
+    HTML('<p>As <a href="https://www.nber.org/papers/w21906" target="_blank">estimated</a> by economists David Autor, David Dorn, and Gordon H. Hanson, manufacturing employment in the 145 counties most impacted by trade with China was 473 thousand jobs as of 2022, the most recent available data. 
+
+We have set the target at 649 thousand jobs, the total employment in these counties just before China joined the WTO in 2001. The administration has repeatedly blamed China’s entry into the WTO for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a> in the United States.</p>'
     )})
 }
 
