@@ -1,6 +1,6 @@
 # Project: Trump Trade Policy Targets Dashboard
 # File description: Aggregating manufacturing employment in counties most affected by the China shock
-# last update: 4/15/2025 by Jiaxin He
+# last update: 4/28/2025 by Jiaxin He
 
 # remove dependencies
 rm(list = ls())
@@ -39,9 +39,16 @@ path_appdata <- file.path(path_app, "cleaned_data")
 ### Data build ###
 ##################
 
-china_shock_counties <- read.csv(file.path(path_data, "china_shock_estimates_2.csv"))
-china_most_hit <- china_shock_counties %>% select(2:11) %>% filter(CA.level.category == "Most hit") %>%
-  mutate(county = cnty) %>% select(county, czone_1990, Full.County.name)
+china_shock <- read.csv(file.path(path_data, "china_shock_estimates_2.csv"))
+china_most_hit_czones <- china_shock %>% select(2:11) %>% filter(CA.level.category == "Most hit") %>%
+  mutate(CZ90 = as.numeric(czone_1990)) %>% .$CZ90
+
+# Commuting zones to counties crosswalk
+czone_to_counties <- read_xls(file.path(path_cbp, "czlma903.xls"), sheet = "CZLMA903")
+china_most_hit_counties <- czone_to_counties %>% mutate(CZ90 = as.numeric(CZ90),
+                                                  county = as.numeric(`County FIPS Code`),
+                                                  county_name = `County Name`) %>%
+  filter(CZ90 %in% china_most_hit_czones) %>% select(county, county_name, CZ90)
 
 # SIC to NAICS crosswalk from Eckert, Fort, Schott, and Yang (2021)
 sic_naics_crosswalk <- read.csv(file.path(path_cbp, "full_sic87_naics97.csv")) %>%
@@ -78,7 +85,7 @@ for(year in 90:97){
                              n1000_2 + n1000_3 + n1000_4)*weight_emp)),
            county = fipstate * 1000 + fipscty) %>%
     group_by(county) %>% summarise(!!emp_var := sum(emp))
-  china_most_hit <- china_most_hit %>% left_join(cbp_year, by = "county")
+  china_most_hit_counties <- china_most_hit_counties %>% left_join(cbp_year, by = "county")
 }
 
 for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:22))){
@@ -115,10 +122,10 @@ for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:22))){
                                     county = fipstate * 1000 + fipscty)
   }
   cbp_year <- cbp_year %>% ungroup() %>% group_by(county) %>% summarise(!!emp_var := sum(emp))
-  china_most_hit <- china_most_hit %>% left_join(cbp_year, by = "county")
+  china_most_hit_counties <- china_most_hit_counties %>% left_join(cbp_year, by = "county")
 }
 
-manu_emp_cn_most_hit <- china_most_hit %>% ungroup() %>% mutate_all(~replace(., is.na(.), 0)) %>%
+manu_emp_cn_most_hit <- china_most_hit_counties %>% ungroup() %>% mutate_all(~replace(., is.na(.), 0)) %>%
   select(-1:-3) %>% mutate_all(~round(.)) %>% summarise_all(sum)
 
 # save as time series
@@ -128,7 +135,7 @@ manu_emp_cn_most_hit <- china_most_hit %>% ungroup() %>% mutate_all(~replace(., 
            year = case_when(
              year >= 60 ~ 1900 + year,
              TRUE ~ 2000 + year
-           ), value = as.numeric(value)/1000) %>% select(year, value)
+           ), value = as.numeric(value)/1000000) %>% select(year, value)
   
   # convert to time series
   china_shock_yr = ts(china_shock$value, start = c(1990), frequency = 1)

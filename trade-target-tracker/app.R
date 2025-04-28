@@ -32,9 +32,8 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 #################
 ### Load Data ###
 #################
-# Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 
-setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
+# Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
 load(file.path("cleaned_data", "cps_employment.RData"))
@@ -1431,7 +1430,7 @@ Spending on factory construction had already climbed steeply in the years before
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.1f}K<extra></extra>"
+      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>"
     ) %>%
       layout(
         xaxis = list(title = "Time (Annual)",
@@ -1439,7 +1438,7 @@ Spending on factory construction had already climbed steeply in the years before
                      hoverformat = "%Y Q%q",
                      range = c(tick_years[1], tick_years[length(tick_years)])),
         
-        yaxis = list(title = "Employment (Thousands of Workers)",
+        yaxis = list(title = "Employment (Millions of Workers)",
                      tickformat = ".0f",
                      ticksuffix = ""),
         
@@ -1460,9 +1459,9 @@ Spending on factory construction had already climbed steeply in the years before
         annotations = list(
           list(
             xref = "paper",
-            x = 0.29,
-            y = y_lvl + 8.5,
-            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"K"),
+            x = 0.31,
+            y = y_lvl + 0.05,
+            text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"M"),
             showarrow = FALSE,
             font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
