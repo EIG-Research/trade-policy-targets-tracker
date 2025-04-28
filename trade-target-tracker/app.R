@@ -110,7 +110,7 @@ ui <- page_fillable(
                 ),  # Plot on the left
                 
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                   uiOutput("text_trade"))
                 ))
     ),
@@ -129,7 +129,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_emp_manu"))
                             ))
                 ),
@@ -145,7 +145,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_share_manu"))
                             ))
                 ),
@@ -161,7 +161,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_motor_emp"))
                             ))
                 ),
@@ -177,7 +177,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_motor_share"))
                             ))
                 ),
@@ -193,7 +193,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_china_shock"))
                             ))
                 )
@@ -214,7 +214,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_va"))
                             ))
                 ),
@@ -229,7 +229,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_va_share"))
                             ))
                 ),
@@ -245,7 +245,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_const"))
                             ))
                 ),
@@ -260,7 +260,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                               uiOutput("text_ind_prod"))
                             ))
                 ),
@@ -279,7 +279,7 @@ ui <- page_fillable(
 #                ),  # Plot on the left
                 
 #                column(4, div(
-#                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+#                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
 #                  uiOutput("text_employment_pop_native"))
 #                ))
               
@@ -295,7 +295,7 @@ ui <- page_fillable(
                        )
                 ),
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                   uiOutput("text_hh_income")
                 ))
               )
@@ -311,7 +311,7 @@ ui <- page_fillable(
                        )
                 ),
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                   uiOutput("text_inflation"))
                 ))
     ),
@@ -327,7 +327,7 @@ ui <- page_fillable(
                 ),  # Plot on the left
                 
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
                   uiOutput("text_budget"))
                 ))
     )
@@ -415,7 +415,7 @@ server <- function(input, output) {
   })
   
   output$text_inflation <- renderUI({
-    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank" >campaign speech</a> in August 2024, then-candidate Donald Trump vowed that “starting on Day 1 [of my administration], we will end inflation and make America affordable again,” though he also later <a href="https://apnews.com/article/trump-immigration-tariffs-pardons-abortion-prosecutions-riot-72c08269f0a870d20e29033319201e22" target="_blank">said</a> that he “can’t guarantee” that prices would not rise because of tariffs.<br><br>Heading into the Trump presidency, inflation was running at roughly 2.5 percent year-over-year, above the Federal Reserve’s target of 2 percent.</p>'
+    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank" >campaign speech</a> in August 2024, then-candidate Donald Trump vowed that “starting on Day 1 [of my administration], we will end inflation and make America affordable again,” although he also later <a href="https://apnews.com/article/trump-immigration-tariffs-pardons-abortion-prosecutions-riot-72c08269f0a870d20e29033319201e22" target="_blank">acknowledged</a> that he “can’t guarantee” prices would not rise because of tariffs.<br><br>Heading into the Trump presidency, inflation was running at roughly 2.5 percent year-over-year, above the Federal Reserve’s target of 2 percent.</p>'
     )})
   
   ## Real Median Household Income ##
@@ -498,7 +498,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>“An increase in real median household income” was one of the explicit goals of the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda.</a> The administration also celebrated the 3.4 percent annual growth rate of real median household income from 2016 to 2019, coinciding with President Trump’s first term.<br><br>We have thus set the target at 3.4 percent annual growth. Real median household income was $81,779 in 2023, the most recent year for which the data is available, and we will update this figure for 2024 once it is released by the Census Bureau.</p>')
+    HTML('<p>“An increase in real median household income” was one of the explicit goals of the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda.</a> The administration also celebrated the 3.4 percent annual growth rate of real median household income from 2016 to 2019, which coincided with President Trump’s first term.<br><br>We have thus set the target at 3.4 percent annual growth. Real median household income was $81,779 in 2023, the most recent year for which the data is available, and we will update this figure for 2024 once it is released by the Census Bureau.</p>')
   })
   
   
@@ -575,7 +575,7 @@ server <- function(input, output) {
   })
   
   output$text_budget <- renderUI({
-    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8th, 2025, six days after “Liberation Day,” President Trump <a href="https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08" target="_blank">claimed<a/> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href="https://www.foxnews.com/video/6370789893112" target="_blank">argued</a> just prior to the enactment of the new tariffs that they would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, <a href="https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">Trump hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025.</p>'
+    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8, 2025, six days after “Liberation Day,” President Trump <a href="https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08" target="_blank">claimed<a/> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href="https://www.foxnews.com/video/6370789893112" target="_blank">asserted</a> just prior to the enactment of the new tariffs that they would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, <a href="https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">Trump hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025.</p>'
     )})
   
   
@@ -665,7 +665,7 @@ server <- function(input, output) {
   })
   
   output$text_trade <- renderUI({
-    HTML('<p>The Trump administration has <a href = "https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">cited</a> as one of its goals a “decrease in the size of the trade in goods deficit,” adding that “reversing the flow of American wealth to foreign countries in the form of the trade deficit” would allow the U.S. to reclaim its technological, economic, and military edge. Such a reversal of capital flows would require running an American trade surplus. And in its <a href="https://web.archive.org/web/20250403054403/https://ustr.gov/issue-areas/reciprocal-tariff-calculations" target="_blanl">original calculation</a> of reciprocal tariffs, the Trump administration explicitly says that the tariffs were set at the level that would eliminate its trade deficit with each country, which if achieved would collectively also imply that its aggregate deficit with the world was also eliminated.<br><br> We have thus set the target deficit at zero, both for the bilateral deficit with China and the aggregate deficit with the rest of the world. We will update this target if the administration clarifies.</p>'
+    HTML('<p>The Trump administration has <a href = "https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">cited</a> as one of its goals a “decrease in the size of the trade in goods deficit,” adding that “reversing the flow of American wealth to foreign countries in the form of the trade deficit” would allow the U.S. to reclaim its technological, economic, and military edge. Such a reversal of capital flows would require running an American trade surplus. In its <a href="https://web.archive.org/web/20250403054403/https://ustr.gov/issue-areas/reciprocal-tariff-calculations" target="_blanl">original calculation</a> of reciprocal tariffs, the Trump administration explicitly stated that the tariffs were set at levels intended to eliminate its trade deficit with each country, which, if achieved collectively, would also imply the elimination of its aggregate deficit with the world.<br><br> We have thus set the target deficit at zero, both for the bilateral deficit with China and for the aggregate deficit with the rest of the world. We will update this target if the administration provides further clarification.</p>'
     )})
   
   ## Value Added ##
@@ -819,7 +819,7 @@ server <- function(input, output) {
   })
   
   output$text_va_share <- renderUI({
-    HTML('<p>The Trump administration has included “an increase in the manufacturing sector’s share of gross domestic product” as one of the specific goals of its <a href="https://www.wita.org/atp-research/trade-policy-agenda-report/" target="_blank">trade agenda.</a><br><br>We have not set a precise target for this indicator, but we will be monitoring it for a sustained reversal of the long-term downward trend, in accordance with the stated goal of the administration.</p>'
+    HTML('<p>The Trump administration has included “an increase in the manufacturing sector’s share of gross domestic product” as one of the specific goals of its <a href="https://www.wita.org/atp-research/trade-policy-agenda-report/" target="_blank">trade agenda.</a><br><br>We have not set a precise target for this indicator, but we will monitor it for a sustained reversal of the long-term downward trend, in accordance with the stated goal of the administration.</p>'
     )})
   
   ## Construction Spending ##
@@ -1141,7 +1141,7 @@ Spending on factory construction had already climbed steeply in the years before
   })
   
   output$text_emp_manu <- renderUI({
-    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our Country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">2025 Trade Policy Agenda,</a> which further laments that manufacturing jobs “declined from 17 million in 1993 to 12 million in 2016.”<br><br>We have set the target at 17.3 million manufacturing jobs, a level slightly below the mid-1990s peak but from just before China’s entry into the WTO — which the administration has repeatedly blamed for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs.</a></p>'
+    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">2025 Trade Policy Agenda,</a> which further laments that manufacturing jobs “declined from 17 million in 1993 to 12 million in 2016.”<br><br>We have set the target at 17.3 million manufacturing jobs, a level slightly below the mid-1990s peak but from just before China’s entry into the WTO — which the administration has repeatedly blamed for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs.</a></p>'
     )})
   
   ## Manufacturing Share ##
@@ -1219,7 +1219,7 @@ Spending on factory construction had already climbed steeply in the years before
   })
   
   output$text_share_manu <- renderUI({
-    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our Country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">2025 Trade Policy Agenda.</a><br><br>The administration has not set an explicit target for the manufacturing share of total jobs in the labor force, but we include the indicator because we think it will be worth monitoring for a sustained reversal of its decades-long decline.</p>'
+    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">2025 Trade Policy Agenda.</a><br><br>The administration has not set an explicit target for the manufacturing share of total jobs in the labor force, but we include the indicator because we think it will be worth monitoring for a sustained reversal of its decades-long decline.</p>'
     )})
   
   ## Employment, motor vehicles and parts ## 
