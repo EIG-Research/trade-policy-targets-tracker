@@ -110,7 +110,7 @@ ui <- page_fillable(
                 ),  # Plot on the left
                 
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                   uiOutput("text_trade"))
                 ))
     ),
@@ -129,7 +129,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_emp_manu"))
                             ))
                 ),
@@ -145,7 +145,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_share_manu"))
                             ))
                 ),
@@ -161,7 +161,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_motor_emp"))
                             ))
                 ),
@@ -177,7 +177,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_motor_share"))
                             ))
                 ),
@@ -193,7 +193,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_china_shock"))
                             ))
                 )
@@ -214,7 +214,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_va"))
                             ))
                 ),
@@ -229,7 +229,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_va_share"))
                             ))
                 ),
@@ -245,7 +245,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_const"))
                             ))
                 ),
@@ -260,7 +260,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                               uiOutput("text_ind_prod"))
                             ))
                 ),
@@ -279,7 +279,7 @@ ui <- page_fillable(
 #                ),  # Plot on the left
                 
 #                column(4, div(
-#                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+#                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
 #                  uiOutput("text_employment_pop_native"))
 #                ))
               
@@ -295,7 +295,7 @@ ui <- page_fillable(
                        )
                 ),
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                   uiOutput("text_hh_income")
                 ))
               )
@@ -311,7 +311,7 @@ ui <- page_fillable(
                        )
                 ),
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                   uiOutput("text_inflation"))
                 ))
     ),
@@ -327,7 +327,7 @@ ui <- page_fillable(
                 ),  # Plot on the left
                 
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 425px;",
                   uiOutput("text_budget"))
                 ))
     )
