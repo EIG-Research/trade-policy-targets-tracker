@@ -111,7 +111,7 @@ ui <- page_fillable(
                 ),  # Plot on the left
                 
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                   uiOutput("text_trade"))
                 ))
     ),
@@ -130,7 +130,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_emp_manu"))
                             ))
                 ),
@@ -146,7 +146,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_share_manu"))
                             ))
                 ),
@@ -162,7 +162,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_motor_emp"))
                             ))
                 ),
@@ -178,7 +178,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_motor_share"))
                             ))
                 ),
@@ -194,7 +194,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_china_shock"))
                             ))
                 )
@@ -215,7 +215,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_va"))
                             ))
                 ),
@@ -230,7 +230,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_va_share"))
                             ))
                 ),
@@ -246,7 +246,7 @@ ui <- page_fillable(
                             ),  # Plot on the left
                             
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_const"))
                             ))
                 ),
@@ -261,7 +261,7 @@ ui <- page_fillable(
                                    )
                             ),  # Plot on the left
                             column(4, div(
-                              style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                              style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                               uiOutput("text_ind_prod"))
                             ))
                 ),
@@ -280,7 +280,7 @@ ui <- page_fillable(
 #                ),  # Plot on the left
                 
 #                column(4, div(
-#                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+#                  style = "display: flex; justify-content: center; align-items: center; height: 450px;",
 #                  uiOutput("text_employment_pop_native"))
 #                ))
               
@@ -296,7 +296,7 @@ ui <- page_fillable(
                        )
                 ),
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                   uiOutput("text_hh_income")
                 ))
               )
@@ -312,7 +312,7 @@ ui <- page_fillable(
                        )
                 ),
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                   uiOutput("text_inflation"))
                 ))
     ),
@@ -328,7 +328,7 @@ ui <- page_fillable(
                 ),  # Plot on the left
                 
                 column(4, div(
-                  style = "display: flex; justify-content: center; align-items: center; height: 400px;",
+                  style = "display: flex; justify-content: center; align-items: center; height: 450px;",
                   uiOutput("text_budget"))
                 ))
     )
@@ -789,33 +789,33 @@ server <- function(input, output) {
                      ticksuffix = "%"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1])
+        hoverlabel = list(bgcolor = eig_colors[1]),
         
         
         # add horizontal line
-  #      shapes = list(
-   #       list(
-  #          type = "line",
-  #          xref = "paper",
-   #         x0 = 0, x1 = 1,
-  #          y0 = y_lvl, y1 = y_lvl,
-   #         line = list(color = eig_colors[4], width = 2, dash = "dash")
-  #        )
-  #      ),
-        
-        # label for balance 
-   #     annotations = list(
-  #        list(
-  #          xref = "paper",
-   #         x = 0.12,
-  #          y = y_lvl+0.25,
-  #          text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
-  #          showarrow = FALSE,
-  #          font = list(color = eig_colors[4], size = 14),
-  #          xanchor = "left",
-  #          yanchor = "middle"
-  #        )
-  #      )
+       shapes = list(
+        list(
+           type = "line",
+           xref = "paper",
+          x0 = 0, x1 = 1,
+           y0 = y_lvl, y1 = y_lvl,
+          line = list(color = eig_colors[4], width = 2, dash = "dash")
+         )
+       ),
+
+        # label for balance
+      annotations = list(
+         list(
+           xref = "paper",
+          x = 0.12,
+           y = y_lvl+0.25,
+           text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
+           showarrow = FALSE,
+           font = list(color = eig_colors[4], size = 14),
+           xanchor = "left",
+           yanchor = "middle"
+         )
+       )
       )
   })
   
@@ -1190,32 +1190,32 @@ Spending on factory construction had already climbed steeply in the years before
                      ticksuffix = "%"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1])
+        hoverlabel = list(bgcolor = eig_colors[1]),
         
         # add target line
-       # shapes = list(
-      #    list(
-      #      type = "line",
-      #      xref = "paper",
-      #      x0 = 0, x1 = 1,
-      #      y0 = y_lvl, y1 = y_lvl,
-      #      line = list(color = eig_colors[4], width = 2, dash = "dash")
-      #    )
-      #  ),
+      shapes = list(
+         list(
+           type = "line",
+           xref = "paper",
+           x0 = 0, x1 = 1,
+           y0 = y_lvl, y1 = y_lvl,
+           line = list(color = eig_colors[4], width = 2, dash = "dash")
+         )
+       ),
         
         # add label for target
-       # annotations = list(
-      #    list(
-      #      xref = "paper",
-      #      x = 0.29,
-      #      y = y_lvl + 0.3,
-      #      text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
-      #      showarrow = FALSE,
-      #      font = list(color = eig_colors[4], size = 14),
-      #      xanchor = "left",
-      #      yanchor = "middle"
-      #    )
-      #  )
+      annotations = list(
+         list(
+           xref = "paper",
+           x = 0.29,
+           y = y_lvl + 0.3,
+           text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+           showarrow = FALSE,
+           font = list(color = eig_colors[4], size = 14),
+           xanchor = "left",
+           yanchor = "middle"
+         )
+       )
       )
   })
   
@@ -1349,32 +1349,32 @@ Spending on factory construction had already climbed steeply in the years before
                      ticksuffix = "%"),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1])
+        hoverlabel = list(bgcolor = eig_colors[1]),
         
         # add target line
-  #      shapes = list(
-  #        list(
-  #          type = "line",
-  #          xref = "paper",
-  #          x0 = 0, x1 = 1,
-  #          y0 = y_lvl, y1 = y_lvl,
-  #          line = list(color = eig_colors[4], width = 2, dash = "dash")
-  #        )
-  #      ),
+       shapes = list(
+         list(
+           type = "line",
+           xref = "paper",
+           x0 = 0, x1 = 1,
+           y0 = y_lvl, y1 = y_lvl,
+           line = list(color = eig_colors[4], width = 2, dash = "dash")
+         )
+       ),
         
         # add label for target
-   #     annotations = list(
-  #        list(
-  #          xref = "paper",
-  #          x = 0.31,
-  #          y = y_lvl + 0.02,
-  #          text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
-  #          showarrow = FALSE,
-  #          font = list(color = eig_colors[4], size = 14),
-  #          xanchor = "left",
-  #          yanchor = "middle"
-  #        )
-  #      )
+      annotations = list(
+         list(
+           xref = "paper",
+           x = 0.31,
+           y = y_lvl + 0.02,
+           text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+           showarrow = FALSE,
+           font = list(color = eig_colors[4], size = 14),
+           xanchor = "left",
+           yanchor = "middle"
+         )
+       )
       )
   })
   
