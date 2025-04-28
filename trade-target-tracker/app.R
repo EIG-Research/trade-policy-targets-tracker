@@ -1472,9 +1472,9 @@ Spending on factory construction had already climbed steeply in the years before
   })
   
   output$text_china_shock <- renderUI({
-    HTML('<p>As <a href="https://www.nber.org/papers/w21906" target="_blank">estimated</a> by economists David Autor, David Dorn, and Gordon H. Hanson, manufacturing employment in the 145 counties most impacted by trade with China was 473 thousand jobs as of 2022, the most recent available data. 
+    HTML('<p>As <a href="https://www.nber.org/papers/w21906" target="_blank">estimated</a> by economists David Autor, David Dorn, and Gordon H. Hanson, manufacturing employment in the 145 commuting zones most impacted by trade with China was 2.2 million jobs as of 2022, the most recent available data. 
 
-We have set the target at 649 thousand jobs, the total employment in these counties just before China joined the WTO in 2001. The administration has repeatedly blamed China’s entry into the WTO for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a> in the United States.</p>'
+We have set the target at 3.2 million jobs, the total manufacturing employment in these commuting zones just before China joined the WTO in 2001. The administration has repeatedly blamed China’s entry into the WTO for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a> in the United States.</p>'
     )})
 }
 
