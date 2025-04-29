@@ -373,7 +373,7 @@ ui <- page_fillable(
                     column(8, plotlyOutput("plotly_tariff"),
                            div(
                              style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: TO DO')
+                             HTML('Source: <a href = "https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target = "_blank">Bureau of Economic Analysis</a> (BEA). <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted. Customs duties include all taxes levied on imported goods. ')
                            )
                     ),  # Plot on the left
                     
@@ -1548,7 +1548,7 @@ We have set the target at 3.2 million jobs, the total manufacturing employment i
   
   
   output$text_tariff <- renderUI({
-    HTML('<p>PLACEHOLDER FOR NOW. </p>')
+    HTML('<p>PLACEHOLDER FOR NOW.</p>')
     
   })
   
