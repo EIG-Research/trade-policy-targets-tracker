@@ -226,7 +226,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_va"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis,</a>seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
+                                     HTML('Source: <a href="https://www.bea.gov/itable/gdp-by-industry" target="_blank"> Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
                                    )
                             ),  # Plot on the left
                             column(4, div(
@@ -794,7 +794,7 @@ server <- function(input, output) {
   })
   
   output$text_va <- renderUI({
-    HTML('<p>The Trump administration <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">argues</a> that the “decline in manufacturing output has reduced U.S. manufacturing capacity.” The White House also <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">says</a> that goods trade deficits have led to the “hollowing out” of the manufacturing base and “resulted in a lack of incentive to increase advanced domestic manufacturing capacity.”<br><br>We have set the target for manufacturing value added, a measure of the sector’s contribution to the overall economy, at the growth rate since after the Great Financial Crisis.</p>'
+    HTML('<p>The Trump administration <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">argues</a> that the “decline in manufacturing output has reduced U.S. manufacturing capacity.” The White House also <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">says</a> that goods trade deficits have led to the “hollowing out” of the manufacturing base and “resulted in a lack of incentive to increase advanced domestic manufacturing capacity.”<br><br>We have not set a precise target, but we will monitor this indicator for any break from the long-term trend heading into the Trump administration.</p>'
     )})
   
   ## Share of Value Added as a Percentage of GDP##
