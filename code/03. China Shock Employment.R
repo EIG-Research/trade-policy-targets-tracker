@@ -51,9 +51,10 @@ china_most_hit_counties <- czone_to_counties %>% mutate(CZ90 = as.numeric(CZ90),
   filter(CZ90 %in% china_most_hit_czones) %>% select(county, county_name, CZ90)
 
 # Add VA cities that got subsumed into counties
-va_cities <- data.frame(county = c(),
-                        county_name = c(),
-                        CZ90 = c(602, ))
+va_cities <- data.frame(county = c(51560),
+                        county_name = c("Clifton Forge City"),
+                        CZ90 = c(602))
+china_most_hit_counties <- bind_rows(china_most_hit_counties, va_cities)
 
 # SIC to NAICS crosswalk from Eckert, Fort, Schott, and Yang (2021)
 sic_naics_crosswalk <- read.csv(file.path(path_cbp, "full_sic87_naics97.csv")) %>%
@@ -82,6 +83,7 @@ for(year in 90:97){
   cbp_year <- read.table(file.path(path_cbp, paste0("cbp", as.character(year), "co.txt")),
                                    header=TRUE, sep = ',')
   cbp_year <- cbp_year %>% filter(sic %in% sic_naics_crosswalk$sic) %>%
+    mutate_all(~replace(., is.na(.), 0)) %>%
     left_join(sic_naics_crosswalk, by = "sic") %>%
     mutate(across(starts_with("n"), ~.*estab_bins[cur_column()]),
            emp = case_when(empflag == "" ~ floor(as.numeric(emp)*weight_emp), # if no suppression, employment is total employment
@@ -98,7 +100,8 @@ for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:22))){
   cbp_year <- read.table(file.path(path_cbp, paste0("cbp", year, "co.txt")),
                          header=TRUE, sep = ',')
   
-  cbp_year <- cbp_year %>% rename_with(tolower) %>% filter(naics == "31----") %>% select(-naics)
+  cbp_year <- cbp_year %>% rename_with(tolower) %>% filter(naics == "31----") %>% select(-naics) %>%
+    mutate_all(~replace(., is.na(.), 0))
   if(year == "17"){
     cbp_year <- cbp_year %>% mutate(emp = case_when(empflag == "" ~ as.numeric(emp),
                                                     empflag == "A" ~ 19/2,
