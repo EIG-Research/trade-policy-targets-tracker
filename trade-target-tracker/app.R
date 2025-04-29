@@ -355,7 +355,9 @@ ui <- page_fillable(
                   column(8, plotlyOutput("plotly_tariff"),
                          div(
                            style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                           HTML('Source: <a href = "https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target = "_blank">Bureau of Economic Analysis</a> (BEA). <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted. Customs duties include all taxes levied on imported goods. ')
+                           HTML('Source: <a href="https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target="_blank">Bureau of Economic Analysis</a> (BEA). <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted.
+
+<br><br>Note: Customs duties are taxes imposed on imported goods. <a href="https://www.law.cornell.edu/uscode/text/6/215?utm_source=chatgpt.com" target="_blank">They include</a> tariffs, antidumping duties, countervailing duties, safeguard duties, and other trade remedy duties. The vast majority are tariffs: in 2024, tariff revenue accounted for <a href="https://dataweb.usitc.gov/trade/search/Import/HTS" target="_blank">92 percent</a> of all customs duties. Custom duties are the standard metric used by journalists and academics to evaluate the impact of Trump’s tariffs on tariff revenue.')
                          )
                   ),  # Plot on the left
                   
