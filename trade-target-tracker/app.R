@@ -33,6 +33,8 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 ### Load Data ###
 #################
 
+setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
+
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
@@ -1502,34 +1504,46 @@ We have set the target at 3.2 million jobs, the total manufacturing employment i
     )})
   
   
-  duties_rev_qt
+  duties_rev_df <- tibble(
+    quarter = as.Date(as.yearqtr(time(duties_rev_qt))),
+    tariff_rev = as.numeric(duties_rev_qt),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+)
   
   output$plotly_tariff <- renderPlotly({
     
+    date_range <- range(duties_rev_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
+
     plot_ly(
-      data = china_shock_df,
-      x = ~year,
-      y = ~cs_manu_emp,
+      data = duties_rev_df,
+      x = ~quarter,
+      y = ~tariff_rev,
       type = 'scatter',
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>"
-    ) %>%
+      hovertemplate = "%{x}: %{y:,.1f}%<extra></extra>") %>%
       layout(
-        xaxis = list(title = "Time (Annual)",
-                     tickvals = tick_years,
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
                      hoverformat = "%Y Q%q",
-                     range = c(tick_years[1], tick_years[length(tick_years)])),
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
-        yaxis = list(title = "Employment (Millions of Workers)",
-                     tickformat = ".0f",
-                     ticksuffix = ""),
+        yaxis = list(title = "Customs Duties (Billions)",
+                     tickformat = ".1f",
+                     ticksuffix = "B"),
         
-        hovermode = "closest")
-    
-    
-    
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1]))
   })
   
   
@@ -1538,7 +1552,7 @@ We have set the target at 3.2 million jobs, the total manufacturing employment i
     
   })
   
-  }
+
 }
 
 shinyApp(ui = ui, server = server)
