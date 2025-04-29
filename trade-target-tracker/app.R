@@ -237,7 +237,7 @@ ui <- page_fillable(
                             )))
                 ),
                 
-                ## Manufacturing share of GDP##
+                ## Manufacturing share of GDP ##
                 nav_panel("Value Added Share of GDP", 
                           fluidRow(
                             column(8, plotlyOutput("plotly_va_share"),
@@ -469,7 +469,7 @@ server <- function(input, output) {
   })
   
   output$text_inflation <- renderUI({
-    HTML('<p>During a <a href="https://www.google.com/search?sca_esv=cc91aa7b516a412e&q=%22Starting+on+Day+1,+we+will+end+inflation+and+make+America+affordable+again%22+speech+august+2024&udm=39&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpmDtIGL1r84kuKz6yAcD_insVp1f9hFz8mUUtzTwQJFouCD7u3pHL14acV3Obfjf5O4Vw3Yj1b1LJCToA-0AtYv29Z1Q7pD9J5KIFLPeTfdotEyfFQrOPYEM53beMeRzUDW_IJGxB1vzIh9GVyeV_othw6NQyUH8FMOgZFA9tvALg9l3F7Mdscc9bI995RPinlUWBbQ&sa=X&ved=2ahUKEwi_h-7kw-yMAxXHCTQIHV3UKgQQs6gLegQIERAB&biw=1458&bih=909&dpr=1#fpstate=ive&ip=1&vld=cid:87eca06d,vid:A6ziIkgI6ao,st:0" target="_blank" >campaign speech</a> in August 2024, then-candidate Donald Trump vowed that “starting on Day 1 [of my administration], we will end inflation and make America affordable again,” although he also later <a href="https://apnews.com/article/trump-immigration-tariffs-pardons-abortion-prosecutions-riot-72c08269f0a870d20e29033319201e22" target="_blank">acknowledged</a> that he “can’t guarantee” prices would not rise because of tariffs.<br><br>Heading into the Trump presidency, inflation was running at roughly 2.5 percent year-over-year, above the Federal Reserve’s target of 2 percent.</p>'
+    HTML('<p>During his campaign, then-candidate Donald Trump <a href = "https://www.donaldjtrump.com/platform" target = "_blank">promised</a> that his administration would “end inflation, and make America affordable again,” although he also later <a href = "https://apnews.com/article/trump-immigration-tariffs-pardons-abortion-prosecutions-riot-72c08269f0a870d20e29033319201e22" target="_blank">acknowledged</a> that he “can’t guarantee” prices would not rise as a result of tariffs.<br><br>Heading into the Trump presidency, inflation was running at roughly 2.5 percent year-over-year, above the Federal Reserve’s target of 2 percent.</p>'
     )})
   
   ## Real Median Household Income ##
