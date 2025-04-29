@@ -341,25 +341,49 @@ ui <- page_fillable(
                     uiOutput("text_inflation"))
                 )))
     ),
+
     
-    ### Federal Budget Balance ###
-    nav_panel("Budget Balance", 
-              fluidRow(
-                column(8, plotlyOutput("plotly_budget"),
-                       div(
-                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method).')
-                       )
-                ),  # Plot on the left
-                
-                column(4, div(
-                  style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
-                  div(
-                    style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
-                    uiOutput("text_budget"))
-                )))
+    ### Budgetary Impacts ###
+  nav_panel("Budgetary Impacts",
+    navset_tab(
+
+        ### Federal Budget Balance ###
+        nav_panel("Budget Balance", 
+                  fluidRow(
+                    column(8, plotlyOutput("plotly_budget"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method).')
+                           )
+                    ),  # Plot on the left
+                    
+                    column(4, div(
+                      style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                      div(
+                        style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                        uiOutput("text_budget"))
+                    )))
+        ),
+        
+        ### Tariff Revenue ###
+        nav_panel("Tariff Revenue", 
+                  fluidRow(
+                    column(8, plotlyOutput("plotly_tariff"),
+                           div(
+                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                             HTML('Source: TO DO')
+                           )
+                    ),  # Plot on the left
+                    
+                    column(4, div(
+                      style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                      div(
+                        style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                        uiOutput("text_tariff"))
+                    )))
+        )
+      )
     )
-    
   )
 )
 
@@ -1476,6 +1500,45 @@ Spending on factory construction had already climbed steeply in the years before
 
 We have set the target at 3.2 million jobs, the total manufacturing employment in these commuting zones just before China joined the WTO in 2001. The administration has repeatedly blamed China’s entry into the WTO for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a> in the United States.</p>'
     )})
+  
+  
+  duties_rev_qt
+  
+  output$plotly_tariff <- renderPlotly({
+    
+    plot_ly(
+      data = china_shock_df,
+      x = ~year,
+      y = ~cs_manu_emp,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:,.1f}M<extra></extra>"
+    ) %>%
+      layout(
+        xaxis = list(title = "Time (Annual)",
+                     tickvals = tick_years,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_years[1], tick_years[length(tick_years)])),
+        
+        yaxis = list(title = "Employment (Millions of Workers)",
+                     tickformat = ".0f",
+                     ticksuffix = ""),
+        
+        hovermode = "closest")
+    
+    
+    
+  })
+  
+  
+  output$text_tariff <- renderUI({
+    HTML('<p>PLACEHOLDER FOR NOW. </p>')
+    
+  })
+  
+  }
 }
 
 shinyApp(ui = ui, server = server)
