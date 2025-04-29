@@ -1374,9 +1374,9 @@ Spending on factory construction had already climbed steeply in the years before
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
-    y_lvl = motor_share_df %>% mutate(year = lubridate::year(quarter)) %>%
-      filter(year == 2000) %>% summarise(y = mean(motor_share))
-    y_lvl = as.numeric(y_lvl[1,1])
+#    y_lvl = motor_share_df %>% mutate(year = lubridate::year(quarter)) %>%
+#      filter(year == 2000) %>% summarise(y = mean(motor_share))
+#    y_lvl = as.numeric(y_lvl[1,1])
     
     plot_ly(
       data = motor_share_df,
@@ -1519,6 +1519,8 @@ Spending on factory construction had already climbed steeply in the years before
     tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
+    
+    y_lvl <- 600/4
 
     plot_ly(
       data = duties_rev_df,
@@ -1528,7 +1530,7 @@ Spending on factory construction had already climbed steeply in the years before
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: B{y:,.1f}%<extra></extra>") %>%
+      hovertemplate = "%{x}: %{y:,.1f}B<extra></extra>") %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1541,7 +1543,32 @@ Spending on factory construction had already climbed steeply in the years before
                      ticksuffix = ""),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]))
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.01,
+            y = y_lvl + 5.5,
+            text = paste0("Target = $" , round(y_lvl, 1),"B"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[4], size = 14),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        ))
   })
   
   
