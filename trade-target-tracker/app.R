@@ -119,6 +119,50 @@ ui <- page_fillable(
                 )))
     ),
     
+    ### Budgetary Impacts ###
+    nav_panel("Budgetary Impacts",
+              navset_tab(
+                
+                ### Tariff Revenue ###
+                nav_panel("Tariff Revenue", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_tariff"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target="_blank">Bureau of Economic Analysis</a> (BEA). <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted.
+
+<br><br>Note: Customs duties are taxes imposed on imported goods. <a href="https://www.law.cornell.edu/uscode/text/6/215?utm_source=chatgpt.com" target="_blank">They include</a> tariffs, antidumping duties, countervailing duties, safeguard duties, and other trade remedy duties. The vast majority are tariffs: in 2024, for example, tariff revenue accounted for <a href="https://dataweb.usitc.gov/trade/search/Import/HTS" target="_blank">92 percent of all customs duties</a>.')
+                                   )
+                            ),  # Plot on the left
+                            
+                            column(4, div(
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_tariff"))
+                            )))
+                ),
+                
+                ### Federal Budget Balance ###
+                nav_panel("Budget Balance", 
+                          fluidRow(
+                            column(8, plotlyOutput("plotly_budget"),
+                                   div(
+                                     style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method).')
+                                   )
+                            ),  # Plot on the left
+                            
+                            column(4, div(
+                              style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                              div(
+                                style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                                uiOutput("text_budget"))
+                            )))
+                )
+              )
+    ),
+    
     ## Manufacturing Employment ##
     nav_panel("Manufacturing Employment",
               navset_tab(
@@ -340,51 +384,6 @@ ui <- page_fillable(
                     style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
                     uiOutput("text_inflation"))
                 )))
-    ),
-
-    
-    ### Budgetary Impacts ###
-  nav_panel("Budgetary Impacts",
-    navset_tab(
-      
-      ### Tariff Revenue ###
-      nav_panel("Tariff Revenue", 
-                fluidRow(
-                  column(8, plotlyOutput("plotly_tariff"),
-                         div(
-                           style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                           HTML('Source: <a href="https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target="_blank">Bureau of Economic Analysis</a> (BEA). <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted.
-
-<br><br>Note: Customs duties are taxes imposed on imported goods. <a href="https://www.law.cornell.edu/uscode/text/6/215?utm_source=chatgpt.com" target="_blank">They include</a> tariffs, antidumping duties, countervailing duties, safeguard duties, and other trade remedy duties. The vast majority are tariffs: in 2024, tariff revenue accounted for <a href="https://dataweb.usitc.gov/trade/search/Import/HTS" target="_blank">92 percent</a> of all customs duties. Custom duties are the standard metric used by journalists and academics to evaluate the impact of Trump’s tariffs on tariff revenue.')
-                         )
-                  ),  # Plot on the left
-                  
-                  column(4, div(
-                    style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
-                    div(
-                      style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
-                      uiOutput("text_tariff"))
-                  )))
-      ),
-
-        ### Federal Budget Balance ###
-        nav_panel("Budget Balance", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_budget"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method).')
-                           )
-                    ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
-                      div(
-                        style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
-                        uiOutput("text_budget"))
-                    )))
-        )
-      )
     )
   )
 )
@@ -629,7 +628,10 @@ server <- function(input, output) {
   })
   
   output$text_budget <- renderUI({
-    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8, 2025, six days after “Liberation Day,” President Trump <a href="https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08" target="_blank">claimed<a/> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href="https://www.foxnews.com/video/6370789893112" target="_blank">asserted</a> just prior to the enactment of the new tariffs that they would raise $600 billion. With a combination of tariff revenues and spending reductions to offset tax cuts, <a href="https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">Trump hopes to balance the federal budget</a> for the first time in 24 years. The budget deficit was $400 billion for Q1 2025.</p>'
+    HTML('<p>In addition to arguing that tariffs will be a significant source of revenue, President Trump also has <a href = "https://www.whitehouse.gov/remarks/2025/03/remarks-by-president-trump-in-joint-address-to-congress/" target="_blank">said</a> that he will balance the federal budget for the first time in 24 years. To be fair, he has not cited tariff revenues as the only or primary contributor to a balanced budget, but still we think the indicator is worth tracking. 
+<br><br>
+We have set the target at a balanced budget.
+</p>'
     )})
   
   
@@ -1573,7 +1575,10 @@ Spending on factory construction had already climbed steeply in the years before
   
   
   output$text_tariff <- renderUI({
-    HTML('<p>PLACEHOLDER FOR NOW.</p>')
+    HTML('<p>The administration has repeatedly argued that tariffs will be a significant source of revenue. On April 8, 2025, six days after “Liberation Day,” President Trump <a href="https://www.reuters.com/world/us/trump-says-us-taking-2-billion-day-tariffs-2025-04-08" target="_blank">claimed<a/> that the United States was already bringing in $2 billion in tariff revenues daily. Separately, trade advisor Peter Navarro <a href="https://www.foxnews.com/video/6370789893112" target="_blank">asserted</a> just prior to the enactment of the new tariffs that they would raise $600 billion per year. In 2024, total revenue from customs duties (more than 90 percent of which came from tariffs) equaled $83 billion, or less than one-sixth that amount.
+<br><br>
+We have set the target at $150 billion in quarterly customs duties (equivalent to $600 billion annualized).
+</p>')
     
   })
   
