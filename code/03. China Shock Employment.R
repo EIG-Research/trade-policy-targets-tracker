@@ -50,6 +50,11 @@ china_most_hit_counties <- czone_to_counties %>% mutate(CZ90 = as.numeric(CZ90),
                                                   county_name = `County Name`) %>%
   filter(CZ90 %in% china_most_hit_czones) %>% select(county, county_name, CZ90)
 
+# Add VA cities that got subsumed into counties
+va_cities <- data.frame(county = c(),
+                        county_name = c(),
+                        CZ90 = c(602, ))
+
 # SIC to NAICS crosswalk from Eckert, Fort, Schott, and Yang (2021)
 sic_naics_crosswalk <- read.csv(file.path(path_cbp, "full_sic87_naics97.csv")) %>%
   filter(naics97 == "31----") %>% mutate(sic = sic87) %>%
@@ -141,3 +146,4 @@ manu_emp_cn_most_hit <- china_most_hit_counties %>% ungroup() %>% mutate_all(~re
   china_shock_yr = ts(china_shock$value, start = c(1990), frequency = 1)
 
 save(china_shock_yr, file = file.path(path_appdata, "china_shock.RData"))
+

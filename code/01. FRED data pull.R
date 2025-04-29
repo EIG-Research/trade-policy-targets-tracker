@@ -8,6 +8,7 @@
 #   5. Employment, Total Private
 #   6. Median household income
 #   7. Industrial Production
+#   8. Customs duties
 # last update: 4/22/2025 by Jiaxin He
 
 # remove dependencies
@@ -110,6 +111,12 @@ ip_manu <- "IPGMFSQ"
 ipman_qt <- fredo(FRED_API_KEY, ip_manu, start_date, end_date)
 ipman_qt <- ipman_qt %>% select(value) %>% ts(., start = c(1990,1), frequency = 4)
 
+# Query customs duties revenue data
+duties_rev <- "B235RC1Q027SBEA"
+duties_rev_qt <- fredo(FRED_API_KEY, duties_rev, start_date, end_date)
+duties_rev_qt <- duties_rev_qt %>% select(value) %>% mutate(value = value/4) %>%
+  ts(., start = c(1990,1), frequency = 4)
+
 # Tabulate by quarters, seasonally adjust the unadjusted ones
 quarterly <- function(df, start_month, func, seasonal = FALSE){
   df_ts <- df %>% select(value) %>% ts(., start = start_month, frequency = 12)
@@ -157,5 +164,5 @@ manu_qt <- manu_qt / 1000
 motor_qt <- motor_qt / 1000
 
 # Export data
-save(pce_adj, pce_inflation, ipman_qt, income_yr, budget_real, construction_real,
+save(pce_adj, pce_inflation, ipman_qt, duties_rev_qt, income_yr, budget_real, construction_real,
      manu_qt, motor_qt, manu_share, motor_share, file = file.path(path_appdata, "fred_data.RData"))
