@@ -348,6 +348,24 @@ ui <- page_fillable(
     ### Budgetary Impacts ###
   nav_panel("Budgetary Impacts",
     navset_tab(
+      
+      ### Tariff Revenue ###
+      nav_panel("Tariff Revenue", 
+                fluidRow(
+                  column(8, plotlyOutput("plotly_tariff"),
+                         div(
+                           style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                           HTML('Source: <a href = "https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target = "_blank">Bureau of Economic Analysis</a> (BEA). <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted. Customs duties include all taxes levied on imported goods. ')
+                         )
+                  ),  # Plot on the left
+                  
+                  column(4, div(
+                    style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                    div(
+                      style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                      uiOutput("text_tariff"))
+                  )))
+      ),
 
         ### Federal Budget Balance ###
         nav_panel("Budget Balance", 
@@ -364,24 +382,6 @@ ui <- page_fillable(
                       div(
                         style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
                         uiOutput("text_budget"))
-                    )))
-        ),
-        
-        ### Tariff Revenue ###
-        nav_panel("Tariff Revenue", 
-                  fluidRow(
-                    column(8, plotlyOutput("plotly_tariff"),
-                           div(
-                             style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                             HTML('Source: <a href = "https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target = "_blank">Bureau of Economic Analysis</a> (BEA). <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted. Customs duties include all taxes levied on imported goods. ')
-                           )
-                    ),  # Plot on the left
-                    
-                    column(4, div(
-                      style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
-                      div(
-                        style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
-                        uiOutput("text_tariff"))
                     )))
         )
       )
@@ -1465,7 +1465,7 @@ Spending on factory construction had already climbed steeply in the years before
                      range = c(tick_years[1], tick_years[length(tick_years)])),
         
         yaxis = list(title = "Employment (Millions of Workers)",
-                     tickformat = ".0f",
+                     tickformat = ".1f",
                      ticksuffix = ""),
         
         hovermode = "closest",
@@ -1530,7 +1530,7 @@ We have set the target at 3.2 million jobs, the total manufacturing employment i
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.1f}%<extra></extra>") %>%
+      hovertemplate = "%{x}: B{y:,.1f}%<extra></extra>") %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1540,7 +1540,7 @@ We have set the target at 3.2 million jobs, the total manufacturing employment i
         
         yaxis = list(title = "Customs Duties (Billions)",
                      tickformat = ".1f",
-                     ticksuffix = "B"),
+                     ticksuffix = ""),
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1]))
