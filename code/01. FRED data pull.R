@@ -23,6 +23,7 @@ library(dplyr)
 library(tidycensus)
 library(scales)
 library(zoo)
+library(readxl)
 
 # Install and load FRED API
 # Link: https://fredblog.stlouisfed.org/2024/12/leveraging-r-for-powerful-data-analysis/
@@ -64,8 +65,8 @@ end_date <- "2025-03-01"
 
 # Query quarterly chained PCE (2017 basis)
 PCE_id <- "PCECTPI"
-PCE_qt <- fredo(FRED_API_KEY, PCE_id, "1989-01-01", end_date) %>% select(value) %>%
-  ts(., start = c(1989,1), frequency = 4)
+PCE_qt <- fredo(FRED_API_KEY, PCE_id, "1989-01-01", end_date) %>% select(value) %>% unlist() 
+PCE_qt <- c(PCE_qt, 125.584) %>% ts(., start = c(1989,1), frequency = 4)
 
 # Query monthly C-CPI-U
 CPI_id <- "SUUR0000SA0"
@@ -113,9 +114,9 @@ ipman_qt <- ipman_qt %>% select(value) %>% ts(., start = c(1990,1), frequency = 
 
 # Query customs duties revenue data
 duties_rev <- "B235RC1Q027SBEA"
-duties_rev_qt <- fredo(FRED_API_KEY, duties_rev, start_date, end_date)
-duties_rev_qt <- duties_rev_qt %>% select(value) %>% mutate(value = value/4) %>%
-  ts(., start = c(1990,1), frequency = 4)
+duties_rev_qt <- fredo(FRED_API_KEY, duties_rev, start_date, end_date) %>% select(value) %>%
+  mutate(value = value/4) %>% unlist()
+duties_rev_qt <- c(duties_rev_qt, 96.3/4) %>% ts(., start = c(1990,1), frequency = 4)
 
 # Tabulate by quarters, seasonally adjust the unadjusted ones
 quarterly <- function(df, start_month, func, seasonal = FALSE){

@@ -942,7 +942,7 @@ We have set the target at a balanced budget.
             xref = "paper",
             x = 0.4,
             y = y_lvl+1,
-            text = paste0("Q4 2024 level: ",round(y_lvl,1)," billion"),
+            text = paste0("Q4 2024 level = ",round(y_lvl,1)," billion"),
             showarrow = FALSE,
             font = list(color = eig_colors[4], size = 14),
             xanchor = "left",
