@@ -4,6 +4,23 @@ This code underlies the EIG Trade Policy Tracker. Contact research@eig.org with 
 
 ******
 
+Each indicator is expressed quarterly, 1990 Q1 to the present unless otherwise specified:
+
+- <b>Goods Trade Balance</b>
+- Tariff Revenue
+- Budget Balance
+- Manufacturing Employment Level
+- Manufacturing Employment Share
+- Automotive Employment Level
+- Automotive Employment Share
+- "China Shock" Jobs
+- Value Added
+- Value Added Share of GDP
+- Manufacturing COnstruction Spending
+- Industrial Production
+- Income
+- Inflation
+
 
 
 
