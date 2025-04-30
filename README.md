@@ -1,4 +1,12 @@
 # Trade Policy Target Tracker
+
+This code underlies the EIG Trade Policy Tracker. Contact research@eig.org with any questions.
+
+******
+
+
+
+
 Tracking the Stated Targets of the Trump Administration's Trade Policy
 Variables, quarterly figures from 1990 Q1 to present unless otherwise specified:
 - Inflation: Year-to-year percent change in Chained PCE published by Bureau of Economic Analysis (BEA) retrieved from FRED ([Link](https://fred.stlouisfed.org/series/PCECTPI))
