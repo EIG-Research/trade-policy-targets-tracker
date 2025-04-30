@@ -23,6 +23,7 @@ library(dplyr)
 library(tidycensus)
 library(scales)
 library(zoo)
+library(readxl)
 
 # Install and load FRED API
 # Link: https://fredblog.stlouisfed.org/2024/12/leveraging-r-for-powerful-data-analysis/
@@ -113,9 +114,8 @@ ipman_qt <- ipman_qt %>% select(value) %>% ts(., start = c(1990,1), frequency = 
 
 # Query customs duties revenue data
 duties_rev <- "B235RC1Q027SBEA"
-duties_rev_qt <- fredo(FRED_API_KEY, duties_rev, start_date, end_date)
-duties_rev_qt <- duties_rev_qt %>% select(value) %>% mutate(value = value/4) %>%
-  ts(., start = c(1990,1), frequency = 4)
+duties_rev_qt <- fredo(FRED_API_KEY, duties_rev, start_date, end_date) %>% select(value) %>%
+  mutate(value = value/4) %>% ts(., start = c(1990,1), frequency = 4)
 
 # Tabulate by quarters, seasonally adjust the unadjusted ones
 quarterly <- function(df, start_month, func, seasonal = FALSE){
