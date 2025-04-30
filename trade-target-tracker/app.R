@@ -957,7 +957,7 @@ server <- function(input, output) {
   })
   
   output$text_const <- renderUI({
-    HTML('<p>The Trump administration has <href ="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">bemoaned</a> that “over 100,000 factories closed between 1997 and 2016.” President Trump has also <a href="https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank">said</a> that owing to his new trade policy, “Jobs and factories will come roaring back into our country.”
+    HTML('<p>The Trump administration has <a href ="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">bemoaned</a> that “over 100,000 factories closed between 1997 and 2016.” President Trump has also <a href="https://www.nytimes.com/2025/04/03/business/economy/trump-tariffs-us-manufacturing-economy.html" target="_blank">said</a> that owing to his new trade policy, “Jobs and factories will come roaring back into our country.”
 
 Spending on factory construction had already climbed steeply in the years before the Trump presidency, so we have set the target at maintaining those high levels.
 </p>'
