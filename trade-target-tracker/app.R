@@ -129,7 +129,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_tariff"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target="_blank">Bureau of Economic Analysis</a> (BEA). <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted.
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target="_blank">Bureau of Economic Analysis</a>. <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted.
 
 <br><br>Note: Customs duties are taxes imposed on imported goods. <a href="https://www.law.cornell.edu/uscode/text/6/215" target="_blank">They include</a> tariffs, antidumping duties, countervailing duties, safeguard duties, and other trade remedy duties. The vast majority are tariffs: in 2024, for example, tariff revenue accounted for <a href="https://dataweb.usitc.gov/trade/search/Import/HTS" target="_blank">92 percent of all customs duties</a> (select “Calculated Duties” and the relevant year in Step 2 at the link).')
                                    )
@@ -270,7 +270,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_va"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://apps.bea.gov/iTable/?reqid=150&step=2&isuri=1&categories=gdpxind&_gl=1*1aj3zuq*_ga*NzE4OTQyNzYwLjE3NDE4NzMwODg.*_ga_J4698JNNFT*MTc0NTk2MTA5NC4yNC4xLjE3NDU5NjExMzcuMTcuMC4w#eyJhcHBpZCI6MTUwLCJzdGVwcyI6WzEsMiwzXSwiZGF0YSI6W1siY2F0ZWdvcmllcyIsIkdkcHhJbmQiXSxbIlRhYmxlX0xpc3QiLCIxIl1dfQ==" target="_blank"> Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars. Available beginning in 1997; 1997 to 2004 data are annual.')
+                                     HTML('Source: <a href="https://apps.bea.gov/iTable/?reqid=150&step=2&isuri=1&categories=gdpxind&_gl=1*1aj3zuq*_ga*NzE4OTQyNzYwLjE3NDE4NzMwODg.*_ga_J4698JNNFT*MTc0NTk2MTA5NC4yNC4xLjE3NDU5NjExMzcuMTcuMC4w#eyJhcHBpZCI6MTUwLCJzdGVwcyI6WzEsMiwzXSwiZGF0YSI6W1siY2F0ZWdvcmllcyIsIkdkcHhJbmQiXSxbIlRhYmxlX0xpc3QiLCIxMCJdXX0=" target="_blank"> Bureau of Economic Analysis</a>. <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data</a>, seasonally adjusted, in 2017 dollars. Available annually from 1997 to 2004 and quarterly beginning Q1 2005. 1997 to 2004 levels are quarterly averages of annual data, displayed at Q1 of each year.')
                                    )
                             ),  # Plot on the left
                             column(4, div(
