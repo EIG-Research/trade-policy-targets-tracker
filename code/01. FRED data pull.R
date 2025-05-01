@@ -117,6 +117,11 @@ duties_rev <- "B235RC1Q027SBEA"
 duties_rev_qt <- fredo(FRED_API_KEY, duties_rev, start_date, end_date) %>% select(value) %>%
   mutate(value = value/4) %>% ts(., start = c(1990,1), frequency = 4)
 
+# Query real YoY GDP growth
+gdp_growth <- "A191RO1Q156NBEA"
+gdp_growth_qt <- fredo(FRED_API_KEY, gdp_growth, start_date, end_date) %>% select(value) %>%
+  mutate(value = value) %>% ts(., start = c(1990,1), frequency = 4)
+
 # Tabulate by quarters, seasonally adjust the unadjusted ones
 quarterly <- function(df, start_month, func, seasonal = FALSE){
   df_ts <- df %>% select(value) %>% ts(., start = start_month, frequency = 12)
@@ -164,5 +169,5 @@ manu_qt <- manu_qt / 1000
 motor_qt <- motor_qt / 1000
 
 # Export data
-save(pce_adj, pce_inflation, ipman_qt, duties_rev_qt, income_yr, budget_real, construction_real,
+save(pce_adj, pce_inflation, ipman_qt, duties_rev_qt, gdp_growth_qt, income_yr, budget_real, construction_real,
      manu_qt, motor_qt, manu_share, motor_share, file = file.path(path_appdata, "fred_data.RData"))
