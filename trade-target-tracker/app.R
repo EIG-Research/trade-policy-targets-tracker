@@ -337,7 +337,7 @@ ui <- page_fillable(
     ## Household Income ##
     nav_panel("Income",
               fluidRow(
-                column(8, plotlyOutput("plotly_hh_income", height = "500px"),
+                column(8, plotlyOutput("plotly_hh_income"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                          HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau</a>, in 2017 dollars (adjusted using the <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>).')
@@ -366,12 +366,12 @@ ui <- page_fillable(
                   div(
                     style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
                     uiOutput("text_inflation"))
-                ))),
+                )))),
               
     ### GDP ###
     nav_panel("GDP",
               fluidRow(
-                column(8, plotlyOutput("plotly_gdp", height = "500px"),
+                column(8, plotlyOutput("plotly_gdp"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
                          HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1IG45" target="_blank" >Bureau of Economic Analysis</a>. Percent change is from the corresponding quarter a year prior. Data is easonally adjusted.')
@@ -384,11 +384,7 @@ ui <- page_fillable(
                     uiOutput("text_gdp")
                   )))
               )
-    ),
-    
-    
-              
-              
+
     )
   )
 )
@@ -1407,22 +1403,20 @@ Spending on factory construction had already climbed steeply in the years before
 We have set the target at $150 billion in quarterly customs duties (equivalent to $600 billion annualized to roughly align with Navarro’s projection).
 </p>')
     
-  }),
+  })
   
   
   
-  
-  plotly_gdp
-  
-  duties_rev_df <- tibble(
-    quarter = as.Date(as.yearqtr(time(duties_rev_qt))),
-    tariff_rev = as.numeric(duties_rev_qt),
+  gdp_growth_df <- tibble(
+    quarter = as.Date(as.yearqtr(time(gdp_growth_qt))),
+    gdp_growth = as.numeric(gdp_growth_qt),
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   
-  output$plotly_tariff <- renderPlotly({
+  
+  output$plotly_gdp <- renderPlotly({
     
-    date_range <- range(duties_rev_df$quarter)
+    date_range <- range(gdp_growth_df$quarter)
     start_year <- lubridate::year(date_range[1])
     end_year   <- lubridate::year(date_range[2])
     
@@ -1432,17 +1426,15 @@ We have set the target at $150 billion in quarterly customs duties (equivalent t
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
-    y_lvl <- 600/4
-    
     plot_ly(
-      data = duties_rev_df,
+      data = gdp_growth_df,
       x = ~quarter,
-      y = ~tariff_rev,
+      y = ~gdp_growth,
       type = 'scatter',
       mode = 'lines',
       line = list(color = eig_colors[1], width = 2),
       text = ~hover_label,
-      hovertemplate = "%{x}: %{y:,.1f}B<extra></extra>") %>%
+      hovertemplate = "%{x}: %{y:,.1f}%<extra></extra>") %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -1450,40 +1442,19 @@ We have set the target at $150 billion in quarterly customs duties (equivalent t
                      hoverformat = "%Y Q%q",
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
-        yaxis = list(title = "Customs Duties (Billions)",
+        yaxis = list(title = "GDP Growth (%)",
                      tickformat = ".1f",
                      ticksuffix = ""),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]),
-        
-        # add target line
-        shapes = list(
-          list(
-            type = "line",
-            xref = "paper",
-            x0 = 0, x1 = 1,
-            y0 = y_lvl, y1 = y_lvl,
-            line = list(color = eig_colors[4], width = 2, dash = "dash")
-          )
-        ),
-        
-        # add label for target
-        annotations = list(
-          list(
-            xref = "paper",
-            x = 0.01,
-            y = y_lvl + 5.5,
-            text = paste0("Target = $" , round(y_lvl, 1)," billion"),
-            showarrow = FALSE,
-            font = list(color = eig_colors[4], size = 14),
-            xanchor = "left",
-            yanchor = "middle"
-          )
-        ))
+        hoverlabel = list(bgcolor = eig_colors[1]))
   })
   
-
+  output$text_gdp <- renderUI({
+    HTML("<p>Stephen Miran, chair of President Trump's Council of Economic Advisors, has <a href = \"https://www.whitehouse.gov/briefings-statements/2025/04/cea-chairman-steve-miran-hudson-institute-event-remarks/\" target= \"_blank\">argued</a> that the tax relief made possible by the tariffs \"will create economic growth.\" As tariff revenues can also be used to reduce the deficit, Miran adds that the resulting lower interest rates will stimulate \"an economic boom.\" The White House also has <a href =\"https://www.whitehouse.gov/fact-sheets/2025/03/fact-sheet-president-donald-j-trump-adjusts-imports-of-automobiles-and-automobile-parts-into-the-united-states/\" target=\"_blank\">cited</a> an external <a href = \"https://prosperousamerica.org/global-10-tariffs-on-u-s-imports-would-raise-incomes-and-pay-for-large-income-tax-cuts-for-lower-middle-class/\" target=\"_blank\">study</a> finding that \"a global tariff of 10% would grow the economy by $728 billion.\"<br><br> Although we are not setting a precise target, we are monitoring inflation-adjusted GDP for a sustained elevation in the rate of growth.</p>")
+    
+  })
+ 
 }
 
 shinyApp(ui = ui, server = server)
