@@ -358,7 +358,7 @@ ui <- page_fillable(
                 column(8,  plotlyOutput("plotly_inflation"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis</a>, 2017 basis, seasonally adjusted.')
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis</a>, 2017 basis, seasonally adjusted. Percent change is from the corresponding quarter a year prior.')
                        )
                 ),
                 column(4, div(
@@ -374,7 +374,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_gdp"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1IG45" target="_blank" >Bureau of Economic Analysis</a>. Percent change is from the corresponding quarter a year prior. Data is easonally adjusted.')
+                         HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1IG45" target="_blank" >Bureau of Economic Analysis</a>, seasonally adjusted. Percent change is from the corresponding quarter a year prior.')
                        )
                 ),
                 column(4, div(
