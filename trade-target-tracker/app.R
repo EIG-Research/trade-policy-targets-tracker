@@ -368,7 +368,29 @@ ui <- page_fillable(
                   div(
                     style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
                     uiOutput("text_inflation"))
-                )))
+                ))),
+              
+    ### GDP ###
+    nav_panel("GDP",
+              fluidRow(
+                column(8, plotlyOutput("plotly_gdp", height = "500px"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1IG45" target="_blank" >Bureau of Economic Analysis</a>. Percent change is from the corresponding quarter a year prior. Data is easonally adjusted.')
+                       )
+                ),
+                column(4, div(
+                  style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                  div(
+                    style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                    uiOutput("text_gdp")
+                  )))
+              )
+    ),
+    
+    
+              
+              
     )
   )
 )
@@ -1387,6 +1409,80 @@ Spending on factory construction had already climbed steeply in the years before
 We have set the target at $150 billion in quarterly customs duties (equivalent to $600 billion annualized to roughly align with Navarro’s projection).
 </p>')
     
+  }),
+  
+  
+  
+  
+  plotly_gdp
+  
+  duties_rev_df <- tibble(
+    quarter = as.Date(as.yearqtr(time(duties_rev_qt))),
+    tariff_rev = as.numeric(duties_rev_qt),
+    hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  )
+  
+  output$plotly_tariff <- renderPlotly({
+    
+    date_range <- range(duties_rev_df$quarter)
+    start_year <- lubridate::year(date_range[1])
+    end_year   <- lubridate::year(date_range[2])
+    
+    tick_years <- c(start_year,
+                    seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
+    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+                    tail(date_range, 1)) %>% unique()  # Q1 of each year
+    tick_texts <- as.character(as.yearqtr(tick_dates))
+    
+    y_lvl <- 600/4
+    
+    plot_ly(
+      data = duties_rev_df,
+      x = ~quarter,
+      y = ~tariff_rev,
+      type = 'scatter',
+      mode = 'lines',
+      line = list(color = eig_colors[1], width = 2),
+      text = ~hover_label,
+      hovertemplate = "%{x}: %{y:,.1f}B<extra></extra>") %>%
+      layout(
+        xaxis = list(title = "Time (Quarterly)",
+                     tickvals = tick_dates,
+                     ticktext = tick_texts,
+                     hoverformat = "%Y Q%q",
+                     range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+        
+        yaxis = list(title = "Customs Duties (Billions)",
+                     tickformat = ".1f",
+                     ticksuffix = ""),
+        
+        hovermode = "closest",
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.01,
+            y = y_lvl + 5.5,
+            text = paste0("Target = $" , round(y_lvl, 1)," billion"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[4], size = 14),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        ))
   })
   
 
