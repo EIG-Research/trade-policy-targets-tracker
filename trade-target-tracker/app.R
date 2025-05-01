@@ -359,7 +359,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_hh_income", height = "500px"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau,</a> in 2017 dollars (adjusted using the PCE), seasonally adjusted.')
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau,</a> in 2017 dollars (adjusted using the <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>).')
                        )
                 ),
                 column(4, div(
