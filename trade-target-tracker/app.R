@@ -1,5 +1,3 @@
-
-
 # This file constructs the Trump Trade Poilcy Targets R Shiny application
 
 # remove dependencies
@@ -107,7 +105,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_trade"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis,</a> seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). Data is available beginning in Q1 1992.')
+                         HTML('Source: <a href="https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services" target="_blank">Bureau of Economic Analysis</a>, seasonally adjusted, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>). Data is available beginning in Q1 1992.')
                        )
                 ),  # Plot on the left
                 
@@ -130,7 +128,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_tariff"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target="_blank">Bureau of Economic Analysis</a>. <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data,</a> seasonally adjusted.
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/B235RC1Q027SBEA" target="_blank">Bureau of Economic Analysis</a>, <a href="https://www.bea.gov/help/faq/122" target="_blank">de-annualized quarterly data</a>, seasonally adjusted.
 
 <br><br>Note: Customs duties are taxes imposed on imported goods. <a href="https://www.law.cornell.edu/uscode/text/6/215" target="_blank">They include</a> tariffs, antidumping duties, countervailing duties, safeguard duties, and other trade remedy duties. The vast majority are tariffs: in 2024, for example, tariff revenue accounted for <a href="https://dataweb.usitc.gov/trade/search/Import/HTS" target="_blank">92 percent of all customs duties</a> (select “Calculated Duties” and the relevant year in Step 2 at the link).')
                                    )
@@ -150,7 +148,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_budget"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service,</a> Department of the Treasury, Fiscal Service, seasonally adjusted using the <a href="https://cran.r-project.org/web/packages/seasonal/index.html" target="_blank">X-13 seasonal adjustment</a> from the Census Bureau, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method).')
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/MTSDS133FMS" target="_blank">Department of the Treasury, Fiscal Service</a>, seasonally adjusted using the <a href="https://cran.r-project.org/web/packages/seasonal/index.html" target="_blank">X-13 seasonal adjustment</a> from the Census Bureau, in 2017 dollars (adjusted using <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank">CPI-U</a>, following the Treasury Department method).')
                                    )
                             ),  # Plot on the left
                             
@@ -173,7 +171,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_emp_manu"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank">Bureau of Labor Statistics</a>, seasonally adjusted.')
                                    )
                             ),  # Plot on the left
                             
@@ -191,7 +189,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_share_manu"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1ICRQ" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1ICRQ" target="_blank">Bureau of Labor Statistics</a>, seasonally adjusted.')
                                    )
                             ),  # Plot on the left
                             
@@ -209,7 +207,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_motor_emp"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/CES3133600101" target="_blank">Bureau of Labor Statistics</a>, seasonally adjusted.')
                                    )
                             ),  # Plot on the left
                             
@@ -227,7 +225,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_motor_share"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1ICS7" target="_blank">Bureau of Labor Statistics,</a> seasonally adjusted.')
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1ICS7" target="_blank">Bureau of Labor Statistics</a>, seasonally adjusted.')
                                    )
                             ),  # Plot on the left
                             
@@ -245,7 +243,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_china_shock"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://www.census.gov/programs-surveys/cbp.html" target="_blank"> Census Bureau County Business Patterns 1990-2022,</a> quarterly data is not available.
+                                     HTML('Source: <a href="https://www.census.gov/programs-surveys/cbp.html" target="_blank"> Census Bureau County Business Patterns 1990-2022</a>, quarterly data is not available.
                                           <br><br>
                                           Note: For the methodology behind identifying the commuting zones most impacted by trade with China, see <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-economics-080315-015041" target="_blank">Autor, et al (2016)</a>.')
                                    )
@@ -271,7 +269,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_va"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://apps.bea.gov/iTable/?reqid=150&step=2&isuri=1&categories=gdpxind&_gl=1*1aj3zuq*_ga*NzE4OTQyNzYwLjE3NDE4NzMwODg.*_ga_J4698JNNFT*MTc0NTk2MTA5NC4yNC4xLjE3NDU5NjExMzcuMTcuMC4w#eyJhcHBpZCI6MTUwLCJzdGVwcyI6WzEsMiwzXSwiZGF0YSI6W1siY2F0ZWdvcmllcyIsIkdkcHhJbmQiXSxbIlRhYmxlX0xpc3QiLCIxMCJdXX0=" target="_blank"> Bureau of Economic Analysis</a>. <a href="https://www.bea.gov/help/faq/122" target="_blank">De-annualized quarterly data</a>, seasonally adjusted, in 2017 dollars. Available annually from 1997 to 2004 and quarterly beginning Q1 2005. 1997 to 2004 levels are quarterly averages of annual data, displayed at Q1 of each year.')
+                                     HTML('Source: <a href="https://apps.bea.gov/iTable/?reqid=150&step=2&isuri=1&categories=gdpxind&_gl=1*1aj3zuq*_ga*NzE4OTQyNzYwLjE3NDE4NzMwODg.*_ga_J4698JNNFT*MTc0NTk2MTA5NC4yNC4xLjE3NDU5NjExMzcuMTcuMC4w#eyJhcHBpZCI6MTUwLCJzdGVwcyI6WzEsMiwzXSwiZGF0YSI6W1siY2F0ZWdvcmllcyIsIkdkcHhJbmQiXSxbIlRhYmxlX0xpc3QiLCIxMCJdXX0=" target="_blank"> Bureau of Economic Analysis</a>, <a href="https://www.bea.gov/help/faq/122" target="_blank">de-annualized quarterly data</a>, seasonally adjusted, in 2017 dollars. Available annually from 1997 to 2004 and quarterly beginning Q1 2005. 1997 to 2004 levels are quarterly averages of annual data, displayed at Q1 of each year.')
                                    )
                             ),  # Plot on the left
                             column(4, div(
@@ -305,7 +303,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_const"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau,</a>  seasonally adjusted, in 2017 dollars (adjusted using <a href="https://apps.bea.gov/iTable/?reqid=19&step=2&isuri=1&categories=survey&_gl=1*885yn5*_ga*MTc5MDExNjA3OS4xNzQ0NzQxMTkx*_ga_J4698JNNFT*MTc0NTMzNTgyOS44LjEuMTc0NTMzNjQ4Mi41NS4wLjA.#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDNdLCJkYXRhIjpbWyJjYXRlZ29yaWVzIiwiU3VydmV5Il0sWyJOSVBBX1RhYmxlX0xpc3QiLCIxNDQiXV19" target="_blank">Price Index for Private Fixed Investment in Manufacturing Structures</a> to be consistent with the Federal Reserve and the BEA). Available beginning Q1 1993.')
+                                     HTML('Source: <a href="https://fred.stlouisfed.org/series/PRMFGCON" target="_blank"> Census Bureau</a>, seasonally adjusted using the <a href="https://cran.r-project.org/web/packages/seasonal/index.html" target="_blank">X-13 seasonal adjustment</a> from the Census Bureau, in 2017 dollars (adjusted using <a href="https://apps.bea.gov/iTable/?reqid=19&step=2&isuri=1&categories=survey&_gl=1*885yn5*_ga*MTc5MDExNjA3OS4xNzQ0NzQxMTkx*_ga_J4698JNNFT*MTc0NTMzNTgyOS44LjEuMTc0NTMzNjQ4Mi41NS4wLjA.#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDNdLCJkYXRhIjpbWyJjYXRlZ29yaWVzIiwiU3VydmV5Il0sWyJOSVBBX1RhYmxlX0xpc3QiLCIxNDQiXV19" target="_blank">Price Index for Private Fixed Investment in Manufacturing Structures</a> to be consistent with the Federal Reserve and the BEA). Available beginning Q1 1993.')
                                    )
                             ),  # Plot on the left
                             
@@ -342,7 +340,7 @@ ui <- page_fillable(
                 column(8, plotlyOutput("plotly_hh_income", height = "500px"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau,</a> in 2017 dollars (adjusted using the <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>).')
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/MEHOINUSA672N" target="_blank" > Census Bureau</a>, in 2017 dollars (adjusted using the <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">PCE</a>).')
                        )
                 ),
                 column(4, div(
@@ -839,7 +837,7 @@ We have set the target at a balanced budget.
   })
   
   output$text_va_share <- renderUI({
-    HTML('<p>The Trump administration has included “an increase in the manufacturing sector’s share of gross domestic product” as one of the specific goals of its <a href="https://www.wita.org/atp-research/trade-policy-agenda-report/" target="_blank">trade agenda.</a><br><br>We have not set a precise target for this indicator, but we will monitor it for a sustained reversal of the long-term downward trend, in accordance with the stated goal of the administration.</p>'
+    HTML('<p>The Trump administration has included “an increase in the manufacturing sector’s share of gross domestic product” as one of the specific goals of its <a href="https://www.wita.org/atp-research/trade-policy-agenda-report/" target="_blank">trade agenda</a>.<br><br>We have not set a precise target for this indicator, but we will monitor it for a sustained reversal of the long-term downward trend, in accordance with the stated goal of the administration.</p>'
     )})
   
   ## Construction Spending ##
@@ -1080,7 +1078,7 @@ Spending on factory construction had already climbed steeply in the years before
   })
   
   output$text_emp_manu <- renderUI({
-    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda,</a> which further laments that manufacturing jobs “declined from 17 million in 1993 to 12 million in 2016.”<br><br>We have set the target at 17.3 million manufacturing jobs, a level slightly below the mid-1990s peak but from just before China’s entry into the WTO — which the administration has repeatedly blamed for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs.</a></p>'
+    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda</a>, which further laments that manufacturing jobs “declined from 17 million in 1993 to 12 million in 2016.”<br><br>We have set the target at 17.3 million manufacturing jobs, a level slightly below the mid-1990s peak but from just before China’s entry into the WTO — which the administration has repeatedly blamed for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a>.</p>'
     )})
   
   ## Manufacturing Share ##
@@ -1133,7 +1131,7 @@ Spending on factory construction had already climbed steeply in the years before
   })
   
   output$text_share_manu <- renderUI({
-    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda.</a><br><br>The administration has not set an explicit target for the manufacturing share of total jobs in the labor force, but we include the indicator because we think it will be worth monitoring for a sustained reversal of its decades-long decline.</p>'
+    HTML('<p>“Using trade policy to increase the number of manufacturing jobs in our country… will help raise wages and return our country to one with a more vibrant and secure middle class,” according to the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda</a>.<br><br>The administration has not set an explicit target for the manufacturing share of total jobs in the labor force, but we include the indicator because we think it will be worth monitoring for a sustained reversal of its decades-long decline.</p>'
     )})
   
   ## Employment, motor vehicles and parts ## 
