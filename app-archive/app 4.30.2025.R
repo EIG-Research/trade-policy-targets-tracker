@@ -1,6 +1,5 @@
-
-
-# This file constructs the Trump Trade Poilcy Targets R Shiny application
+# Project: Trump Trade Policy Targets Dashboard
+# File Description: R Shiny application
 
 # remove dependencies
 rm(list = ls())
@@ -335,6 +334,24 @@ ui <- page_fillable(
                 ),
               )
     ),
+    
+    
+    ## Native Employment ##
+#    nav_panel("Native Employment",
+#              fluidRow(
+#                column(8, plotlyOutput("plotly_employment_pop_native"),
+#                       div(
+#                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+#                         HTML('Source: <a href="https://cps.ipums.org/cps/index.shtml" target="_blank">Current Population Survey,</a> Quarterly averages of seasonally adjusted monthly rates.')
+#                       )
+#                ),  # Plot on the left
+                
+#                column(4, div(
+#                  style = "display: flex; justify-content: center; align-items: center; height: 430px;",
+#                  uiOutput("text_employment_pop_native"))
+#                ))
+              
+#    ),
     
     ## Household Income ##
     nav_panel("Income",
@@ -746,7 +763,16 @@ We have set the target at a balanced budget.
       text = ~hover_label,
       hovertemplate = "%{x}: %{y:$,.0f}B<extra></extra>"
     ) %>%
-
+  #    add_trace(
+  #      data = va_df_trend,
+  #      x = ~quarter,
+  #      y = ~predict(trend_model),
+  #      name = "Trendline after the Great Financial Crisis",
+  #      line = list(color = eig_colors[4], width = 2, dash = "dash"),
+  #      hoverinfo = "none",
+  #      hovertemplate = NULL,
+  #      showlegend = TRUE
+  #    ) %>%
       layout(
         xaxis = list(title = "Time (Quarterly)",
                      tickvals = tick_dates,
@@ -757,6 +783,14 @@ We have set the target at a balanced budget.
         yaxis = list(title = "Value Added (Billions of Dollars)",
                      tickformat = ",.0f",
                      ticksuffix = ""),
+        
+  #      legend = list(
+   #       x = 0,          # 0 = left side
+   #       y = 1,          # 1 = top side
+  #        xanchor = "left",
+   #       yanchor = "top",
+    #      title = list(text = "")
+   #     ),
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1])
@@ -813,6 +847,32 @@ We have set the target at a balanced budget.
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1])
+        
+        
+        # add horizontal line
+  #      shapes = list(
+   #       list(
+  #          type = "line",
+  #          xref = "paper",
+   #         x0 = 0, x1 = 1,
+  #          y0 = y_lvl, y1 = y_lvl,
+   #         line = list(color = eig_colors[4], width = 2, dash = "dash")
+  #        )
+  #      ),
+        
+        # label for balance 
+   #     annotations = list(
+  #        list(
+  #          xref = "paper",
+   #         x = 0.12,
+  #          y = y_lvl+0.25,
+  #          text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
+  #          showarrow = FALSE,
+  #          font = list(color = eig_colors[4], size = 14),
+  #          xanchor = "left",
+  #          yanchor = "middle"
+  #        )
+  #      )
       )
   })
   
@@ -982,6 +1042,87 @@ Spending on factory construction had already climbed steeply in the years before
     HTML('<p>The Trump administration, in declaring a <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security" target="_blank">national emergency</a> to justify the use of tariffs, cited the decline in manufacturing output as one of the reasons tariffs are needed. Goods trade deficits “have led to the hollowing out of our manufacturing base; resulted in a lack of incentive to increase advanced domestic manufacturing capacity; undermined critical supply chains; and rendered our defense-industrial base dependent on foreign adversaries.“<br><br>We set the target to be a return to the pre-financial crisis peak of 106.1, which had been reached after a long upward trajectory.</p>'
     )})
   
+  # ## Employment rate, native born 16+ ##
+  # emp_pop_ratio_df = tibble(
+  #   quarter = as.Date(as.yearqtr(time(emp_pop_ratio_m))),
+  #   emp_pop = as.numeric(emp_pop_ratio_m)*100,
+  #   hover_label = format(as.yearqtr(quarter), "%Y Q%q")
+  # )
+  # 
+  # output$plotly_employment_pop_native <- renderPlotly({
+  #   
+  #   # Dynamically generate tick dates: Q1 every 5 years
+  #   date_range <- range(emp_pop_ratio_df$quarter)
+  #   start_year <- lubridate::year(date_range[1])
+  #   end_year   <- lubridate::year(date_range[2])
+  #   
+  #   # Add ticks
+  #   tick_years <- c(start_year,
+  #                   seq((start_year %/% 5 + 2)*5, end_year %/% 5*5, by = 5))
+  #   tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+  #                   tail(date_range, 1)) %>% unique()  # Q1 of each year
+  #   tick_texts <- as.character(as.yearqtr(tick_dates))
+  #   
+  #   y_lvl = emp_pop_ratio_df %>% mutate(year = lubridate::year(quarter)) %>%
+  #     filter(year == 2000) %>% summarise(mean(emp_pop))
+  #   y_lvl = as.numeric(y_lvl[1,1])
+  #   
+  #   plot_ly(
+  #     data = emp_pop_ratio_df,
+  #     x = ~quarter,
+  #     y = ~emp_pop,
+  #     type = 'scatter',
+  #     mode = 'lines',
+  #     line = list(color = eig_colors[1], width = 2),
+  #     text = ~hover_label,
+  #     hovertemplate = "%{x}: %{y:,.1f}%<extra></extra>"
+  #   ) %>%
+  #     layout(
+  #       xaxis = list(title = "Time (Quarterly)",
+  #                    tickvals = tick_dates,
+  #                    ticktext = tick_texts,
+  #                    hoverformat = "%Y Q%q",
+  #                    range = c(tick_dates[1], tick_dates[length(tick_dates)])),
+  #       
+  #       yaxis = list(title = "Employment-to-Population Ratio (%)",
+  #                    tickformat = ".0f",
+  #                    ticksuffix = "%"),
+  #       
+  #       hovermode = "closest",
+  #       hoverlabel = list(bgcolor = eig_colors[1]),
+  #       
+  #       # add horizontal line
+  #       shapes = list(
+  #         list(
+  #           type = "line",
+  #           xref = "paper",
+  #           x0 = 0, x1 = 1,
+  #           y0 = y_lvl, y1 = y_lvl,
+  #           line = list(color = eig_colors[4], width = 2, dash = "dash")
+  #         )
+  #       ),
+  #       
+  #       # label for balance 
+  #       annotations = list(
+  #         list(
+  #           xref = "paper",
+  #           x = 0.25,
+  #           y = y_lvl+0.4,
+  #           text = paste0("2000 level, before China joined the WTO = ",round(y_lvl,1),"%"),
+  #           showarrow = FALSE,
+  #           font = list(color = eig_colors[4], size = 14),
+  #           xanchor = "left",
+  #           yanchor = "middle"
+  #         )
+  #       )
+  #     )
+  #   
+  # })
+  # 
+  # output$text_employment_pop_native <- renderUI({
+  #   HTML('<p>According to Vice President J.D. Vance, the Trump administration <a href="https://www.nytimes.com/2024/10/12/magazine/jd-vance-interview.html" target="_blank"> hopes</a> to raise native-born employment in part by imposing more severe immigration restrictions and creating new jobs by restricting trade. NEC director <a href = "https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target  "_blank"> has also said: </a>"China entered the WTO in 2000. In the 15 years that followed, real incomes declined about $1,200 cumulatively over that time … We got the cheap goods at the grocery store, but then we had fewer jobs.” The native-born employment rate currently stands at 59.4 percent. We set the target to be 64.5 percent, which is the 2000 level before China joined the WTO.</p>'
+  #   )})
+  
   ## Employment Manufacturing ##
   manu_df = tibble(
     quarter = as.Date(as.yearqtr(time(manu_qt))),
@@ -1107,6 +1248,31 @@ Spending on factory construction had already climbed steeply in the years before
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1])
+        
+        # add target line
+       # shapes = list(
+      #    list(
+      #      type = "line",
+      #      xref = "paper",
+      #      x0 = 0, x1 = 1,
+      #      y0 = y_lvl, y1 = y_lvl,
+      #      line = list(color = eig_colors[4], width = 2, dash = "dash")
+      #    )
+      #  ),
+        
+        # add label for target
+       # annotations = list(
+      #    list(
+      #      xref = "paper",
+      #      x = 0.29,
+      #      y = y_lvl + 0.3,
+      #      text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+      #      showarrow = FALSE,
+      #      font = list(color = eig_colors[4], size = 14),
+      #      xanchor = "left",
+      #      yanchor = "middle"
+      #    )
+      #  )
       )
   })
   
@@ -1211,7 +1377,11 @@ Spending on factory construction had already climbed steeply in the years before
     tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
-
+    
+#    y_lvl = motor_share_df %>% mutate(year = lubridate::year(quarter)) %>%
+#      filter(year == 2000) %>% summarise(y = mean(motor_share))
+#    y_lvl = as.numeric(y_lvl[1,1])
+    
     plot_ly(
       data = motor_share_df,
       x = ~quarter,
@@ -1234,6 +1404,31 @@ Spending on factory construction had already climbed steeply in the years before
         
         hovermode = "closest",
         hoverlabel = list(bgcolor = eig_colors[1])
+        
+        # add target line
+  #      shapes = list(
+  #        list(
+  #          type = "line",
+  #          xref = "paper",
+  #          x0 = 0, x1 = 1,
+  #          y0 = y_lvl, y1 = y_lvl,
+  #          line = list(color = eig_colors[4], width = 2, dash = "dash")
+  #        )
+  #      ),
+        
+        # add label for target
+   #     annotations = list(
+  #        list(
+  #          xref = "paper",
+  #          x = 0.31,
+  #          y = y_lvl + 0.02,
+  #          text = paste0("2000 level, before China joined the WTO = " , round(y_lvl, 1),"%"),
+  #          showarrow = FALSE,
+  #          font = list(color = eig_colors[4], size = 14),
+  #          xanchor = "left",
+  #          yanchor = "middle"
+  #        )
+  #      )
       )
   })
   
