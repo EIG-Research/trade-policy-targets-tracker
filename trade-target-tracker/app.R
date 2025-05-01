@@ -355,13 +355,30 @@ ui <- page_fillable(
                 )))
               )
     ),
+    
+    ### Inflation ###
+    nav_panel("Inflation",
+              fluidRow(
+                column(8,  plotlyOutput("plotly_inflation"),
+                       div(
+                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
+                         HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis</a>, 2017 basis, seasonally adjusted. Percent change is from the corresponding quarter a year prior.')
+                       )
+                ),
+                column(4, div(
+                  style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
+                  div(
+                    style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
+                    uiOutput("text_inflation"))
+                )))),
+              
     ### GDP ###
     nav_panel("GDP",
               fluidRow(
                 column(8, plotlyOutput("plotly_gdp"),
                        div(
                          style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1IG45" target="_blank" >Bureau of Economic Analysis</a>. Percent change is from the corresponding quarter a year prior. Data is easonally adjusted.')
+                         HTML('Source: <a href="https://fred.stlouisfed.org/graph/?g=1IG45" target="_blank" >Bureau of Economic Analysis</a>, seasonally adjusted. Percent change is from the corresponding quarter a year prior.')
                        )
                 ),
                 column(4, div(
