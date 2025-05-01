@@ -31,7 +31,7 @@ rsconnect::setAccountInfo(name='economicinnovationgroup',
 #################
 ### Load Data ###
 #################
-setwd("/Users/sarah/Documents/GitHub/trade-policy-targets-tracker/trade-target-tracker")
+
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
@@ -356,22 +356,6 @@ ui <- page_fillable(
               )
     ),
     
-    ### Inflation ###
-    nav_panel("Inflation",
-              fluidRow(
-                column(8,  plotlyOutput("plotly_inflation"),
-                       div(
-                         style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                         HTML('Source: <a href="https://fred.stlouisfed.org/series/PCECTPI" target="_blank">Bureau of Economic Analysis</a>, 2017 basis, seasonally adjusted. Percent change is from the corresponding quarter a year prior.')
-                       )
-                ),
-                column(4, div(
-                  style = "display: flex; justify-content: flex-start; height: 430px; overflow-y: hidden;",
-                  div(
-                    style = "max-height: 430px; overflow-y: auto; width: 100%; padding: 10px;",
-                    uiOutput("text_inflation"))
-                )))),
-              
     ### GDP ###
     nav_panel("GDP",
               fluidRow(
@@ -1462,7 +1446,7 @@ We have set the target at $150 billion in quarterly customs duties (equivalent t
                      hoverformat = "%Y Q%q",
                      range = c(tick_dates[1], tick_dates[length(tick_dates)])),
         
-        yaxis = list(title = "GDP Growth (%)",
+        yaxis = list(title = "Real GDP Growth (%)",
                      tickformat = ".1f",
                      ticksuffix = ""),
         
