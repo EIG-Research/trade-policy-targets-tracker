@@ -73,16 +73,23 @@ ui <- page_fillable(
         margin-right: 20px;
       }
       .card-header-tabs>li>a{
-        color: #1a654d;
+        color: #044140;
+        font-size: 15px !important;
+        font-weight: bold !important;
       }
       .card-header-tabs>li>a:hover{
         color: #5e9c86;
       }
       .nav-tabs>li>a{
-        color: #1a654d;
+        color: #044140;
+        font-size: 15px !important;
+        font-weight: bold !important;
       }
       .nav-tabs>li>a:hover{
         color: #5e9c86;
+      }
+      .nav-link.active {
+      color: #da9969 !important;
       }
     "))
   ),

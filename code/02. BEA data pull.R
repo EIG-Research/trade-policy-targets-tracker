@@ -52,7 +52,7 @@ load(file.path(path_appdata, "fred_data.RData"))
 # Link: https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services
 # Monthly aggregate: U.S. Trade in Goods and Services, 1960-present, Table 1, column 3 "Goods"
 # Quarterly with China: U.S. Trade in Goods and Services by Selected Countries and Areas, 1999-present, Table 6
-trade_agg_month <- read_xlsx(file.path(path_bea, "trad-time-series-0225.xlsx"),
+trade_agg_month <- read_xlsx(file.path(path_bea, "trad-time-series-0325.xlsx"),
                              sheet = "Table 1",
                              skip = 74) %>%
   select(1,3) %>%
@@ -102,13 +102,16 @@ trade_china_qt_92_98 <- final(seas(trade_china_hist$balance %>%
                                     ts(., start = c(1992,1), frequency = 12))) %>%
   aggregate(., nfrequency = 4, FUN = sum)
 trade_china_qt_99_24 <- trade_china_qt$balance %>% ts(., start = c(1999,1), frequency = 4)
-trade_china_qt <- round(ts(c(trade_china_qt_92_98, trade_china_qt_99_24), start = start(trade_china_qt_92_98),
+
+# From BEA International Trade in Goods and Services, March Release, page 38
+# Will remove when BEA & FRED update their trade balance by country database
+trade_china_qt <- round(ts(c(trade_china_qt_92_98, trade_china_qt_99_24, -81081), start = start(trade_china_qt_92_98),
                      frequency = 4), digits = 0)
 
 # Adjust to billions of 2017 dollars
 # Remove the -1 when trade data comes out
-trade_agg_qt <- trade_agg_qt / (pce_adj[9:(length(pce_adj)-1)]*1000)
-trade_china_qt <- trade_china_qt / (pce_adj[9:(length(pce_adj)-1)]*1000)
+trade_agg_qt <- trade_agg_qt / (pce_adj[9:length(pce_adj)]*1000)
+trade_china_qt <- trade_china_qt / (pce_adj[9:length(pce_adj)]*1000)
 
 # Export data
 save(trade_agg_qt, trade_china_qt, va_manu_1997_2004_year, va_manu_2005_2024_qt,
