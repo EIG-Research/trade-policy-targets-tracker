@@ -9,7 +9,6 @@ clear all
 
 ********************************************************************************
 * employment levels
-* use /Users/sarah/Documents/GitHub/trade-policy-targets-tracker/data/cps_00030.dta, clear
 use /Users/sarah/Downloads/cps_00031.dta, clear
 
 * in labor force
@@ -41,7 +40,6 @@ export excel /Users/sarah/Downloads/employment_level_native.xlsx, firstrow(varia
 
 ********************************************************************************
 * employment rate, native born men
-*use /Users/sarah/Documents/GitHub/trade-policy-targets-tracker/data/cps_00030.dta, clear
 use /Users/sarah/Downloads/cps_00031.dta, clear
 
 keep if nativity != 5
