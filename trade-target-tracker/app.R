@@ -24,9 +24,9 @@ library(plotly)
 # R Shiny
 library(shiny)
 library(rsconnect)
-rsconnect::setAccountInfo(name='economicinnovationgroup',
-                          token='1E424A49864E72123BE5CAA19E6D2274',
-                          secret='/OJ/Oy/GW2sk6ibHJt4JgoqzB80U03mcEyFJn0ev')
+rsconnect::setAccountInfo(name='',
+                          token='',
+                          secret='')
 
 #################
 ### Load Data ###
