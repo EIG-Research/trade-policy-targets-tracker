@@ -1334,7 +1334,7 @@ Spending on factory construction had already climbed steeply in the years before
   })
   
   output$text_china_shock <- renderUI({
-    HTML('<p>The economists David Autor, David Dorn, and Gordon H Hanson <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-economics-080315-015041" target="_blank">identified</a> the 145 commuting zones in the United States that were most impacted by trade with China. Manufacturing employment in these zones was 2.2 million jobs as of 2022, the most available data.<br><br>We have set the target at 3.2 million jobs, the total manufacturing employment in these commuting zones just before China joined the WTO in 2001. The administration has repeatedly blamed China’s entry into the WTO for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a> in the United States.</p>'
+    HTML('<p>The economists David Autor, David Dorn, and Gordon H Hanson <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-economics-080315-015041" target="_blank">identified</a> the 145 commuting zones in the United States that were most impacted by trade with China. Manufacturing employment in these zones was 2.2 million jobs as of 2022, the most recent available data.<br><br>We have set the target at 3.2 million jobs, the total manufacturing employment in these commuting zones just before China joined the WTO in 2001. The administration has repeatedly blamed China’s entry into the WTO for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a> in the United States.</p>'
     )})
   
   
@@ -1437,6 +1437,8 @@ We have set the target at $150 billion in quarterly customs duties (equivalent t
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
+    y_lvl <- 3
+    
     plot_ly(
       data = gdp_growth_df,
       x = ~quarter,
@@ -1458,11 +1460,37 @@ We have set the target at $150 billion in quarterly customs duties (equivalent t
                      ticksuffix = ""),
         
         hovermode = "closest",
-        hoverlabel = list(bgcolor = eig_colors[1]))
+        hoverlabel = list(bgcolor = eig_colors[1]),
+        
+        # add target line
+        shapes = list(
+          list(
+            type = "line",
+            xref = "paper",
+            x0 = 0, x1 = 1,
+            y0 = y_lvl, y1 = y_lvl,
+            line = list(color = eig_colors[4], width = 2, dash = "dash")
+          )
+        ),
+        
+        # add label for target
+        annotations = list(
+          list(
+            xref = "paper",
+            x = 0.21,
+            y = y_lvl - 0.75,
+            text = paste0("Target = " , round(y_lvl, 1),"%"),
+            showarrow = FALSE,
+            font = list(color = eig_colors[4], size = 14),
+            xanchor = "left",
+            yanchor = "middle"
+          )
+        ))
   })
   
   output$text_gdp <- renderUI({
-    HTML("<p>Stephen Miran, chair of President Trump's Council of Economic Advisors, has <a href = \"https://www.whitehouse.gov/briefings-statements/2025/04/cea-chairman-steve-miran-hudson-institute-event-remarks/\" target= \"_blank\">argued</a> that the tax relief made possible by the tariffs \"will create economic growth.\" As tariff revenues can also be used to reduce the deficit, Miran adds that the resulting lower interest rates will stimulate \"an economic boom.\" The White House also has <a href =\"https://www.whitehouse.gov/fact-sheets/2025/03/fact-sheet-president-donald-j-trump-adjusts-imports-of-automobiles-and-automobile-parts-into-the-united-states/\" target=\"_blank\">cited</a> an external <a href = \"https://prosperousamerica.org/global-10-tariffs-on-u-s-imports-would-raise-incomes-and-pay-for-large-income-tax-cuts-for-lower-middle-class/\" target=\"_blank\">study</a> finding that \"a global tariff of 10% would grow the economy by $728 billion.\"<br><br> Although we are not setting a precise target, we are monitoring inflation-adjusted GDP for a sustained elevation in the rate of growth.</p>")
+    HTML("<p>Stephen Miran, chair of President Trump's Council of Economic Advisors, has <a href = \"https://www.whitehouse.gov/briefings-statements/2025/04/cea-chairman-steve-miran-hudson-institute-event-remarks/\" target= \"_blank\">argued</a> that the tax relief made possible by the tariffs \"will create economic growth.\" As tariff revenues can also be used to reduce the deficit, Miran adds that the resulting lower interest rates will stimulate \"an economic boom.\" The White House also has <a href =\"https://www.whitehouse.gov/fact-sheets/2025/03/fact-sheet-president-donald-j-trump-adjusts-imports-of-automobiles-and-automobile-parts-into-the-united-states/\" target=\"_blank\">cited</a> an external <a href = \"https://prosperousamerica.org/global-10-tariffs-on-u-s-imports-would-raise-incomes-and-pay-for-large-income-tax-cuts-for-lower-middle-class/\" target=\"_blank\">study</a> finding that \"a global tariff of 10% would grow the economy by $728 billion.\"<br><br>
+         As President Trump has declared the start of a new \"Golden Age,\" we believe that 3 percent real GDP growth, sustained over time, is a reasonable target. The American economy previously hit that target in multiple quarters both during President Trump’s first term and under the Biden administration.</p>")
     
   })
  
