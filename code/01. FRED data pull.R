@@ -9,7 +9,7 @@
 #   6. Median household income
 #   7. Industrial Production
 #   8. Customs duties
-# last update: 4/22/2025 by Jiaxin He
+# last update: 5/6/2025 by jiaxin@eig.org
 
 # remove dependencies
 rm(list = ls())
@@ -37,10 +37,8 @@ library(seasonal) # Use X-13 to seasonally adjust monthly data
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker",
-  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker"
-)
+  "name" = "PATH TO GITHUB REPO"
+  )
 
 # Setting project path based on current user
 current_user <- Sys.info()[["user"]]
