@@ -4,7 +4,7 @@
 #   2. Trade balance with China
 #   3. Total real value added, manufacturing
 # Additional historical data downloaded manually from Census and OECD
-# last update: 4/14/2025 by Jiaxin He
+# last update: 5/6/2025 by jiaxin@eig.org
 
 # remove dependencies
 rm(list = ls())
@@ -24,10 +24,8 @@ library(seasonal)
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO",
-  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker"
-)
+  "name" = "PATH TO GITHUB REPO"
+  )
 
 # Setting project path based on current user
 current_user <- Sys.info()[["user"]]
