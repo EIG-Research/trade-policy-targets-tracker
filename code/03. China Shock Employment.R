@@ -54,6 +54,8 @@ va_cities <- data.frame(county = c(51560),
                         CZ90 = c(602))
 china_most_hit_counties <- bind_rows(china_most_hit_counties, va_cities)
 
+write.csv(china_most_hit_counties, file.path(path_data, "top_china_shock_counties.csv"))
+
 # SIC to NAICS crosswalk from Eckert, Fort, Schott, and Yang (2021)
 sic_naics_crosswalk <- read.csv(file.path(path_cbp, "full_sic87_naics97.csv")) %>%
   filter(naics97 == "31----") %>% mutate(sic = sic87) %>%
