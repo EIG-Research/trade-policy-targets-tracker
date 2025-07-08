@@ -18,8 +18,7 @@ library(scales)
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO"
-  )
+  "name" = "PATH TO GITHUB REPO"  )
 
 # Setting project path based on current user
 current_user <- Sys.info()[["user"]]
@@ -53,6 +52,13 @@ va_cities <- data.frame(county = c(51560),
                         county_name = c("Clifton Forge City"),
                         CZ90 = c(602))
 china_most_hit_counties <- bind_rows(china_most_hit_counties, va_cities)
+
+    # save most hit czones
+    china_most_hit_czones_df = china_shock %>% select(2:11) %>% filter(CA.level.category == "Most hit")
+    write.csv(china_most_hit_czones_df, file.path(path_data, "top_china_shock_czones.csv"))
+
+    # save most hit counties
+    write.csv(china_most_hit_counties, file.path(path_data, "top_china_shock_counties.csv"))
 
 # SIC to NAICS crosswalk from Eckert, Fort, Schott, and Yang (2021)
 sic_naics_crosswalk <- read.csv(file.path(path_cbp, "full_sic87_naics97.csv")) %>%
