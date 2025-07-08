@@ -55,7 +55,7 @@ path_appdata <- file.path(path_app, "cleaned_data")
 ##################
 
 # Insert your FRED API key here
-FRED_API_KEY <- "ac17e5b7bc9c9e7c03f3f452bcb3051e"
+FRED_API_KEY <- ""
 api_key <- Sys.getenv("FRED_API_KEY")
 
 start_date <- "1990-01-01"

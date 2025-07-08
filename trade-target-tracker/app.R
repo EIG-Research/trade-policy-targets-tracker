@@ -24,9 +24,9 @@ library(plotly)
 # R Shiny
 library(shiny)
 library(rsconnect)
-rsconnect::setAccountInfo(name='',
-                          token='',
-                          secret='')
+rsconnect::setAccountInfo(name='economicinnovationgroup',
+                          token='1E424A49864E72123BE5CAA19E6D2274',
+                          secret='/OJ/Oy/GW2sk6ibHJt4JgoqzB80U03mcEyFJn0ev')
 
 #################
 ### Load Data ###
@@ -738,8 +738,8 @@ We have set the target at a balanced budget.
   
   ## Value Added ##
   va_df <- tibble(
-    quarter = c(as.Date(time(va_manu_1997_2004_year)), as.Date(time(va_manu_2005_2024_qt))),
-    value_added = c(as.matrix(va_manu_1997_2004_year), as.matrix(va_manu_2005_2024_qt)),
+    quarter = c(as.Date(time(va_manu_1997_2004_year)), as.Date(time(va_manu_2005_2025_qt))),
+    value_added = c(as.matrix(va_manu_1997_2004_year), as.matrix(va_manu_2005_2025_qt)),
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   va_df_trend <- va_df %>%
@@ -796,8 +796,8 @@ We have set the target at a balanced budget.
   
   ## Share of Value Added as a Percentage of GDP##
   share_va_df <- tibble(
-    quarter = c(as.Date(time(share_va_manu_1997_2004_year)), as.Date(time(share_va_manu_2005_2024_qt))),
-    share_gdp = c(as.matrix(share_va_manu_1997_2004_year), as.matrix(share_va_manu_2005_2024_qt)),
+    quarter = c(as.Date(time(share_va_manu_1997_2004_year)), as.Date(time(share_va_manu_2005_2025_qt))),
+    share_gdp = c(as.matrix(share_va_manu_1997_2004_year), as.matrix(share_va_manu_2005_2025_qt)),
     hover_label = format(as.yearqtr(quarter), "%Y Q%q")
   )
   

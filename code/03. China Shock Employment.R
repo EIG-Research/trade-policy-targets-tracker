@@ -93,7 +93,7 @@ for(year in 90:97){
   china_most_hit_counties <- china_most_hit_counties %>% left_join(cbp_year, by = "county")
 }
 
-for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:22))){
+for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:23))){
   emp_var <- paste0("man_emp_", year)
   cbp_year <- read.table(file.path(path_cbp, paste0("cbp", year, "co.txt")),
                          header=TRUE, sep = ',')
@@ -116,7 +116,7 @@ for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:22))){
                                                     empflag == "M" ~ 100000,
                                                     TRUE ~ 0),
                                     county = fipstate * 1000 + fipscty)
-  }else if(year %in% c(as.character(18:22))){
+  }else if(year %in% c(as.character(18:23))){
     cbp_year <- cbp_year %>% mutate(emp = as.numeric(emp),
                                     county = fipstate * 1000 + fipscty)
   }else{

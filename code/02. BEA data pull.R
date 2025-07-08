@@ -69,9 +69,9 @@ trade_china_hist <- read.csv(file.path(path_bea, "trad-china-hist-92-98.csv")) %
 trade_china_hist$balance <- round(as.numeric(sub(",", "", trade_china_hist$balance)), digits = 0)
 
 # Real value added by industry
-va_manu_q <- read.csv(file.path(path_bea, "real_VA_manu_2005_2024_Q.csv"), skip = 3, header = TRUE)
+va_manu_q <- read.csv(file.path(path_bea, "real_VA_manu_2005_2025_Q.csv"), skip = 3, header = TRUE)
 va_manu_q <- head(va_manu_q, -5) %>% select(-1:-2)
-va_manu_2005_2024_qt <- (as.numeric(unlist(va_manu_q[2,]))/4) %>%
+va_manu_2005_2025_qt <- (as.numeric(unlist(va_manu_q[2,]))/4) %>%
   ts(., start = c(2005, 1), frequency = 4) / 1000
 
 va_manu_a <- read.csv(file.path(path_bea, "real_VA_manu_1997_2004_A.csv"), skip = 3, header = TRUE)
@@ -80,9 +80,9 @@ va_manu_1997_2004_year <- (as.numeric(unlist(va_manu_a[1,]))/4) %>%
   ts(., start = c(1997, 1), frequency = 1) / 1000
 
 # Manufacturing value added share of gdp
-share_va_manu_q <- read.csv(file.path(path_bea, "manu_share_gdp_2005_2024_Q.csv"), skip = 3, header = TRUE)
+share_va_manu_q <- read.csv(file.path(path_bea, "manu_share_gdp_2005_2025_Q.csv"), skip = 3, header = TRUE)
 share_va_manu_q <- head(share_va_manu_q, -5) %>% select(-1:-2)
-share_va_manu_2005_2024_qt <- as.numeric(unlist(share_va_manu_q[2,])) %>%
+share_va_manu_2005_2025_qt <- as.numeric(unlist(share_va_manu_q[2,])) %>%
   ts(., start = c(2005, 1), frequency = 4)
 
 share_va_manu_a <- read.csv(file.path(path_bea, "manu_share_gdp_1997_2004_A.csv"), skip = 3, header = TRUE)
@@ -112,5 +112,5 @@ trade_agg_qt <- trade_agg_qt / (pce_adj[9:length(pce_adj)]*1000)
 trade_china_qt <- trade_china_qt / (pce_adj[9:length(pce_adj)]*1000)
 
 # Export data
-save(trade_agg_qt, trade_china_qt, va_manu_1997_2004_year, va_manu_2005_2024_qt,
-     share_va_manu_1997_2004_year, share_va_manu_2005_2024_qt, file = file.path(path_appdata, "bea_data.RData"))
+save(trade_agg_qt, trade_china_qt, va_manu_1997_2004_year, va_manu_2005_2025_qt,
+     share_va_manu_1997_2004_year, share_va_manu_2005_2025_qt, file = file.path(path_appdata, "bea_data.RData"))
