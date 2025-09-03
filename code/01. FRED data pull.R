@@ -9,7 +9,7 @@
 #   6. Median household income
 #   7. Industrial Production
 #   8. Customs duties
-# last update: 5/6/2025 by jiaxin@eig.org
+# last update: 9/3/2025 by jiaxin@eig.org
 
 # remove dependencies
 rm(list = ls())
@@ -37,7 +37,7 @@ library(seasonal) # Use X-13 to seasonally adjust monthly data
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO"
+  "name" = "PATH TO GITHUB REPO",
   )
 
 # Setting project path based on current user
@@ -59,7 +59,7 @@ FRED_API_KEY <- ""
 api_key <- Sys.getenv("FRED_API_KEY")
 
 start_date <- "1990-01-01"
-end_date <- "2025-03-01"
+end_date <- "2025-06-01"
 
 # Query quarterly chained PCE (2017 basis)
 PCE_id <- "PCECTPI"

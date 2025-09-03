@@ -1,6 +1,6 @@
 # Project: Trump Trade Policy Targets Dashboard
 # File description: Aggregating manufacturing employment in counties most affected by the China shock
-# last update: 5/1/2025 by jiaxin@eig.org
+# last update: 9/3/2025 by jiaxin@eig.org
 
 # remove dependencies
 rm(list = ls())
@@ -18,7 +18,9 @@ library(scales)
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO"  )
+  "name" = "PATH TO GITHUB REPO",
+  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker"
+  )
 
 # Setting project path based on current user
 current_user <- Sys.info()[["user"]]

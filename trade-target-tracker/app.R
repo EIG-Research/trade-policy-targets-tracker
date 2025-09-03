@@ -31,7 +31,7 @@ rsconnect::setAccountInfo(name='',
 #################
 ### Load Data ###
 #################
-
+setwd("/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker/trade-target-tracker")
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
@@ -423,7 +423,7 @@ server <- function(input, output) {
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -583,7 +583,7 @@ server <- function(input, output) {
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -673,7 +673,7 @@ We have set the target at a balanced budget.
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -758,7 +758,7 @@ We have set the target at a balanced budget.
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1))  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -810,7 +810,7 @@ We have set the target at a balanced budget.
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1))  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -863,7 +863,7 @@ We have set the target at a balanced budget.
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -948,7 +948,7 @@ Spending on factory construction had already climbed steeply in the years before
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -1025,7 +1025,7 @@ Spending on factory construction had already climbed steeply in the years before
     # Add ticks
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -1104,7 +1104,7 @@ Spending on factory construction had already climbed steeply in the years before
     
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -1157,7 +1157,7 @@ Spending on factory construction had already climbed steeply in the years before
     
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -1235,7 +1235,7 @@ Spending on factory construction had already climbed steeply in the years before
     
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
 
@@ -1352,7 +1352,7 @@ Spending on factory construction had already climbed steeply in the years before
     
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
@@ -1433,7 +1433,7 @@ We have set the target at $150 billion in quarterly customs duties (equivalent t
     
     tick_years <- c(start_year,
                     seq((start_year %/% 5 + 1)*5, end_year %/% 5*5, by = 5))
-    tick_dates <- c(as.Date(paste0(tick_years, "-01-01")),
+    tick_dates <- c(as.Date(paste0(tick_years[-length(tick_years)], "-01-01")),
                     tail(date_range, 1)) %>% unique()  # Q1 of each year
     tick_texts <- as.character(as.yearqtr(tick_dates))
     
