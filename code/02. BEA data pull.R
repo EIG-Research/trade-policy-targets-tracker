@@ -58,7 +58,7 @@ trade_agg_month <- read_xlsx(file.path(path_bea, "trad-time-series-0625_0.xlsx")
   na.omit() %>% rename(month = Monthly, balance = `...3`)
 
 
-trade_china_qt <- read_xlsx(file.path(path_bea, "trad-geo-time-series-0425.xlsx"),
+trade_china_qt <- read_xlsx(file.path(path_bea, "trad-geo-time-series-0725.xlsx"),
                             sheet = "Table 6",
                             skip = 5) %>% slice(29:n()) %>% select(Period, China) %>%
   na.omit() %>% rename(quarter = Period, balance = China)
@@ -106,7 +106,7 @@ trade_china_qt <- round(ts(c(trade_china_qt_92_98, trade_china_qt_99_25), start 
 
 # Adjust to billions of 2017 dollars
 trade_agg_qt <- trade_agg_qt / (pce_adj[9:length(pce_adj)]*1000)
-trade_china_qt <- trade_china_qt / (pce_adj[9:(length(pce_adj) - 1)]*1000)
+trade_china_qt <- trade_china_qt / (pce_adj[9:length(pce_adj)]*1000)
 
 # Export data
 save(trade_agg_qt, trade_china_qt, va_manu_1997_2004_year, va_manu_2005_2025_qt,
