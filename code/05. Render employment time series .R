@@ -16,7 +16,8 @@ library(seasonal)
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO"
+  "name" = "PATH TO GITHUB REPO",
+  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker"
   )
 
 # Setting project path based on current user

@@ -9,7 +9,7 @@ clear all
 
 ********************************************************************************
 * employment levels
-use /Users/sarah/Downloads/cps_00031.dta, clear
+use /Users/sarah/Documents/GitHub/trade-policy-targets-tracker/data/CPS/cps_00068.dta, clear
 
 * in labor force
 keep if inlist(empstat, 10, 12) // at work, or has job not at work last week
@@ -36,11 +36,11 @@ format employment_level %12.0f
 *collapse(mean) employment_level, by(year quarter)	
 format employment_level %12.0f 
 
-export excel /Users/sarah/Downloads/employment_level_native.xlsx, firstrow(variables) replace
+export excel /Users/sarah/Documents/GitHub/trade-policy-targets-tracker/data/CPS/employment_level_native.xlsx, firstrow(variables) replace
 
 ********************************************************************************
 * employment rate, native born men
-use /Users/sarah/Downloads/cps_00031.dta, clear
+use /Users/sarah/Documents/GitHub/trade-policy-targets-tracker/data/CPS/cps_00068.dta, clear
 
 keep if nativity != 5
 keep if age >=16
@@ -69,6 +69,6 @@ g employment_rate = counter/population
 keep year month employment_rate
 *collapse(mean) employment_rate, by(year quarter)
 	
-export excel /Users/sarah/Downloads/employment_rate_native.xlsx, firstrow(variables) replace
+export excel /Users/sarah/Documents/GitHub/trade-policy-targets-tracker/data/CPS/employment_rate_native.xlsx, firstrow(variables) replace
 
 
