@@ -37,7 +37,7 @@ library(seasonal) # Use X-13 to seasonally adjust monthly data
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO",
+  "name" = "PATH TO GITHUB REPO"
   )
 
 # Setting project path based on current user
