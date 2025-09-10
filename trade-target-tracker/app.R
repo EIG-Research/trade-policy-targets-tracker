@@ -31,7 +31,7 @@ rsconnect::setAccountInfo(name='',
 #################
 ### Load Data ###
 #################
-setwd("/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker/trade-target-tracker")
+
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
@@ -493,11 +493,11 @@ server <- function(input, output) {
     )
     
     # grow at a rate of 3.4% a year.
-     growth_rate <-0.034
+    growth_rate <-0.034
     
-    start_val <- income_df %>% filter(quarter == as.Date("2023-01-01")) %>% pull(income)
-    start_year = 2023
-    years <- 2024:2028
+    start_val <- income_df %>% filter(quarter == as.Date("2024-01-01")) %>% pull(income)
+    start_year = 2024
+    years <- 2025:2028
     
     future_df <- tibble(
       year = years,
