@@ -155,8 +155,8 @@ construction_real <- construction_qt / (manu_const_adj*1000)
 
 # Adjust median household income to 2017 PCE dollars
 cpi_yr <- cpi_qt %>% aggregate(., nfrequency = 1, FUN = mean)
-cpi_adj_yr <- cpi_yr[2:(length(cpi_yr)-1)]/cpi_yr[2017-1989+1]
-pce_adj_yr <- PCE_qt[5:(length(PCE_qt)-4)] %>% ts(., start = c(1990,1), frequency = 4) %>%
+cpi_adj_yr <- cpi_yr[2:length(cpi_yr)]/cpi_yr[length(cpi_yr)]
+pce_adj_yr <- PCE_qt[5:length(PCE_qt)] %>% ts(., start = c(1990,1), frequency = 4) %>%
   aggregate(., nfrequency = 1, FUN = mean) / 100
 income_yr <- income_yr * cpi_adj_yr / pce_adj_yr
 
