@@ -4,7 +4,7 @@
 #   2. Trade balance with China
 #   3. Total real value added, manufacturing
 # Additional historical data downloaded manually from Census and OECD
-# last update: 9/3/2025 by jiaxin@eig.org
+# last update: 1/22/2026 by jiaxin@eig.org
 
 # remove dependencies
 rm(list = ls())
@@ -24,8 +24,7 @@ library(seasonal)
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker/"
+  "name" = "PATH TO GITHUB REPO"
   )
 
 # Setting project path based on current user
@@ -51,14 +50,13 @@ load(file.path(path_appdata, "fred_data.RData"))
 # Link: https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services
 # Monthly aggregate: U.S. Trade in Goods and Services, 1960-present, Table 1, column 3 "Goods"
 # Quarterly with China: U.S. Trade in Goods and Services by Selected Countries and Areas, 1999-present, Table 6
-trade_agg_month <- read_xlsx(file.path(path_bea, "trad-time-series-0625_0.xlsx"),
+trade_agg_month <- read_xlsx(file.path(path_bea, "trad-time-series-1025.xlsx"),
                              sheet = "Table 1",
                              skip = 74) %>%
   select(1,3) %>%
   na.omit() %>% rename(month = Monthly, balance = `...3`)
 
-
-trade_china_qt <- read_xlsx(file.path(path_bea, "trad-geo-time-series-0725.xlsx"),
+trade_china_qt <- read_xlsx(file.path(path_bea, "trad-geo-time-series-1025.xlsx"),
                             sheet = "Table 6",
                             skip = 5) %>% slice(29:n()) %>% select(Period, China) %>%
   na.omit() %>% rename(quarter = Period, balance = China)
@@ -109,5 +107,7 @@ trade_agg_qt <- trade_agg_qt / (pce_adj[9:length(pce_adj)]*1000)
 trade_china_qt <- trade_china_qt / (pce_adj[9:length(pce_adj)]*1000)
 
 # Export data
-save(trade_agg_qt, trade_china_qt, va_manu_1997_2004_year, va_manu_2005_2025_qt,
-     share_va_manu_1997_2004_year, share_va_manu_2005_2025_qt, file = file.path(path_appdata, "bea_data.RData"))
+save(trade_agg_qt, trade_china_qt,
+     va_manu_1997_2004_year, va_manu_2005_2025_qt,
+     share_va_manu_1997_2004_year, share_va_manu_2005_2025_qt,
+     file = file.path(path_appdata, "bea_data.RData"))

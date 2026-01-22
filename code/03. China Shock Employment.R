@@ -18,8 +18,7 @@ library(scales)
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO",
-  "jiaxinhe" = "/Users/jiaxinhe/Documents/projects/trade-policy-targets-tracker"
+  "name" = "PATH TO GITHUB REPO"
   )
 
 # Setting project path based on current user

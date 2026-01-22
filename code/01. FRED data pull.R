@@ -9,7 +9,7 @@
 #   6. Median household income
 #   7. Industrial Production
 #   8. Customs duties
-# last update: 9/3/2025 by jiaxin@eig.org
+# last update: 1/22/2026 by jiaxin@eig.org
 
 # remove dependencies
 rm(list = ls())
@@ -59,7 +59,7 @@ FRED_API_KEY <- ""
 api_key <- Sys.getenv("FRED_API_KEY")
 
 start_date <- "1990-01-01"
-end_date <- "2025-06-01"
+end_date <- "2025-12-01"
 
 # Query quarterly chained PCE (2017 basis)
 PCE_id <- "PCECTPI"
@@ -126,12 +126,12 @@ quarterly <- function(df, start_month, func, seasonal = FALSE){
   if(seasonal){
     df_ts <- final(seas(df_ts)) # Seasonally adjust FRED budget and construction spending data
   }
-  df_ts %>% aggregate(., nfrequency = 4, FUN = func)
+  df_ts %>% aggregate(., nfrequency = 4, FUN = func, na.rm = TRUE)
 }
 
 cpi_qt <- quarterly(CPI_month, c(1989,1), mean, FALSE)
 budget_qt <- quarterly(budget_month, c(1990,1), sum, TRUE)
-construction_qt <- quarterly(contruction_month, c(1993,1), sum, TRUE)
+construction_qt <- quarterly(contruction_month %>% filter(date != "2025-10-01"), c(1993,1), sum, TRUE)
 manu_qt <- quarterly(manu_month, c(1990,1), mean, FALSE)
 motor_qt <- quarterly(motor_month, c(1990,1), mean, FALSE)
 priv_qt <- quarterly(priv_month, c(1990,1), mean, FALSE)
@@ -154,9 +154,12 @@ manu_const_adj <- as.numeric(unlist(manu_const_price_index))/100
 construction_real <- construction_qt / (manu_const_adj*1000)
 
 # Adjust median household income to 2017 PCE dollars
-cpi_yr <- cpi_qt %>% aggregate(., nfrequency = 1, FUN = mean)
-cpi_adj_yr <- cpi_yr[2:length(cpi_yr)]/cpi_yr[length(cpi_yr)]
-pce_adj_yr <- PCE_qt[5:length(PCE_qt)] %>% ts(., start = c(1990,1), frequency = 4) %>%
+cpi_yr <- cpi_qt[5:(length(cpi_qt)-4)] %>%
+  ts(., start = c(1990,1), frequency = 4) %>%
+  aggregate(., nfrequency = 1, FUN = mean)
+cpi_adj_yr <- cpi_yr/cpi_yr[length(cpi_yr)]
+pce_adj_yr <- PCE_qt[5:length(PCE_qt)] %>%
+  ts(., start = c(1990,1), frequency = 4) %>%
   aggregate(., nfrequency = 1, FUN = mean) / 100
 income_yr <- income_yr * cpi_adj_yr / pce_adj_yr
 

@@ -24,9 +24,7 @@ library(plotly)
 # R Shiny
 library(shiny)
 library(rsconnect)
-rsconnect::setAccountInfo(name='',
-                          token='',
-                          secret='')
+rsconnect::setAccountInfo(name='economicinnovationgroup', token='1E424A49864E72123BE5CAA19E6D2274', secret='/OJ/Oy/GW2sk6ibHJt4JgoqzB80U03mcEyFJn0ev')
 
 #################
 ### Load Data ###
@@ -276,7 +274,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_va"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://apps.bea.gov/iTable/?reqid=150&step=2&isuri=1&categories=gdpxind&_gl=1*1aj3zuq*_ga*NzE4OTQyNzYwLjE3NDE4NzMwODg.*_ga_J4698JNNFT*MTc0NTk2MTA5NC4yNC4xLjE3NDU5NjExMzcuMTcuMC4w#eyJhcHBpZCI6MTUwLCJzdGVwcyI6WzEsMiwzXSwiZGF0YSI6W1siY2F0ZWdvcmllcyIsIkdkcHhJbmQiXSxbIlRhYmxlX0xpc3QiLCIxMCJdXX0=" target="_blank"> Bureau of Economic Analysis</a>, <a href="https://www.bea.gov/help/faq/122" target="_blank">de-annualized quarterly data</a>, seasonally adjusted, in 2017 dollars. Available annually from 1997 to 2004 and quarterly beginning Q1 2005. 1997 to 2004 levels are quarterly averages of annual data, displayed at Q1 of each year.')
+                                     HTML('Source: <a href="https://apps.bea.gov/iTable/?reqid=1603&step=2&Categories=GDPxInd&isURI=1&_gl=1*9rhkk0*_ga*NzE4OTQyNzYwLjE3NDE4NzMwODg.*_ga_J4698JNNFT*czE3NTgyMjczNzQkbzEwOSRnMSR0MTc1ODIyNzQ2MCRqNTMkbDAkaDA.#eyJhcHBpZCI6MTYwMywic3RlcHMiOlsxLDIsNCw0XSwiZGF0YSI6W1siY2F0ZWdvcmllcyIsIkdEUHhJbmQiXSxbIlRhYmxlX0xpc3QiLCJUVkExMDYiXSxbIlNjYWxlIiwiLTkiXSxbIkZpcnN0X1llYXIiLCIxOTk3Il0sWyJMYXN0X1llYXIiLCIyMDI1Il0sWyJSb3dzIixbIjMxRyJdXSxbIlNlcmllcyIsIlEiXSxbIkNvbHVtbnMiLFsiMjAyMCJdXV19" target="_blank"> Bureau of Economic Analysis</a>, <a href="https://www.bea.gov/help/faq/122" target="_blank">de-annualized quarterly data</a>, seasonally adjusted, in 2017 dollars. Available annually from 1997 to 2004 and quarterly beginning Q1 2005. 1997 to 2004 levels are quarterly averages of annual data, displayed at Q1 of each year.')
                                    )
                             ),  # Plot on the left
                             column(4, div(
@@ -293,7 +291,7 @@ ui <- page_fillable(
                             column(8, plotlyOutput("plotly_va_share"),
                                    div(
                                      style = "padding-top: 8px; text-align: left; font-size: 12px; color: #555;",
-                                     HTML('Source: <a href="https://apps.bea.gov/iTable/?reqid=150&step=2&isuri=1&categories=gdpxind&_gl=1*63mv2i*_ga*NzE4OTQyNzYwLjE3NDE4NzMwODg.*_ga_J4698JNNFT*MTc0NTk2MTA5NC4yNC4xLjE3NDU5NjEyNjguNjAuMC4w#eyJhcHBpZCI6MTUwLCJzdGVwcyI6WzEsMiwzXSwiZGF0YSI6W1siY2F0ZWdvcmllcyIsIkdkcHhJbmQiXSxbIlRhYmxlX0xpc3QiLCI1Il1dfQ==" target="_blank"> Bureau of Economic Analysis</a>. Available beginning in 1997; 1997 to 2004 data are annual.')
+                                     HTML('Source: <a href="https://apps.bea.gov/iTable/?reqid=1603&step=2&Categories=GDPxInd&isURI=1&_gl=1*9rhkk0*_ga*NzE4OTQyNzYwLjE3NDE4NzMwODg.*_ga_J4698JNNFT*czE3NTgyMjczNzQkbzEwOSRnMSR0MTc1ODIyNzQ2MCRqNTMkbDAkaDA.#eyJhcHBpZCI6MTYwMywic3RlcHMiOlsxLDIsNCw0XSwiZGF0YSI6W1siY2F0ZWdvcmllcyIsIkdEUHhJbmQiXSxbIlRhYmxlX0xpc3QiLCJUVkExMTAiXSxbIlNjYWxlIiwiMiJdLFsiRmlyc3RfWWVhciIsIjE5OTciXSxbIkxhc3RfWWVhciIsIjIwMjUiXSxbIlJvd3MiLFsiMzFHIl1dLFsiU2VyaWVzIiwiUSJdLFsiQ29sdW1ucyIsWyIyMDIwIl1dXX0=" target="_blank"> Bureau of Economic Analysis</a>. Available beginning in 1997; 1997 to 2004 data are annual.')
                                    )
                             ),  # Plot on the left
                             column(4, div(
@@ -563,7 +561,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>“An increase in real median household income” was one of the explicit goals of the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda</a>. The administration also celebrated the 3.4 percent annual growth rate of real median household income from 2016 to 2019, which coincided with President Trump’s first term.<br><br>We have thus set the target at 3.4 percent annual growth. Real median household income was $81,779 in 2023, the most recent year for which the data is available, and we will update this figure for 2024 once it is released by the Census Bureau.</p>')
+    HTML('<p>“An increase in real median household income” was one of the explicit goals of the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda</a>. The administration also celebrated the 3.4 percent annual growth rate of real median household income from 2016 to 2019, which coincided with President Trump’s first term.<br><br>We have thus set the target at 3.4 percent annual growth. Real median household income was $67,797 in 2024, the most recent year for which the data is available.</p>')
   })
   
   
@@ -1334,7 +1332,7 @@ Spending on factory construction had already climbed steeply in the years before
   })
   
   output$text_china_shock <- renderUI({
-    HTML('<p>The economists David Autor, David Dorn, and Gordon H Hanson <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-economics-080315-015041" target="_blank">identified</a> the 145 commuting zones in the United States that were most impacted by trade with China. Manufacturing employment in these zones was 2.2 million jobs as of 2022, the most recent available data.<br><br>We have set the target at 3.2 million jobs, the total manufacturing employment in these commuting zones just before China joined the WTO in 2001. The administration has repeatedly blamed China’s entry into the WTO for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a> in the United States.</p>'
+    HTML('<p>The economists David Autor, David Dorn, and Gordon H Hanson <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-economics-080315-015041" target="_blank">identified</a> the 145 commuting zones in the United States that were most impacted by trade with China. Manufacturing employment in these zones was 2.2 million jobs as of 2023, the most recent available data.<br><br>We have set the target at 3.2 million jobs, the total manufacturing employment in these commuting zones just before China joined the WTO in 2001. The administration has repeatedly blamed China’s entry into the WTO for <a href="https://www.whitehouse.gov/fact-sheets/2025/04/fact-sheet-president-donald-j-trump-declares-national-emergency-to-increase-our-competitive-edge-protect-our-sovereignty-and-strengthen-our-national-and-economic-security/#:~:text=Large%20and%20persistent%20annual%20U.S.,base%20dependent%20on%20foreign%20adversaries." target="_blank">lower incomes</a> and <a href="https://www.whitehouse.gov/articles/2025/04/sunday-shows-president-trumps-bold-vision-for-economic-prosperity/" target="_blank">lost jobs</a> in the United States.</p>'
     )})
   
   

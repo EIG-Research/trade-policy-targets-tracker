@@ -1,6 +1,6 @@
 # Project: Trump Trade Policy Targets Dashboard
 # File description: Clean output of stata employment data -- time series conversion
-# last update: 4/15/2025 by Jiaxin He
+# last update: 1/22/2026 by Jiaxin He
 
 rm(list = ls())
 ###########################
@@ -16,8 +16,7 @@ library(seasonal)
 #################
 # Define user-specific project directories
 project_directories <- list(
-  "name" = "PATH TO GITHUB REPO",
-  "sarah" = "/Users/sarah/Documents/GitHub/trade-policy-targets-tracker"
+  "name" = "PATH TO GITHUB REPO"
   )
 
 # Setting project path based on current user
