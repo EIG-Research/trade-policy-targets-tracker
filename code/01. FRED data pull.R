@@ -124,7 +124,7 @@ gdp_growth_qt <- fredo(FRED_API_KEY, gdp_growth, start_date, end_date) %>% selec
 quarterly <- function(df, start_month, func, seasonal = FALSE){
   df_ts <- df %>% select(value) %>% ts(., start = start_month, frequency = 12)
   if(seasonal){
-    df_ts <- final(seas(df_ts)) # Seasonally adjust FRED budget and construction spending data
+    df_ts <- final(seas(df_ts, arima.model = "(2 1 1)(0 1 1)")) # Seasonally adjust FRED budget and construction spending data
   }
   df_ts %>% aggregate(., nfrequency = 4, FUN = func, na.rm = TRUE)
 }
