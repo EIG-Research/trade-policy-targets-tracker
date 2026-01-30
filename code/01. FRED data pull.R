@@ -9,7 +9,7 @@
 #   6. Median household income
 #   7. Industrial Production
 #   8. Customs duties
-# last update: 1/22/2026 by jiaxin@eig.org
+# last update: 1/30/2026 by sarah@eig.org
 
 # remove dependencies
 rm(list = ls())
@@ -26,10 +26,17 @@ library(zoo)
 library(readxl)
 
 # Install and load FRED API
-# Link: https://fredblog.stlouisfed.org/2024/12/leveraging-r-for-powerful-data-analysis/
-# install.packages("devtools")
-# devtools::install_github("manutzn/fredo")
-library(fredo)
+
+  # no longer available
+  # Link: https://fredblog.stlouisfed.org/2024/12/leveraging-r-for-powerful-data-analysis/
+  # install.packages("devtools")
+  # devtools::install_github("manutzn/fredo")
+  # library(fredo)
+
+  # https://fred.stlouisfed.org/docs/api/fred/
+  # install.packages("fredr")
+  
+library(fredr)
 library(seasonal) # Use X-13 to seasonally adjust monthly data
 
 #################
@@ -38,7 +45,7 @@ library(seasonal) # Use X-13 to seasonally adjust monthly data
 # Define user-specific project directories
 project_directories <- list(
   "name" = "PATH TO GITHUB REPO"
-  )
+)
 
 # Setting project path based on current user
 current_user <- Sys.info()[["user"]]
@@ -55,20 +62,21 @@ path_appdata <- file.path(path_app, "cleaned_data")
 ##################
 
 # Insert your FRED API key here
-FRED_API_KEY <- ""
-api_key <- Sys.getenv("FRED_API_KEY")
+# See https://fred.stlouisfed.org/docs/api/api_key.html for setup
+FRED_API_KEY <- "ENTER-KEY-HERE"
+fredr_set_key(FRED_API_KEY)
 
-start_date <- "1990-01-01"
-end_date <- "2025-12-01"
+start_date <- as.Date("1990-01-01")
+end_date <- as.Date("2025-12-01")
 
 # Query quarterly chained PCE (2017 basis)
 PCE_id <- "PCECTPI"
-PCE_qt <- fredo(FRED_API_KEY, PCE_id, "1989-01-01", end_date) %>% select(value) %>%
-  ts(., start = c(1989,1), frequency = 4)
+PCE_qt <- fredr(series_id = PCE_id, observation_start = as.Date("1989-01-01"), observation_end = end_date) %>%
+  select(value) %>% ts(., start = c(1989,1), frequency = 4)
 
 # Query monthly C-CPI-U
 CPI_id <- "SUUR0000SA0"
-CPI_month <- fredo(FRED_API_KEY, CPI_id, "1999-12-01", end_date)
+CPI_month <- fredr(series_id = CPI_id, observation_start = as.Date("1999-12-01"), observation_end = end_date)
 
 # Import monthly R-CPI-U-RS from BLS and combine with C-CPI-U, replicating Census' approach
 path_bls <- file.path(path_project, "data/BLS")
@@ -82,43 +90,43 @@ CPI_month <- bind_rows(rcpi_rs, CPI_month %>% select(date, value)) %>% distinct(
 
 # Query monthly federal budget balance
 budget_id <- "MTSDS133FMS"
-budget_month <- fredo(FRED_API_KEY, budget_id, start_date, end_date)
+budget_month <- fredr(series_id = budget_id, observation_start = start_date, observation_end = end_date)
 
 # Query private construction spending, manufacturing
 construction_id <- "PRMFGCON"
-contruction_month <- fredo(FRED_API_KEY, construction_id, start_date, end_date)
+contruction_month <- fredr(series_id = construction_id,  observation_start = start_date, observation_end = end_date)
 
 # Query real annual median household income
 income_id <- "MEHOINUSA672N"
-income_yr <- fredo(FRED_API_KEY, income_id, start_date, end_date) %>% select(value) %>%
-  ts(., start = c(1990,1), frequency = 1)
+income_yr <- fredr(series_id = income_id, observation_start = start_date, observation_end = end_date) %>% 
+  select(value) %>% ts(., start = c(1990,1), frequency = 1)
 
 # Query all employees, manufacturing
 emp_manu <- "MANEMP"
-manu_month <- fredo(FRED_API_KEY, emp_manu, start_date, end_date)
+manu_month <- fredr(series_id =  emp_manu, observation_start = start_date, observation_end = end_date)
 
 # Query all employees, motor vehicles and parts
 emp_motor <- "CES3133600101"
-motor_month <- fredo(FRED_API_KEY, emp_motor, start_date, end_date)
+motor_month <- fredr(series_id = emp_motor, observation_start = start_date, observation_end = end_date)
 
 # Query all employees, private
 emp_priv <- "USPRIV"
-priv_month <- fredo(FRED_API_KEY, emp_priv, start_date, end_date)
+priv_month <- fredr(series_id = emp_priv, observation_start = start_date, observation_end = end_date)
 
 # Query industrial production, manufacturing (seasonally adjusted)
 ip_manu <- "IPGMFSQ"
-ipman_qt <- fredo(FRED_API_KEY, ip_manu, start_date, end_date)
-ipman_qt <- ipman_qt %>% select(value) %>% ts(., start = c(1990,1), frequency = 4)
+ipman_qt <- fredr(series_id = ip_manu, observation_start = start_date, observation_end = end_date) %>%
+  select(value) %>% ts(., start = c(1990,1), frequency = 4)
 
 # Query customs duties revenue data
 duties_rev <- "B235RC1Q027SBEA"
-duties_rev_qt <- fredo(FRED_API_KEY, duties_rev, start_date, end_date) %>% select(value) %>%
-  mutate(value = value/4) %>% ts(., start = c(1990,1), frequency = 4)
+duties_rev_qt <- fredr(series_id = duties_rev, observation_start = start_date, observation_end = end_date) %>%
+  select(value) %>% mutate(value = value/4) %>% ts(., start = c(1990,1), frequency = 4)
 
 # Query real YoY GDP growth
 gdp_growth <- "A191RO1Q156NBEA"
-gdp_growth_qt <- fredo(FRED_API_KEY, gdp_growth, start_date, end_date) %>% select(value) %>%
-  mutate(value = value) %>% ts(., start = c(1990,1), frequency = 4)
+gdp_growth_qt <- fredr(series_id = gdp_growth, observation_start = start_date, observation_end = end_date) %>% 
+  select(value) %>% mutate(value = value) %>% ts(., start = c(1990,1), frequency = 4)
 
 # Tabulate by quarters, seasonally adjust the unadjusted ones
 quarterly <- function(df, start_month, func, seasonal = FALSE){

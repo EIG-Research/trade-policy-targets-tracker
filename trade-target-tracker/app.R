@@ -33,7 +33,6 @@ rsconnect::setAccountInfo(name='economicinnovationgroup', token='1E424A49864E721
 # Change to just file.path("cleaned_data", "fred_data.RData") when deploying online
 load(file.path("cleaned_data", "fred_data.RData"))
 load(file.path("cleaned_data", "bea_data.RData"))
-load(file.path("cleaned_data", "cps_employment.RData"))
 load(file.path("cleaned_data", "china_shock.RData"))
 
 ######################

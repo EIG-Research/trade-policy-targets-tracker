@@ -1,6 +1,6 @@
 # Project: Trump Trade Policy Targets Dashboard
 # File description: Aggregating manufacturing employment in counties most affected by the China shock
-# last update: 9/3/2025 by jiaxin@eig.org
+# last update: 1/30/2026 by sarah@eig.org
 
 # remove dependencies
 rm(list = ls())
@@ -85,8 +85,13 @@ estab_bins <- c(
 
 for(year in 90:97){
   emp_var <- paste0("man_emp_", as.character(year))
-  cbp_year <- read.table(file.path(path_cbp, paste0("cbp", as.character(year), "co.txt")),
-                                   header=TRUE, sep = ',')
+  zip_file <- file.path(path_cbp, paste0("cbp", year, "co.txt.zip"))
+  txt_file <- paste0("cbp", year, "co.txt")
+  tmpdir <- tempdir()
+  unzip(zip_file, exdir = tmpdir)
+  
+  cbp_year <- read.table(file.path(tmpdir, txt_file), header = TRUE, sep = ",", stringsAsFactors = FALSE)
+  
   cbp_year <- cbp_year %>% filter(sic %in% sic_naics_crosswalk$sic) %>%
     mutate_all(~replace(., is.na(.), 0)) %>%
     left_join(sic_naics_crosswalk, by = "sic") %>%
@@ -100,10 +105,15 @@ for(year in 90:97){
   china_most_hit_counties <- china_most_hit_counties %>% left_join(cbp_year, by = "county")
 }
 
+
 for(year in c(as.character(98:99), paste0("0", 0:9), as.character(10:23))){
-  emp_var <- paste0("man_emp_", year)
-  cbp_year <- read.table(file.path(path_cbp, paste0("cbp", year, "co.txt")),
-                         header=TRUE, sep = ',')
+  emp_var <- paste0("man_emp_", as.character(year))
+  zip_file <- file.path(path_cbp, paste0("cbp", year, "co.txt.zip"))
+  txt_file <- paste0("cbp", year, "co.txt")
+  tmpdir <- tempdir()
+  unzip(zip_file, exdir = tmpdir)
+  
+  cbp_year <- read.table(file.path(tmpdir, txt_file), header = TRUE, sep = ",", stringsAsFactors = FALSE)
   
   cbp_year <- cbp_year %>% rename_with(tolower) %>% filter(naics == "31----") %>% select(-naics) %>%
     mutate_all(~replace(., is.na(.), 0))
