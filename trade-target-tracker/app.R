@@ -562,7 +562,7 @@ server <- function(input, output) {
   })
   
   output$text_hh_income <- renderUI({
-    HTML('<p>“An increase in real median household income” was one of the explicit goals of the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda</a>. The administration also celebrated the 3.4 percent annual growth rate of real median household income from 2016 to 2019, which coincided with President Trump’s first term.<br><br>We have thus set the target at 3.4 percent annual growth. Real median household income was $67,797 in 2024, the most recent year for which the data is available.</p>')
+    HTML('<p>“An increase in real median household income” was one of the explicit goals of the Trump administration’s <a href="https://ustr.gov/sites/default/files/files/reports/2025/President%20Trump%27s%202025%20Trade%20Policy%20Agenda.pdf" target="_blank">trade policy agenda</a>. The administration also celebrated the 3.4 percent annual growth rate of real median household income from 2016 to 2019, which coincided with President Trump’s first term.<br><br>We have thus set the target at 3.4 percent annual growth. Real median household income was $67,707 in 2024, the most recent year for which the data is available.</p>')
   })
   
   
