@@ -1,6 +1,6 @@
 # Trade Policy Target Tracker
 
-This code underlies the EIG Trade Policy Tracker. Contact research@eig.org with any questions.
+This code underlies the EIG [Trade Policy Dashboard](https://eig.org/trade-policy-dashboard/). Contact research@eig.org with any questions.
 
 ******
 
